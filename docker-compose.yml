@@ -1,0 +1,43 @@
+version: '3'
+services:
+  case-db:
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci --default-authentication-plugin=mysql_native_password
+    image: mysql:8.0
+    ports:
+      - '3310:3306'
+    environment:
+      MYSQL_ROOT_PASSWORD: secret
+      MYSQL_DATABASE: case
+      MYSQL_USER: case-user
+      MYSQL_PASSWORD: secret
+  case:
+    image: case
+    command: npm run start:debug
+    volumes:
+      - .:/src/app:cached
+      - ./node_modules:/src/app/node_modules:ro
+    ports:
+      - '9229:9229'
+      - '5000:80'
+    links:
+      - case-db:db
+      - case-redis:redis
+    environment:
+      MYSQL_ROOT_PASSWORD: secret
+      MYSQL_DATABASE: case
+      MYSQL_USER: case-user
+      MYSQL_PASSWORD: secret
+      APP_URL: http://localhost:5000
+      JWT_KEY: L74o566h2eGmD32Ptog8TOToY5vs5BVh
+      PORT: 80
+      FRONT_URL: https://test.ru
+      STEAM_APIKEY: 9CECF1287A6E051A6AD420CAA3A3AE89
+      AUTH_URL: http://localhost:5000
+      STEAM_APPID: 730
+      
+
+  case-redis:
+    image: redis:4.0-alpine
+    command: ['sh', '-c', 'exec redis-server']
+    ports:
+      - '6379:6379'

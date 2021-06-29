@@ -1,0 +1,58 @@
+{
+  "_from": "@eus/social-default-logic",
+  "_id": "@eus/social-default-logic@1.0.0",
+  "_inBundle": false,
+  "_integrity": "sha512-Y8d7k4lGfFjLlu0RQn6O0ayTJ9DiS8IaqTJJxBNCcVAfWhCbnFrWnms8moC+XECxBAFJKA/gq+wfP1oWkjhkjw==",
+  "_location": "/@eus/social-default-logic",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "tag",
+    "registry": true,
+    "raw": "@eus/social-default-logic",
+    "name": "@eus/social-default-logic",
+    "escapedName": "@eus%2fsocial-default-logic",
+    "scope": "@eus",
+    "rawSpec": "",
+    "saveSpec": null,
+    "fetchSpec": "latest"
+  },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "https://repo.els24.com/repository/npm-private/@eus/social-default-logic/-/social-default-logic-1.0.0.tgz",
+  "_shasum": "8f1fc38e96bd30cbf4bd601e1adca513aa1c1e40",
+  "_spec": "@eus/social-default-logic",
+  "_where": "/Users/pavelprohorov/Projects/social-default-logic",
+  "author": {
+    "name": "Pavel Prohorov"
+  },
+  "bundleDependencies": false,
+  "dependencies": {},
+  "deprecated": false,
+  "description": "Logic for social",
+  "devDependencies": {
+    "jest": "^26.4.2",
+    "prettier": "^1.17.0",
+    "ts-jest": "^26.3.0",
+    "typescript": "^3.4.5"
+  },
+  "engines": {
+    "node": ">=0.10.0"
+  },
+  "license": "MIT",
+  "main": "index.js",
+  "name": "@eus/social-default-logic",
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://repo.els24.com/repository/npm-private"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://gitlab.els24.com/common-packages/social-default-logic"
+  },
+  "scripts": {
+    "test": "jest"
+  },
+  "version": "1.0.0"
+}

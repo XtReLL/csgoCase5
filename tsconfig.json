@@ -1,0 +1,27 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "declaration": true,
+    "removeComments": true,
+    "emitDecoratorMetadata": true,
+    "strict": true,
+    "experimentalDecorators": true,
+    "skipLibCheck": true,
+    "allowSyntheticDefaultImports": true,
+    "target": "es2017",
+    "lib": ["ESNext"],
+    "sourceMap": true,
+    "outDir": "./dist",    
+    "incremental": true,
+    "baseUrl": ".",
+    "paths": {
+      "typings/*": [ 
+        "./typings/src/*"
+      ],
+      "*": [
+        "./src/*"
+      ]
+    }
+  }
+}
+

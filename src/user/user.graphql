@@ -1,0 +1,12 @@
+type User {
+  id: ID
+  username: String
+  steamId: String
+  avatar: String
+  trade_url: String
+  balance: Int
+}
+
+type Query {
+  user(id: ID): User!
+}
