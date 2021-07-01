@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { RedisClientService } from 'redis-client/redis-client.service';
+import { TradeService } from 'trade/trade.service';
 import { Repository } from 'typeorm';
 import { FindOrCreateUserDto } from './dto/findOrCreateUser.dto';
 import { User } from './entity/user.entity';
@@ -10,7 +11,8 @@ export class UserService {
   constructor(
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
-    private readonly redisClientService: RedisClientService
+    private readonly redisClientService: RedisClientService,
+    private readonly tradeService: TradeService
   ) { }
 
   async findAll(): Promise<User[]> {
@@ -60,4 +62,31 @@ export class UserService {
     await this.redisClientService.set(`user_${user.steamId}`, user)
     return user
   }
+
+  async setTradeUrl(user: User, tradeUrl: string): Promise<boolean> {
+    try {
+        const data = tradeUrl.split('?')[1]
+
+        if (data) {
+            if (data.indexOf('partner') > -1 && data.indexOf('token') > -1) {
+                const offer = this.tradeService.tradeOfferManager.createOffer(tradeUrl)
+
+                if (offer.partner.getSteamID64() !== user.steamId) {
+                    throw new Error("This is not your trade link")
+                }
+
+                user.trade_url = tradeUrl
+                await this.update(user)
+
+                return true
+            }
+
+            throw new Error("Invalid trade link")
+        }
+
+        return false
+    } catch (e) {
+        throw new Error(`Error setTradeUrl ==> ${e}`)
+    }
+}
 }

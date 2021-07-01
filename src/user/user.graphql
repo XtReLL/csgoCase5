@@ -10,3 +10,7 @@ type User {
 type Query {
   user(id: ID): User!
 }
+
+type Mutation {
+  setTradeLink(link: String): Boolean
+}

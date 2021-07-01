@@ -47,6 +47,7 @@
     "rimraf": "^3.0.2",
     "rxjs": "^6.6.6",
     "sqlite3": "^5.0.2",
+    "steam-tradeoffer-manager": "^2.10.3",
     "type-graphql": "^1.1.1",
     "typeorm": "^0.2.34",
     "voyager": "^0.4.13"

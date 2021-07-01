@@ -9,6 +9,7 @@ import { AuthModule } from './auth/auth.module';
 import config from 'ormconfig';
 import { RedisModule } from 'nestjs-redis';
 import { RedisClientService } from 'redis-client/redis-client.service';
+import { TradeModule } from './trade/trade.module';
 
 
 @Module({
@@ -37,6 +38,7 @@ import { RedisClientService } from 'redis-client/redis-client.service';
     TypeOrmModule.forRoot(config),
     UserModule,
     AuthModule,
+    TradeModule,
   ],
   providers: [
     RedisClientService,

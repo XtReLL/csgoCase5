@@ -19,3 +19,7 @@ export interface User {
 export interface IQuery {
     user(id?: string): User | Promise<User>;
 }
+
+export interface IMutation {
+    setTradeLink(link?: string): boolean | Promise<boolean>;
+}
