@@ -7,6 +7,72 @@
 
 /* tslint:disable */
 /* eslint-disable */
+export enum PromocodeType {
+    SUM = "SUM",
+    PERCENT = "PERCENT"
+}
+
+export interface UpdateConfigInput {
+    id: string;
+    dollarRate?: number;
+    minSteamLvlForUsePromocode?: number;
+    minPlayTimeInCSGOForUsePromocode?: number;
+}
+
+export interface Pagination {
+    cursor?: string;
+    direction: string;
+    limit: number;
+}
+
+export interface CreatePromocodeInput {
+    name: string;
+    sum?: number;
+    percent?: number;
+    count?: number;
+    endTime?: Date;
+}
+
+export interface UpdatePromocodeInput {
+    id: string;
+    name?: string;
+    sum?: number;
+    percent?: number;
+    count?: number;
+    endTime?: Date;
+}
+
+export interface Config {
+    id: string;
+    dollarRate?: number;
+    minSteamLvlForUsePromocode?: number;
+    minPlayTimeInCSGOForUsePromocode?: number;
+}
+
+export interface IMutation {
+    updateConfig(updateConfigInput: UpdateConfigInput): Config | Promise<Config>;
+    createPromocode(createPromocodeInput: CreatePromocodeInput): Promocode | Promise<Promocode>;
+    updatePromocode(updatePromocodeInput: UpdatePromocodeInput): Promocode | Promise<Promocode>;
+    removePromocode(id: string): boolean | Promise<boolean>;
+    usePromocode(code: string): boolean | Promise<boolean>;
+    setTradeLink(link?: string): boolean | Promise<boolean>;
+}
+
+export interface CursorBasedPaginationData {
+    hasMore: boolean;
+    cursor?: string;
+    id: string;
+}
+
+export interface Promocode {
+    id: string;
+    name?: string;
+    sum?: number;
+    percent?: number;
+    count?: number;
+    endTime?: Date;
+}
+
 export interface User {
     id?: string;
     username?: string;
@@ -18,8 +84,4 @@ export interface User {
 
 export interface IQuery {
     user(id?: string): User | Promise<User>;
-}
-
-export interface IMutation {
-    setTradeLink(link?: string): boolean | Promise<boolean>;
 }

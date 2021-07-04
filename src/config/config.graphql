@@ -1,0 +1,18 @@
+type Config {
+  id: ID!
+  dollarRate: Float
+  minSteamLvlForUsePromocode: Int
+  minPlayTimeInCSGOForUsePromocode: Int
+}
+
+input UpdateConfigInput {
+  id: ID!
+  dollarRate: Float
+  minSteamLvlForUsePromocode: Int
+  minPlayTimeInCSGOForUsePromocode: Int 
+}
+
+
+type Mutation {
+  updateConfig(updateConfigInput: UpdateConfigInput!): Config!
+}

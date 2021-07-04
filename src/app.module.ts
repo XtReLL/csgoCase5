@@ -10,6 +10,9 @@ import config from 'ormconfig';
 import { RedisModule } from 'nestjs-redis';
 import { RedisClientService } from 'redis-client/redis-client.service';
 import { TradeModule } from './trade/trade.module';
+import { PromocodeModule } from './promocode/promocode.module';
+import { ConfigModule } from './config/config.module';
+
 
 
 @Module({
@@ -39,6 +42,8 @@ import { TradeModule } from './trade/trade.module';
     UserModule,
     AuthModule,
     TradeModule,
+    PromocodeModule,
+    ConfigModule,
   ],
   providers: [
     RedisClientService,

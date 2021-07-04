@@ -1,0 +1,11 @@
+input Pagination {
+  cursor: ID
+  direction: String!
+  limit: Int!
+}
+
+type CursorBasedPaginationData {
+  hasMore: Boolean!
+  cursor: ID
+  id: ID!
+}

@@ -1,0 +1,39 @@
+scalar Date
+
+type Promocode {
+  id: ID!
+  name: String
+  sum: Float
+  percent: Int
+  count: Int
+  endTime: Date
+}
+
+input CreatePromocodeInput {
+  name: String!
+  sum: Float
+  percent: Int
+  count: Int
+  endTime: Date
+}
+
+input UpdatePromocodeInput {
+  id: ID!
+  name: String
+  sum: Float
+  percent: Int
+  count: Int
+  endTime: Date
+}
+
+enum PromocodeType {
+  SUM
+  PERCENT
+}
+
+type Mutation {
+  createPromocode(createPromocodeInput: CreatePromocodeInput!): Promocode!
+  updatePromocode(updatePromocodeInput: UpdatePromocodeInput!): Promocode!
+  removePromocode(id: ID!): Boolean!
+  usePromocode(code: String!): Boolean!
+}

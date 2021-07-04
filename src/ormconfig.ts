@@ -1,4 +1,7 @@
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
+import { Config } from 'config/entity/config.entity';
+import { PromocodeUse } from 'promocode/entity/promocode-use.entity';
+import { Promocode } from 'promocode/entity/promocode.entity';
 import { User } from 'user/entity/user.entity';
 
 
@@ -12,7 +15,10 @@ const config: TypeOrmModuleOptions = {
   acquireTimeout: 60000,
   connectTimeout: 60000,
   entities: [
-    User
+    User,
+    Promocode,
+    PromocodeUse,
+    Config
   ],
   synchronize: true,
 

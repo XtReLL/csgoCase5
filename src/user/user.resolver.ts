@@ -4,7 +4,7 @@ import { AuthorizedModel } from 'auth/model/authorized.model';
 import { UserService } from './user.service';
 
 
-@Resolver('user')
+@Resolver('User')
 export class UserResolver {
   constructor(private readonly userService: UserService) {}
 

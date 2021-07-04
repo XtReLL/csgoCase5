@@ -5,6 +5,7 @@ import { TradeService } from 'trade/trade.service';
 import { Repository } from 'typeorm';
 import { FindOrCreateUserDto } from './dto/findOrCreateUser.dto';
 import { User } from './entity/user.entity';
+import axios from 'axios'
 
 @Injectable()
 export class UserService {
@@ -88,5 +89,52 @@ export class UserService {
     } catch (e) {
         throw new Error(`Error setTradeUrl ==> ${e}`)
     }
-}
+	}
+	
+	async getPlayTimeCSGO(steamId: string): Promise<number> {
+		try {
+			const response = await axios.get(`http://api.steampowered.com/IPlayerService/GetOwnedGames/v0001/?key=${process.env.STEAM_APIKEY}&steamid=${steamId}&format=json`)
+			const games = response.data['response']['games']
+
+			let playedTime = 0
+
+			games.map((game: any) => {
+				if (game.appid === 730) {
+					playedTime = (game.playtime_forever / 60)
+				}
+			})
+
+			return playedTime
+		} catch (e) {
+				return 0
+		}
+	}
+
+	async getProfileVisibleSteam(steamId: string): Promise<boolean> {
+		try {
+			const response = await axios.get(`http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=${process.env.STEAM_APIKEY}&steamids=${steamId}`)
+			const data = response.data['response']['players'][0]
+
+			let visible = false
+
+			if (data['communityvisibilitystate'] === 3) {
+				visible = true
+			}
+
+			return visible
+		} catch (e) {
+				return false
+		}
+	}
+
+	async getSteamLevel(steamId: string): Promise<number> {
+		try {
+			const response = await axios.get(`http://api.steampowered.com/IPlayerService/GetSteamLevel/v1/?key=${process.env.STEAM_APIKEY}&steamid=${steamId}`)
+			const data = response.data['response']
+
+			return data.player_level
+		} catch (e) {
+				return 0
+		}
+	}
 }

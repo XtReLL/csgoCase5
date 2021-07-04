@@ -22,8 +22,8 @@ export class RedisClientService {
         return JSON.parse(data)
     }
 
-    async set(key: string, value: any) {
-        return await this.service.set(key, JSON.stringify(value))
+    async set(key: string, value: any, options?: any) {
+        return await this.service.set(key, JSON.stringify(value), options)
     }
 
     async delete(key: string) {

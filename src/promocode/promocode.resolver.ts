@@ -1,0 +1,60 @@
+import { Args, Mutation, Resolver } from '@nestjs/graphql';
+import { Authorized } from 'auth/authorized.decorator';
+import { AuthorizedModel } from 'auth/model/authorized.model';
+import { CreatePromocodeInput } from './dto/create-promocode.input';
+import { UpdatePromocodeInput } from './dto/update-promocode.input';
+import { Promocode } from './entity/promocode.entity';
+import { PromocodeService } from './promocode.service';
+
+@Resolver('Promocode')
+export class PromocodeResolver {
+  constructor(
+    private readonly promocodeService: PromocodeService
+  ) {
+    
+  }
+
+  @Mutation('createPromocode')
+  async createPromocode(
+    @Args('createPromocodeInput') createPromocodeInput: CreatePromocodeInput,
+    @Authorized() author: AuthorizedModel,
+  ): Promise<Promocode> {
+    return this.promocodeService.createPromocode(
+      createPromocodeInput,
+      author,
+    );
+  }
+
+  @Mutation('updatePromocode')
+  async updatePromocode(
+    @Args('updatePromocodeInput') updatePromocodeInput: UpdatePromocodeInput,
+    @Authorized() author: AuthorizedModel,
+  ): Promise<Promocode> {
+    return this.promocodeService.updatePromocode(
+      updatePromocodeInput,
+      author,
+    ); 
+  }
+
+  @Mutation('removePromocode')
+  async removePromocode(
+    @Args('id') id: string,
+    @Authorized() author: AuthorizedModel,
+  ): Promise<boolean> {
+    return this.promocodeService.removePromocode(
+      id,
+      author,
+    );
+  }
+
+  @Mutation('usePromocode')
+  async usePromocode(
+    @Args('code') code: string,
+    @Authorized() author: AuthorizedModel,
+  ): Promise<boolean> {
+    return this.promocodeService.usePromocode(
+      author.model,
+      code,
+    );
+  }
+}
