@@ -1,18 +1,18 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { RedisClientService } from 'redis-client/redis-client.service';
 import { TradeService } from 'trade/trade.service';
 import { Repository } from 'typeorm';
 import { FindOrCreateUserDto } from './dto/findOrCreateUser.dto';
 import { User } from './entity/user.entity';
 import axios from 'axios'
+import { RedisCacheService } from 'redisCache/redisCache.service';
 
 @Injectable()
 export class UserService {
   constructor(
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
-    private readonly redisClientService: RedisClientService,
+    private readonly redisCacheService: RedisCacheService,
     private readonly tradeService: TradeService
   ) { }
 
@@ -39,7 +39,7 @@ export class UserService {
   }
 
   async findBySteamId(steamId: string): Promise<User> {
-    let user = await this.redisClientService.get(`user_${steamId}`)
+    let user = await this.redisCacheService.get(`user_${steamId}`)
 
     if (user) {
         return user
@@ -60,7 +60,7 @@ export class UserService {
 
   async update(user: User): Promise<User> {
     user = await this.userRepository.save(user)
-    await this.redisClientService.set(`user_${user.steamId}`, user)
+    await this.redisCacheService.set(`user_${user.steamId}`, user)
     return user
   }
 

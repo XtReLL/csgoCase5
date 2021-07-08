@@ -5,22 +5,15 @@ import { ConfigService } from './config.service';
 import { UpdateConfigInput } from './dto/update-config.input';
 import { Config } from './entity/config.entity';
 
-@Resolver()
+@Resolver('Config')
 export class ConfigResolver {
-  constructor(
-    private readonly configService: ConfigService
-  ) {
-    
-  }
+  constructor(private readonly configService: ConfigService) {}
 
   @Mutation('updateConfig')
   async usePromocode(
     @Args('updateConfigInput') updateConfigInput: UpdateConfigInput,
     @Authorized() author: AuthorizedModel,
   ): Promise<Config> {
-    return this.configService.updateConfig(
-      updateConfigInput,
-      author,
-    );
+    return this.configService.updateConfig(updateConfigInput, author);
   }
 }

@@ -1,22 +1,35 @@
-import {BaseEntity, Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn} from "typeorm"
+import {
+  BaseEntity,
+  Column,
+  CreateDateColumn,
+  Entity,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 
 @Entity('config')
 export class Config {
-    @PrimaryGeneratedColumn()
-    id!: number
+  @PrimaryGeneratedColumn()
+  id!: number;
 
-    @Column({type: 'double', default: 73.62 })
-    dollarRate!: number
+  @Column()
+  siteName!: string;
 
-    @Column({ default: 0 })
-    minSteamLvlForUsePromocode!: number
+  @Column({ type: 'double', default: 73.62 })
+  dollarRate!: number;
 
-    @Column({ default: 0 })
-    minPlayTimeInCSGOForUsePromocode!: number
+  @Column({ default: 0 })
+  minSteamLvlForUsePromocode!: number;
 
-    @CreateDateColumn()
-    createdAt!: Date
+  @Column({ default: 0 })
+  minPlayTimeInCSGOForUsePromocode!: number;
 
-    @UpdateDateColumn()
-    updatedAt!: Date
+  @Column({ default: 0 })
+  minItemPrice!: number;
+
+  @CreateDateColumn()
+  createdAt!: Date;
+
+  @UpdateDateColumn()
+  updatedAt!: Date;
 }

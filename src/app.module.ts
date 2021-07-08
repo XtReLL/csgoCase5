@@ -7,11 +7,12 @@ import { UserModule } from './user/user.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from './auth/auth.module';
 import config from 'ormconfig';
-import { RedisModule } from 'nestjs-redis';
-import { RedisClientService } from 'redis-client/redis-client.service';
 import { TradeModule } from './trade/trade.module';
 import { PromocodeModule } from './promocode/promocode.module';
 import { ConfigModule } from './config/config.module';
+import { RedisCacheModule } from 'redisCache/redisCache.module';
+import { ItemModule } from './item/item.module';
+import { CsgoMarketModule } from './csgo-market/csgo-market.module';
 
 
 
@@ -33,20 +34,17 @@ import { ConfigModule } from './config/config.module';
         outputAs: 'interface',
       },
     }),
-    RedisModule.register({
-      host: 'redis',
-      name: 'app',
-      port: 6379
-    }),
     TypeOrmModule.forRoot(config),
     UserModule,
     AuthModule,
     TradeModule,
     PromocodeModule,
     ConfigModule,
+    RedisCacheModule,
+    ItemModule,
+    CsgoMarketModule
   ],
   providers: [
-    RedisClientService,
   ],
 })
 export class AppModule {}
