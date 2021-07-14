@@ -1,6 +1,8 @@
 import { HttpService, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { BackpackApiService } from 'backpack-api/backpack-api.service';
 import { CsgoMarketService } from 'csgo-market/csgo-market.service';
+import { stringify } from 'querystring';
 import { RedisCacheService } from 'redisCache/redisCache.service';
 import { Repository } from 'typeorm';
 import {
@@ -27,13 +29,14 @@ export class ItemService {
     private readonly csgoMarketService: CsgoMarketService,
     private readonly httpService: HttpService,
     private readonly redisCacheService: RedisCacheService,
+    private readonly backpackService: BackpackApiService,
   ) {}
 
   async checkItems(): Promise<boolean> {
     try {
       const itemsCount = await this.itemRepository.count();
       if (itemsCount === 0) {
-        await this.loadItems();
+        await this.getItems();
       }
       return true;
     } catch (error) {
@@ -41,16 +44,17 @@ export class ItemService {
     }
   }
 
-  async loadItems(): Promise<boolean> {
+  async getItems(): Promise<any> {
     try {
+      const entities: Array<Item> = [];
       const prices = await this.csgoMarketService.getPrices();
-
-      for await (const marketItem of this.generatorSteamMarketItems()) {
+      for (const [key, value] of Object.entries(
+        await this.backpackService.getItems(),
+      )) {
         try {
           const priceIndex = prices.findIndex(
-            (x: any) => x.market_hash_name === marketItem.hash_name,
+            (x: any) => x.market_hash_name === value.name,
           );
-
           if (priceIndex > -1) {
             let price;
 
@@ -59,12 +63,13 @@ export class ItemService {
                 prices[priceIndex].price /
                 (await this.redisCacheService.get('config')).dollarRate;
             } else {
-              price = marketItem.sell_price / 100;
+              price =
+                prices[priceIndex].price -
+                ((prices[priceIndex].price / 100) * 30) /
+                  (await this.redisCacheService.get('config')).dollarRate;
             }
 
-            const item = marketItem.asset_description;
-
-            if (item.icon_url_large === null) {
+            if (value.icon_url_large === null) {
               continue;
             }
 
@@ -74,79 +79,30 @@ export class ItemService {
               continue;
             }
 
-            const exterior = '';
-            const rarity = item.type;
-
-            await this.itemRepository.save(
+            entities.push(
               this.itemRepository.create({
-                market_hash_name: item.market_hash_name,
+                market_hash_name: value.name,
                 icon_url:
-                  item.icon_url_large === ''
-                    ? item.icon_url
-                    : item.icon_url_large,
-                exterior: exterior,
-                rarity: rarity,
-                color: item.name_color,
+                  value.icon_url_large === ''
+                    ? value.icon_url
+                    : value.icon_url_large,
+                exterior: value.exterior,
+                rarity: value.rarity,
+                color: value.rarity_color,
                 price,
               }),
             );
           }
-        } catch (e) {
-          throw new Error('Failed to create item');
+        } catch (error) {
+          throw new Error(error);
         }
       }
 
+      await this.itemRepository.save(entities);
+
       return true;
-    } catch (e) {
-      throw new Error(e);
+    } catch (error) {
+      throw new Error(error);
     }
-  }
-
-  async *generatorSteamMarketItems(startPage: number = 0) {
-    let currentPage = startPage;
-    const loaderBreakRule = (page: any) =>
-      page.start >= page.total_count ||
-      page.results.some(
-        async (i: any) =>
-          i.sell_listings <
-          (await this.redisCacheService.get('config')).minItemPrice,
-      );
-
-    while (true) {
-      const page = await this.itemLoaderQueue.add(() =>
-        this.loadItemsPage(currentPage),
-      );
-
-      for (const item of page.results)
-        if (
-          item.sell_listings >
-          (await this.redisCacheService.get('config')).minItemPrice
-        )
-          yield item;
-
-      if (loaderBreakRule(page)) break;
-      currentPage++;
-    }
-  }
-
-  async loadItemsPage(page: number = 0, perPage: number = 1000): Promise<any> {
-    perPage = Math.min(100, perPage);
-
-    const { data } = await this.httpService
-      .get(`https://steamcommunity.com/market/search/render`, {
-        params: {
-          query: '',
-          start: page * perPage,
-          count: perPage,
-          search_descriptions: 0,
-          norender: 1,
-          sort_column: 'quantity',
-          sort_dir: 'desc',
-          appid: 730,
-        },
-      })
-      .toPromise();
-
-    return data;
   }
 }

@@ -1,6 +1,7 @@
 import { HttpModule } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { BackpackApiModule } from 'backpack-api/backpack-api.module';
 import { CsgoMarketModule } from 'csgo-market/csgo-market.module';
 import { CsgoMarketService } from 'csgo-market/csgo-market.service';
 import { RedisCacheModule } from 'redisCache/redisCache.module';
@@ -23,6 +24,7 @@ describe('ItemService', () => {
         CsgoMarketModule,
         HttpModule,
         RedisCacheModule,
+        BackpackApiModule,
       ],
       providers: [ItemService, CsgoMarketService],
     }).compile();
@@ -37,7 +39,8 @@ describe('ItemService', () => {
   describe('parse items', () => {
     test('correct loadItems', async () => {
       const user = await UserFactory().create();
-      const items = await service.loadItems();
+      // const items = await service.loadItems();
+      const items = await service.getItems();
 
       expect(items).toEqual(true);
     });

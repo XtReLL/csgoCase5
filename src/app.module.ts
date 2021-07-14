@@ -13,6 +13,7 @@ import { ConfigModule } from './config/config.module';
 import { RedisCacheModule } from 'redisCache/redisCache.module';
 import { ItemModule } from './item/item.module';
 import { CsgoMarketModule } from './csgo-market/csgo-market.module';
+import { BackpackApiModule } from './backpack-api/backpack-api.module';
 
 
 
@@ -42,7 +43,8 @@ import { CsgoMarketModule } from './csgo-market/csgo-market.module';
     ConfigModule,
     RedisCacheModule,
     ItemModule,
-    CsgoMarketModule
+    CsgoMarketModule,
+    BackpackApiModule
   ],
   providers: [
   ],
