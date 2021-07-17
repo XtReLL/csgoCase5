@@ -15,6 +15,7 @@ import { CsgoMarketModule } from './csgo-market/csgo-market.module';
 import { BackpackApiModule } from './backpack-api/backpack-api.module';
 import { InventoryModule } from './inventory/inventory.module';
 import { EventEmitterModule } from '@nestjs/event-emitter';
+import { CaseModule } from './case/case.module';
 
 @Module({
   imports: [
@@ -46,6 +47,7 @@ import { EventEmitterModule } from '@nestjs/event-emitter';
     CsgoMarketModule,
     BackpackApiModule,
     InventoryModule,
+    CaseModule,
   ],
   providers: [],
 })

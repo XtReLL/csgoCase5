@@ -1,3 +1,4 @@
+import { CaseItems } from 'case/entity/caseItems.entity';
 import { Inventory } from 'inventory/entity/inventory.entity';
 import {
   BaseEntity,
@@ -34,6 +35,9 @@ export class Item {
 
   @OneToMany(() => Inventory, (inventory) => inventory.item)
   inventory!: Promise<Inventory[]>;
+
+  @OneToMany(() => CaseItems, (caseItems) => caseItems.item)
+  caseItems!: Promise<CaseItems[]>;
 
   @CreateDateColumn()
   createdAt!: Date;

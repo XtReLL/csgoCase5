@@ -1,0 +1,40 @@
+type Case {
+  id: ID!
+}
+enum CaseRarityType {
+  CUSTOM
+  CONSUMER
+  INDUSTRIAL
+}
+
+enum CaseStatusType {
+  ACTIVE
+  HIDE
+}
+
+input CreateCaseInput {
+  name: String!
+  price: Int
+  rarirty: CaseRarityType
+  category: String
+  status: CaseStatusType
+  discount: Int
+  icon: String
+}
+
+input UpdateCaseInput {
+  id: ID!
+  name: String
+  price: Int
+  rarirty: CaseRarityType
+  category: String
+  status: CaseStatusType
+  discount: Int
+  icon: String
+}
+
+type Mutation {
+  createCase(createCaseInput: CreateCaseInput!): Case!
+  updateCase(updateCaseInput: UpdateCaseInput!): Case!
+  removeCase(id: ID!): Boolean!
+}

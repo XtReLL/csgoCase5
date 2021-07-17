@@ -7,6 +7,17 @@
 
 /* tslint:disable */
 /* eslint-disable */
+export enum CaseRarityType {
+    CUSTOM = "CUSTOM",
+    CONSUMER = "CONSUMER",
+    INDUSTRIAL = "INDUSTRIAL"
+}
+
+export enum CaseStatusType {
+    ACTIVE = "ACTIVE",
+    HIDE = "HIDE"
+}
+
 export enum InventoryStatus {
     AVAILABLE = "AVAILABLE"
 }
@@ -14,6 +25,27 @@ export enum InventoryStatus {
 export enum PromocodeType {
     SUM = "SUM",
     PERCENT = "PERCENT"
+}
+
+export interface CreateCaseInput {
+    name: string;
+    price?: number;
+    rarirty?: CaseRarityType;
+    category?: string;
+    status?: CaseStatusType;
+    discount?: number;
+    icon?: string;
+}
+
+export interface UpdateCaseInput {
+    id: string;
+    name?: string;
+    price?: number;
+    rarirty?: CaseRarityType;
+    category?: string;
+    status?: CaseStatusType;
+    discount?: number;
+    icon?: string;
 }
 
 export interface UpdateConfigInput {
@@ -46,20 +78,27 @@ export interface UpdatePromocodeInput {
     endTime?: Date;
 }
 
-export interface Config {
+export interface Case {
     id: string;
-    dollarRate?: number;
-    minSteamLvlForUsePromocode?: number;
-    minPlayTimeInCSGOForUsePromocode?: number;
 }
 
 export interface IMutation {
+    createCase(createCaseInput: CreateCaseInput): Case | Promise<Case>;
+    updateCase(updateCaseInput: UpdateCaseInput): Case | Promise<Case>;
+    removeCase(id: string): boolean | Promise<boolean>;
     updateConfig(updateConfigInput: UpdateConfigInput): Config | Promise<Config>;
     createPromocode(createPromocodeInput: CreatePromocodeInput): Promocode | Promise<Promocode>;
     updatePromocode(updatePromocodeInput: UpdatePromocodeInput): Promocode | Promise<Promocode>;
     removePromocode(id: string): boolean | Promise<boolean>;
     usePromocode(code: string): boolean | Promise<boolean>;
     setTradeLink(link?: string): boolean | Promise<boolean>;
+}
+
+export interface Config {
+    id: string;
+    dollarRate?: number;
+    minSteamLvlForUsePromocode?: number;
+    minPlayTimeInCSGOForUsePromocode?: number;
 }
 
 export interface Inventory {
