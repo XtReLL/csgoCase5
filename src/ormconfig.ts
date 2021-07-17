@@ -1,5 +1,6 @@
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { Config } from 'config/entity/config.entity';
+import { Inventory } from 'inventory/entity/inventory.entity';
 import { Item } from 'item/entity/item.entity';
 import { PromocodeUse } from 'promocode/entity/promocode-use.entity';
 import { Promocode } from 'promocode/entity/promocode.entity';
@@ -14,7 +15,7 @@ const config: TypeOrmModuleOptions = {
   database: process.env.MYSQL_DATABASE,
   acquireTimeout: 60000,
   connectTimeout: 60000,
-  entities: [User, Promocode, PromocodeUse, Config, Item],
+  entities: [User, Promocode, PromocodeUse, Config, Item, Inventory],
   synchronize: true,
 
   // migrations: [__dirname + '/migrations/**/*{.ts,.js}'],

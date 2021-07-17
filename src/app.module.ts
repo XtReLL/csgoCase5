@@ -1,6 +1,5 @@
 import { Module } from '@nestjs/common';
 
-
 import { GraphQLModule } from '@nestjs/graphql';
 import { join } from 'path';
 import { UserModule } from './user/user.module';
@@ -14,18 +13,19 @@ import { RedisCacheModule } from 'redisCache/redisCache.module';
 import { ItemModule } from './item/item.module';
 import { CsgoMarketModule } from './csgo-market/csgo-market.module';
 import { BackpackApiModule } from './backpack-api/backpack-api.module';
-
-
+import { InventoryModule } from './inventory/inventory.module';
+import { EventEmitterModule } from '@nestjs/event-emitter';
 
 @Module({
   imports: [
+    EventEmitterModule.forRoot(),
     GraphQLModule.forRoot({
       debug: true,
       playground: {
         endpoint: process.env.APP_URL + '/graphql',
         settings: {
           ['request.credentials']: 'same-origin',
-        }
+        },
       },
       introspection: true,
       tracing: true,
@@ -44,9 +44,9 @@ import { BackpackApiModule } from './backpack-api/backpack-api.module';
     RedisCacheModule,
     ItemModule,
     CsgoMarketModule,
-    BackpackApiModule
+    BackpackApiModule,
+    InventoryModule,
   ],
-  providers: [
-  ],
+  providers: [],
 })
 export class AppModule {}

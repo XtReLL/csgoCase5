@@ -7,6 +7,10 @@
 
 /* tslint:disable */
 /* eslint-disable */
+export enum InventoryStatus {
+    AVAILABLE = "AVAILABLE"
+}
+
 export enum PromocodeType {
     SUM = "SUM",
     PERCENT = "PERCENT"
@@ -56,6 +60,14 @@ export interface IMutation {
     removePromocode(id: string): boolean | Promise<boolean>;
     usePromocode(code: string): boolean | Promise<boolean>;
     setTradeLink(link?: string): boolean | Promise<boolean>;
+}
+
+export interface Inventory {
+    id: string;
+    userId?: number;
+    itemId?: number;
+    price?: number;
+    status?: number;
 }
 
 export interface CursorBasedPaginationData {

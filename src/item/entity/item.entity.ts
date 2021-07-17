@@ -1,8 +1,10 @@
+import { Inventory } from 'inventory/entity/inventory.entity';
 import {
   BaseEntity,
   Column,
   CreateDateColumn,
   Entity,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -29,6 +31,9 @@ export class Item {
 
   @Column({ precision: 255, scale: 2, default: 0.0, type: 'double' })
   price!: number;
+
+  @OneToMany(() => Inventory, (inventory) => inventory.item)
+  inventory!: Promise<Inventory[]>;
 
   @CreateDateColumn()
   createdAt!: Date;

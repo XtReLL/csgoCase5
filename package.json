@@ -23,6 +23,7 @@
   "dependencies": {
     "@nestjs/common": "^7.6.15",
     "@nestjs/core": "^7.6.15",
+    "@nestjs/event-emitter": "^1.0.0",
     "@nestjs/graphql": "^7.11.0",
     "@nestjs/jwt": "^7.2.0",
     "@nestjs/passport": "^7.1.5",
@@ -35,6 +36,7 @@
     "apollo-server-express": "^2.25.2",
     "cache-manager": "^3.4.4",
     "cache-manager-redis-store": "^2.0.0",
+    "class-validator": "^0.13.1",
     "core-js": "^3.15.2",
     "dataloader": "^2.0.0",
     "graphql": "^15.5.1",

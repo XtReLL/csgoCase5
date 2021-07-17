@@ -1,35 +1,43 @@
-import { PromocodeUse } from 'promocode/entity/promocode-use.entity'
-import { Entity, Column, CreateDateColumn, UpdateDateColumn, PrimaryGeneratedColumn, OneToMany } from 'typeorm'
+import { Inventory } from 'inventory/entity/inventory.entity';
+import { PromocodeUse } from 'promocode/entity/promocode-use.entity';
+import {
+  Entity,
+  Column,
+  CreateDateColumn,
+  UpdateDateColumn,
+  PrimaryGeneratedColumn,
+  OneToMany,
+} from 'typeorm';
 
 @Entity('users')
 export class User {
-	@PrimaryGeneratedColumn()
-	public id!: number
+  @PrimaryGeneratedColumn()
+  public id!: number;
 
-	@Column()
-	public username!: string
+  @Column()
+  public username!: string;
 
-	@Column({nullable: true})
-	steamId!: string
+  @Column({ nullable: true })
+  steamId!: string;
 
-	@Column({nullable: true})
-	avatar!: string
+  @Column({ nullable: true })
+  avatar!: string;
 
-	@Column('varchar', { nullable: true })
-	trade_url!: string
+  @Column('varchar', { nullable: true })
+  trade_url!: string;
 
-	@Column('double', { precision: 255, scale: 2, default: 0.00 })
-	balance!: number
+  @Column('double', { precision: 255, scale: 2, default: 0.0 })
+  balance!: number;
 
-	@OneToMany(
-		() => PromocodeUse,
-		promocodeUse => promocodeUse.user,
-	)
-	usePromocodes!: Promise<PromocodeUse[]>;
+  @OneToMany(() => PromocodeUse, (promocodeUse) => promocodeUse.user)
+  usePromocodes!: Promise<PromocodeUse[]>;
 
-	@CreateDateColumn()
-	created_at!: Date
+  @OneToMany(() => Inventory, (inventory) => inventory.user)
+  inventory!: Promise<Inventory[]>;
 
-	@UpdateDateColumn()
-	updated_at!: Date
+  @CreateDateColumn()
+  created_at!: Date;
+
+  @UpdateDateColumn()
+  updated_at!: Date;
 }
