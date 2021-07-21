@@ -1,4 +1,4 @@
-import { Case } from 'case/entity/case.entity';
+import { Case } from 'game/case/entity/case.entity';
 
 import { Factory } from 'typeorm-factory';
 

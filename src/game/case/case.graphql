@@ -22,6 +22,11 @@ input CreateCaseInput {
   icon: String
 }
 
+input OpenCaseInput {
+  id: String!
+  count: Int!
+}
+
 input UpdateCaseInput {
   id: ID!
   name: String

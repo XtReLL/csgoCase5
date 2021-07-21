@@ -1,7 +1,8 @@
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
-import { Case } from 'case/entity/case.entity';
-import { CaseItems } from 'case/entity/caseItems.entity';
+import { Case } from 'game/case/entity/case.entity';
+import { CaseItems } from 'game/case/entity/caseItems.entity';
 import { Config } from 'config/entity/config.entity';
+import { GameCase } from 'game/game/entity/game-case.entity';
 import { Inventory } from 'inventory/entity/inventory.entity';
 import { Item } from 'item/entity/item.entity';
 import { PromocodeUse } from 'promocode/entity/promocode-use.entity';
@@ -26,6 +27,7 @@ const config: TypeOrmModuleOptions = {
     Inventory,
     Case,
     CaseItems,
+    GameCase,
   ],
   synchronize: true,
 

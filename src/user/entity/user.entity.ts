@@ -1,3 +1,4 @@
+import { GameCase } from 'game/game/entity/game-case.entity';
 import { Inventory } from 'inventory/entity/inventory.entity';
 import { PromocodeUse } from 'promocode/entity/promocode-use.entity';
 import {
@@ -31,6 +32,9 @@ export class User {
 
   @OneToMany(() => PromocodeUse, (promocodeUse) => promocodeUse.user)
   usePromocodes!: Promise<PromocodeUse[]>;
+
+  @OneToMany(() => GameCase, (gameCase) => gameCase.user)
+  gameCase!: Promise<GameCase[]>;
 
   @OneToMany(() => Inventory, (inventory) => inventory.user)
   inventory!: Promise<Inventory[]>;

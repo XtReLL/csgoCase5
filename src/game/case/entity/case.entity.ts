@@ -1,3 +1,4 @@
+import { GameCase } from 'game/game/entity/game-case.entity';
 import {
   Column,
   CreateDateColumn,
@@ -38,6 +39,9 @@ export class Case {
 
   @OneToMany(() => CaseItems, (caseItems) => caseItems.case)
   caseItems!: Promise<CaseItems[]>;
+
+  @OneToMany(() => GameCase, (gameCase) => gameCase.case)
+  gameCase!: Promise<GameCase[]>;
 
   @CreateDateColumn()
   createdAt!: Date;

@@ -1,4 +1,5 @@
-import { CaseItems } from 'case/entity/caseItems.entity';
+import { CaseItems } from 'game/case/entity/caseItems.entity';
+import { GameCase } from 'game/game/entity/game-case.entity';
 import { Inventory } from 'inventory/entity/inventory.entity';
 import {
   BaseEntity,
@@ -35,6 +36,9 @@ export class Item {
 
   @OneToMany(() => Inventory, (inventory) => inventory.item)
   inventory!: Promise<Inventory[]>;
+
+  @OneToMany(() => GameCase, (gameCase) => gameCase.winningItem)
+  gameCase!: Promise<GameCase[]>;
 
   @OneToMany(() => CaseItems, (caseItems) => caseItems.item)
   caseItems!: Promise<CaseItems[]>;

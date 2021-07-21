@@ -1,0 +1,17 @@
+type GameCase {
+  id: ID!
+}
+
+enum GameType {
+  CASE
+}
+
+input CreateGameCaseDto {
+  caseId: String!
+  userId: String!
+  itemId: String!
+}
+
+type Mutation {
+  createGameCase(createGameCaseDto: CreateGameCaseDto!): GameCase!
+}

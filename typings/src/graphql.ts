@@ -18,6 +18,10 @@ export enum CaseStatusType {
     HIDE = "HIDE"
 }
 
+export enum GameType {
+    CASE = "CASE"
+}
+
 export enum InventoryStatus {
     AVAILABLE = "AVAILABLE"
 }
@@ -25,6 +29,13 @@ export enum InventoryStatus {
 export enum PromocodeType {
     SUM = "SUM",
     PERCENT = "PERCENT"
+}
+
+export interface UpdateConfigInput {
+    id: string;
+    dollarRate?: number;
+    minSteamLvlForUsePromocode?: number;
+    minPlayTimeInCSGOForUsePromocode?: number;
 }
 
 export interface CreateCaseInput {
@@ -35,6 +46,11 @@ export interface CreateCaseInput {
     status?: CaseStatusType;
     discount?: number;
     icon?: string;
+}
+
+export interface OpenCaseInput {
+    id: string;
+    count: number;
 }
 
 export interface UpdateCaseInput {
@@ -48,11 +64,10 @@ export interface UpdateCaseInput {
     icon?: string;
 }
 
-export interface UpdateConfigInput {
-    id: string;
-    dollarRate?: number;
-    minSteamLvlForUsePromocode?: number;
-    minPlayTimeInCSGOForUsePromocode?: number;
+export interface CreateGameCaseDto {
+    caseId: string;
+    userId: string;
+    itemId: string;
 }
 
 export interface Pagination {
@@ -78,15 +93,19 @@ export interface UpdatePromocodeInput {
     endTime?: Date;
 }
 
-export interface Case {
+export interface Config {
     id: string;
+    dollarRate?: number;
+    minSteamLvlForUsePromocode?: number;
+    minPlayTimeInCSGOForUsePromocode?: number;
 }
 
 export interface IMutation {
+    updateConfig(updateConfigInput: UpdateConfigInput): Config | Promise<Config>;
     createCase(createCaseInput: CreateCaseInput): Case | Promise<Case>;
     updateCase(updateCaseInput: UpdateCaseInput): Case | Promise<Case>;
     removeCase(id: string): boolean | Promise<boolean>;
-    updateConfig(updateConfigInput: UpdateConfigInput): Config | Promise<Config>;
+    createGameCase(createGameCaseDto: CreateGameCaseDto): GameCase | Promise<GameCase>;
     createPromocode(createPromocodeInput: CreatePromocodeInput): Promocode | Promise<Promocode>;
     updatePromocode(updatePromocodeInput: UpdatePromocodeInput): Promocode | Promise<Promocode>;
     removePromocode(id: string): boolean | Promise<boolean>;
@@ -94,11 +113,12 @@ export interface IMutation {
     setTradeLink(link?: string): boolean | Promise<boolean>;
 }
 
-export interface Config {
+export interface Case {
     id: string;
-    dollarRate?: number;
-    minSteamLvlForUsePromocode?: number;
-    minPlayTimeInCSGOForUsePromocode?: number;
+}
+
+export interface GameCase {
+    id: string;
 }
 
 export interface Inventory {
