@@ -1,5 +1,8 @@
 import { GameCase } from 'game/game/entity/game-case.entity';
+import { GiveawayBet } from 'giveaway/entity/giveaway-bet.entity';
+import { Giveaway } from 'giveaway/entity/giveaway.entity';
 import { Inventory } from 'inventory/entity/inventory.entity';
+import { Payment } from 'payment/entity/payment.entity';
 import { PromocodeUse } from 'promocode/entity/promocode-use.entity';
 import {
   Entity,
@@ -38,6 +41,15 @@ export class User {
 
   @OneToMany(() => Inventory, (inventory) => inventory.user)
   inventory!: Promise<Inventory[]>;
+
+  @OneToMany(() => Giveaway, (giveaway) => giveaway.winner)
+  giveaway!: Promise<Giveaway[]>;
+
+  @OneToMany(() => GiveawayBet, (giveawayBet) => giveawayBet.user)
+  giveawayBet!: Promise<GiveawayBet[]>;
+
+  @OneToMany(() => Payment, (payment) => payment.user)
+  payment!: Promise<Payment[]>;
 
   @CreateDateColumn()
   created_at!: Date;

@@ -1,5 +1,6 @@
 import { CaseItems } from 'game/case/entity/caseItems.entity';
 import { GameCase } from 'game/game/entity/game-case.entity';
+import { Giveaway } from 'giveaway/entity/giveaway.entity';
 import { Inventory } from 'inventory/entity/inventory.entity';
 import {
   BaseEntity,
@@ -42,6 +43,9 @@ export class Item {
 
   @OneToMany(() => CaseItems, (caseItems) => caseItems.item)
   caseItems!: Promise<CaseItems[]>;
+
+  @OneToMany(() => Giveaway, (giveaway) => giveaway.item)
+  giveaway!: Promise<Giveaway[]>;
 
   @CreateDateColumn()
   createdAt!: Date;

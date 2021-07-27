@@ -17,6 +17,8 @@ import { InventoryModule } from './inventory/inventory.module';
 import { EventEmitterModule } from '@nestjs/event-emitter';
 import { CaseModule } from './game/case/case.module';
 import { GameModule } from './game/game/game.module';
+import { GiveawayModule } from './giveaway/giveaway.module';
+import { PaymentModule } from './payment/payment.module';
 
 @Module({
   imports: [
@@ -50,6 +52,8 @@ import { GameModule } from './game/game/game.module';
     InventoryModule,
     CaseModule,
     GameModule,
+    GiveawayModule,
+    PaymentModule,
   ],
   providers: [],
 })

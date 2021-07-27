@@ -1,0 +1,20 @@
+type Giveaway {
+  id: ID
+  winner: User
+  giveawayBet: GiveawayBet
+  item: Item
+}
+
+type GiveawayBet {
+  id: ID
+}
+
+input CreateGiveawayInput {
+  itemId: ID!
+  endDate: Date
+}
+
+type Mutation {
+  createGiveaway(createGiveawayInput: CreateGiveawayInput!): Giveaway!
+  joinToGiveaway(id: ID!): GiveawayBet!
+}

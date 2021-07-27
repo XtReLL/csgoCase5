@@ -27,6 +27,15 @@ export class Config {
   @Column({ default: 0 })
   minItemPrice!: number;
 
+  @Column({ default: 0.5, type: 'double' })
+  minPayment!: number;
+
+  @Column({ default: 15000, type: 'double' })
+  maxPayment!: number;
+
+  @Column({ default: 0.25, type: 'double' })
+  minPaymentToPromocode!: number;
+
   @CreateDateColumn()
   createdAt!: Date;
 

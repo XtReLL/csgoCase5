@@ -26,6 +26,16 @@ export enum InventoryStatus {
     AVAILABLE = "AVAILABLE"
 }
 
+export enum PaymentMethodType {
+    LOCAL = "LOCAL"
+}
+
+export enum PaymentStatusType {
+    PENDING = "PENDING",
+    SUCCESSFUL = "SUCCESSFUL",
+    REJECTED = "REJECTED"
+}
+
 export enum PromocodeType {
     SUM = "SUM",
     PERCENT = "PERCENT"
@@ -70,10 +80,20 @@ export interface CreateGameCaseDto {
     itemId: string;
 }
 
+export interface CreateGiveawayInput {
+    itemId: string;
+    endDate?: Date;
+}
+
 export interface Pagination {
     cursor?: string;
     direction: string;
     limit: number;
+}
+
+export interface CreatePaymentInput {
+    method: PaymentMethodType;
+    sum: number;
 }
 
 export interface CreatePromocodeInput {
@@ -106,6 +126,9 @@ export interface IMutation {
     updateCase(updateCaseInput: UpdateCaseInput): Case | Promise<Case>;
     removeCase(id: string): boolean | Promise<boolean>;
     createGameCase(createGameCaseDto: CreateGameCaseDto): GameCase | Promise<GameCase>;
+    createGiveaway(createGiveawayInput: CreateGiveawayInput): Giveaway | Promise<Giveaway>;
+    joinToGiveaway(id: string): GiveawayBet | Promise<GiveawayBet>;
+    createPayment(createPaymentInput: CreatePaymentInput): Payment | Promise<Payment>;
     createPromocode(createPromocodeInput: CreatePromocodeInput): Promocode | Promise<Promocode>;
     updatePromocode(updatePromocodeInput: UpdatePromocodeInput): Promocode | Promise<Promocode>;
     removePromocode(id: string): boolean | Promise<boolean>;
@@ -121,6 +144,17 @@ export interface GameCase {
     id: string;
 }
 
+export interface Giveaway {
+    id?: string;
+    winner?: User;
+    giveawayBet?: GiveawayBet;
+    item?: Item;
+}
+
+export interface GiveawayBet {
+    id?: string;
+}
+
 export interface Inventory {
     id: string;
     userId?: number;
@@ -129,10 +163,18 @@ export interface Inventory {
     status?: number;
 }
 
+export interface Item {
+    id?: string;
+}
+
 export interface CursorBasedPaginationData {
     hasMore: boolean;
     cursor?: string;
     id: string;
+}
+
+export interface Payment {
+    id?: string;
 }
 
 export interface Promocode {

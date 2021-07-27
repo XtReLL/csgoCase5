@@ -1,0 +1,22 @@
+type Payment {
+  id: ID
+}
+
+input CreatePaymentInput {
+  method: PaymentMethodType!
+  sum: Float!
+}
+
+enum PaymentMethodType {
+  LOCAL
+}
+
+enum PaymentStatusType {
+  PENDING
+  SUCCESSFUL
+  REJECTED
+}
+
+type Mutation {
+  createPayment(createPaymentInput: CreatePaymentInput!): Payment!
+}

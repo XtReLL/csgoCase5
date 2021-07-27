@@ -8,6 +8,9 @@ import { Item } from 'item/entity/item.entity';
 import { PromocodeUse } from 'promocode/entity/promocode-use.entity';
 import { Promocode } from 'promocode/entity/promocode.entity';
 import { User } from 'user/entity/user.entity';
+import { Giveaway } from 'giveaway/entity/giveaway.entity';
+import { GiveawayBet } from 'giveaway/entity/giveaway-bet.entity';
+import { Payment } from 'payment/entity/payment.entity';
 
 const config: TypeOrmModuleOptions = {
   type: 'mysql',
@@ -28,6 +31,9 @@ const config: TypeOrmModuleOptions = {
     Case,
     CaseItems,
     GameCase,
+    Giveaway,
+    GiveawayBet,
+    Payment,
   ],
   synchronize: true,
 
