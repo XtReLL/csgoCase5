@@ -9,12 +9,26 @@ type GiveawayBet {
   id: ID
 }
 
+enum GiveawayType {
+  CUSTOM
+  DAILY
+  WEEKLY
+}
+
 input CreateGiveawayInput {
-  itemId: ID!
+  itemId: Int!
+  endDate: Date
+}
+
+input UpdateGiveawayInput {
+  id: ID!
+  itemId: Int
   endDate: Date
 }
 
 type Mutation {
   createGiveaway(createGiveawayInput: CreateGiveawayInput!): Giveaway!
+  updateGiveaway(updateGiveawayInput: UpdateGiveawayInput!): Giveaway!
   joinToGiveaway(id: ID!): GiveawayBet!
+  removeGiveaway(id: ID!): Boolean!
 }

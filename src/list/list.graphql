@@ -2,6 +2,7 @@ input Pagination {
   cursor: ID
   direction: String!
   limit: Int!
+  offset: Int
 }
 
 type CursorBasedPaginationData {

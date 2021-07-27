@@ -19,8 +19,24 @@ export class GiveawayResolver {
     return await this.giveawayService.joinToGiveaway(author.model, giveawayId);
   }
 
+  @Mutation('removeGiveaway')
+  async removeGiveaway(
+    @Authorized() author: AuthorizedModel,
+    @Args('id') giveawayId: string,
+  ): Promise<boolean> {
+    return await this.giveawayService.remove(author.model, giveawayId);
+  }
+
   @Mutation('createGiveaway')
   async createGiveaway(
+    @Authorized() author: AuthorizedModel,
+    @Args('createGiveawayInput') createGiveawayInput: CreateGiveawayInput,
+  ): Promise<Giveaway> {
+    return await this.giveawayService.create(author.model, createGiveawayInput);
+  }
+
+  @Mutation('updateGiveaway')
+  async updateGiveaway(
     @Authorized() author: AuthorizedModel,
     @Args('createGiveawayInput') createGiveawayInput: CreateGiveawayInput,
   ): Promise<Giveaway> {

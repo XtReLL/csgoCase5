@@ -3,6 +3,6 @@ import { CreateGiveawayInput as CreateGiveawayInputInterface } from 'typings/gra
 
 @InputType()
 export class CreateGiveawayInput implements CreateGiveawayInputInterface {
-  itemId!: string;
+  itemId!: number;
   endDate?: Date;
 }

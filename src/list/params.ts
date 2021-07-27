@@ -26,6 +26,7 @@ export const paramsToQuery = async <T extends BaseEntity>(
 
   return {
     take: pagination.limit,
+    skip: pagination.offset,
     order: { [sortColumn]: pagination.direction.toUpperCase() as any } as any,
     where: {
       ...additionalWhere,
@@ -51,8 +52,15 @@ export const paramsToBuilder = <T extends BaseEntity>(
     .limit(pagination.limit)
     .orderBy(sortColumn as string, pagination.direction.toUpperCase() as any);
 
+  if (pagination.offset) {
+    tempBuilder = tempBuilder.offset(pagination.offset);
+  }
+
+  // Теперь в дальнейшем можно везде вызывать andWhere
+  tempBuilder = tempBuilder.where('1 = 1');
+
   if (pagination.cursor) {
-    tempBuilder = tempBuilder.where(
+    tempBuilder = tempBuilder.andWhere(
       `${cursorColumn} ${pagination.direction === 'desc' ? '<' : '>'} :cursor`,
       { cursor: parseInt(pagination.cursor, 10) },
     );

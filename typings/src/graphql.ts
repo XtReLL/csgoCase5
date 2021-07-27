@@ -22,6 +22,12 @@ export enum GameType {
     CASE = "CASE"
 }
 
+export enum GiveawayType {
+    CUSTOM = "CUSTOM",
+    DAILY = "DAILY",
+    WEEKLY = "WEEKLY"
+}
+
 export enum InventoryStatus {
     AVAILABLE = "AVAILABLE"
 }
@@ -81,7 +87,13 @@ export interface CreateGameCaseDto {
 }
 
 export interface CreateGiveawayInput {
-    itemId: string;
+    itemId: number;
+    endDate?: Date;
+}
+
+export interface UpdateGiveawayInput {
+    id: string;
+    itemId?: number;
     endDate?: Date;
 }
 
@@ -89,6 +101,7 @@ export interface Pagination {
     cursor?: string;
     direction: string;
     limit: number;
+    offset?: number;
 }
 
 export interface CreatePaymentInput {
@@ -127,7 +140,9 @@ export interface IMutation {
     removeCase(id: string): boolean | Promise<boolean>;
     createGameCase(createGameCaseDto: CreateGameCaseDto): GameCase | Promise<GameCase>;
     createGiveaway(createGiveawayInput: CreateGiveawayInput): Giveaway | Promise<Giveaway>;
+    updateGiveaway(updateGiveawayInput: UpdateGiveawayInput): Giveaway | Promise<Giveaway>;
     joinToGiveaway(id: string): GiveawayBet | Promise<GiveawayBet>;
+    removeGiveaway(id: string): boolean | Promise<boolean>;
     createPayment(createPaymentInput: CreatePaymentInput): Payment | Promise<Payment>;
     createPromocode(createPromocodeInput: CreatePromocodeInput): Promocode | Promise<Promocode>;
     updatePromocode(updatePromocodeInput: UpdatePromocodeInput): Promocode | Promise<Promocode>;

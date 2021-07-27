@@ -10,6 +10,7 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { GiveawayType } from 'typings/graphql';
 import { User } from 'user/entity/user.entity';
 import { GiveawayBet } from './giveaway-bet.entity';
 
@@ -26,6 +27,9 @@ export class Giveaway {
 
   @Column()
   endDate!: Date;
+
+  @Column({ default: GiveawayType.CUSTOM })
+  type!: GiveawayType;
 
   @ManyToOne(() => User, (user) => user.giveaway)
   public winner!: Promise<User>;

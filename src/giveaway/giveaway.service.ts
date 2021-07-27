@@ -1,9 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { AuthorizedModel } from 'auth/model/authorized.model';
 import { InventoryService } from 'inventory/inventory.service';
-import { Repository } from 'typeorm';
+import { defaultPagination } from 'list/pagination.input';
+import { paramsToBuilder } from 'list/params';
+import { IsNull, Raw, Repository } from 'typeorm';
 import { User } from 'user/entity/user.entity';
 import { CreateGiveawayInput } from './dto/createGiveawayInput.input';
+import { UpdateGiveawayInput } from './dto/updateGiveawayInput.input';
 import { GiveawayBet } from './entity/giveaway-bet.entity';
 import { Giveaway } from './entity/giveaway.entity';
 
@@ -32,10 +36,30 @@ export class GiveawayService {
   ): Promise<Giveaway> {
     return await this.giveawayRepository.save(
       this.giveawayRepository.create({
-        itemId: parseInt(createGiveawayInput.itemId, 10),
+        itemId: createGiveawayInput.itemId,
         endDate: createGiveawayInput.endDate,
       }),
     );
+  }
+
+  async update(
+    user: User,
+    updateGiveawayInput: UpdateGiveawayInput,
+  ): Promise<Giveaway> {
+    const id = parseInt(updateGiveawayInput.id);
+    const giveaway = await this.giveawayRepository.findOneOrFail(id);
+
+    return this.giveawayRepository.save(
+      this.giveawayRepository.merge(giveaway, { ...updateGiveawayInput, id }),
+    );
+  }
+
+  async remove(user: User, giveawayId: string): Promise<boolean> {
+    const giveaway = await this.giveawayRepository.findOneOrFail(
+      parseInt(giveawayId, 10),
+    );
+    await this.giveawayRepository.softRemove(giveaway);
+    return true;
   }
 
   async setWinner(giveawayId: number): Promise<Giveaway> {
@@ -58,5 +82,28 @@ export class GiveawayService {
     });
 
     return giveaway;
+  }
+
+  async getActiveGiveaways(
+    authorized: AuthorizedModel,
+    pagination = defaultPagination,
+  ): Promise<[Giveaway[], number]> {
+    const query = paramsToBuilder(
+      this.giveawayRepository.createQueryBuilder(),
+      pagination,
+    );
+    return await query.andWhere('winnerId IS NULL').getManyAndCount();
+  }
+
+  async getLastGiveaways(
+    authorized: AuthorizedModel,
+    pagination = defaultPagination,
+  ): Promise<[Giveaway[], number]> {
+    const query = paramsToBuilder(
+      this.giveawayRepository.createQueryBuilder(),
+      pagination,
+    );
+
+    return await query.andWhere('winnerId IS NOT NULL').getManyAndCount();
   }
 }
