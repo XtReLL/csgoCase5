@@ -11,6 +11,7 @@ import { User } from 'user/entity/user.entity';
 import { Giveaway } from 'giveaway/entity/giveaway.entity';
 import { GiveawayBet } from 'giveaway/entity/giveaway-bet.entity';
 import { Payment } from 'payment/entity/payment.entity';
+import { WithdrawItem } from 'withdraw/entity/withdrawItem.entity';
 
 const config: TypeOrmModuleOptions = {
   type: 'mysql',
@@ -34,6 +35,7 @@ const config: TypeOrmModuleOptions = {
     Giveaway,
     GiveawayBet,
     Payment,
+    WithdrawItem,
   ],
   synchronize: true,
 

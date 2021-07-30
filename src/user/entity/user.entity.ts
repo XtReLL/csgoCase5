@@ -12,6 +12,7 @@ import {
   PrimaryGeneratedColumn,
   OneToMany,
 } from 'typeorm';
+import { WithdrawItem } from 'withdraw/entity/withdrawItem.entity';
 
 @Entity('users')
 export class User {
@@ -50,6 +51,9 @@ export class User {
 
   @OneToMany(() => Payment, (payment) => payment.user)
   payment!: Promise<Payment[]>;
+
+  @OneToMany(() => WithdrawItem, (withdrawItem) => withdrawItem.user)
+  withdrawItem!: Promise<WithdrawItem[]>;
 
   @CreateDateColumn()
   created_at!: Date;

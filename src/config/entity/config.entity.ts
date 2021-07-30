@@ -36,6 +36,9 @@ export class Config {
   @Column({ default: 0.25, type: 'double' })
   minPaymentToPromocode!: number;
 
+  @Column({ default: 1.5, type: 'double' })
+  maxBuyPercent!: number;
+
   @CreateDateColumn()
   createdAt!: Date;
 

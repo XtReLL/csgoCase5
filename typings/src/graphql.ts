@@ -47,6 +47,12 @@ export enum PromocodeType {
     PERCENT = "PERCENT"
 }
 
+export enum WithdrawStatusType {
+    PENDING = "PENDING",
+    SUCCESSFUL = "SUCCESSFUL",
+    REJECTED = "REJECTED"
+}
+
 export interface UpdateConfigInput {
     id: string;
     dollarRate?: number;
@@ -212,4 +218,8 @@ export interface User {
 
 export interface IQuery {
     user(id?: string): User | Promise<User>;
+}
+
+export interface Withdraw {
+    id: string;
 }

@@ -33,9 +33,9 @@ services:
       PORT: 80
       FRONT_URL: https://test.ru
       STEAM_APIKEY: 9CECF1287A6E051A6AD420CAA3A3AE89
+      CSGO_MARKET_APIKEY: testkey
       AUTH_URL: http://localhost:5000
       STEAM_APPID: 730
-      
 
   case-redis:
     image: redis:4.0-alpine

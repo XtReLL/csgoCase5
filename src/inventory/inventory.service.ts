@@ -1,11 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { InjectRepository } from '@nestjs/typeorm';
+import { CsgoMarketService } from 'csgo-market/csgo-market.service';
 import { Item } from 'item/entity/item.entity';
 import { RedisCacheService } from 'redisCache/redisCache.service';
 import { Repository } from 'typeorm';
 import { InventoryStatus } from 'typings/graphql';
+import { User } from 'user/entity/user.entity';
 import { UserService } from 'user/user.service';
+import { WithdrawItem } from 'withdraw/entity/withdrawItem.entity';
 import { AddItemToInventoryDto } from './dto/addItemToInventory.dto';
 import { Inventory } from './entity/inventory.entity';
 import { AddItemToInventoryEvent } from './events/inventory.event';
@@ -17,9 +20,12 @@ export class InventoryService {
     private readonly inventoryRepository: Repository<Inventory>,
     @InjectRepository(Item)
     private readonly itemRepository: Repository<Item>,
+    @InjectRepository(WithdrawItem)
+    private readonly withdrawItemRepository: Repository<WithdrawItem>,
     private readonly redisCacheService: RedisCacheService,
     private eventEmitter: EventEmitter2,
     private readonly userService: UserService,
+    private readonly csgoMarketService: CsgoMarketService,
   ) {}
 
   async addItems(
@@ -69,5 +75,48 @@ export class InventoryService {
     await this.redisCacheService.set(`inventory_${userId}`, result);
 
     return result;
+  }
+
+  async withdrawItem(user: User, inventoryItem: Inventory) {
+    const withdraw = await this.withdrawItemRepository.save(
+      this.withdrawItemRepository.create({
+        userId: user.id,
+        itemId: inventoryItem.itemId,
+      }),
+    );
+
+    try {
+      const marketItem = await this.csgoMarketService.searchItemByHashName(
+        await inventoryItem.item,
+      );
+
+      if (
+        (await inventoryItem.item).price *
+          (await this.redisCacheService.get('config')).maxBuyPercent <
+        marketItem.price /
+          100 /
+          (await this.redisCacheService.get('config')).redisCacheServiceRate
+      ) {
+        throw new Error('High purchase prices');
+      }
+
+      const buyItem = await this.csgoMarketService.buyItem(marketItem, user);
+
+      withdraw.customId = buyItem.custom_id;
+      await this.withdrawItemRepository.save(withdraw);
+
+      await this.removeItem(inventoryItem.id);
+
+      return true;
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  async removeItem(inventoryId: number) {
+    const inventoryItem = await this.inventoryRepository.findOneOrFail(
+      inventoryId,
+    );
+    //
   }
 }

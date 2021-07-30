@@ -11,6 +11,7 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { WithdrawItem } from 'withdraw/entity/withdrawItem.entity';
 
 @Entity('items')
 export class Item {
@@ -46,6 +47,9 @@ export class Item {
 
   @OneToMany(() => Giveaway, (giveaway) => giveaway.item)
   giveaway!: Promise<Giveaway[]>;
+
+  @OneToMany(() => WithdrawItem, (withdrawItem) => withdrawItem.item)
+  withdrawItem!: Promise<WithdrawItem[]>;
 
   @CreateDateColumn()
   createdAt!: Date;

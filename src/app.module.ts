@@ -19,6 +19,7 @@ import { CaseModule } from './game/case/case.module';
 import { GameModule } from './game/game/game.module';
 import { GiveawayModule } from './giveaway/giveaway.module';
 import { PaymentModule } from './payment/payment.module';
+import { WithdrawModule } from './withdraw/withdraw.module';
 
 @Module({
   imports: [
@@ -54,6 +55,7 @@ import { PaymentModule } from './payment/payment.module';
     GameModule,
     GiveawayModule,
     PaymentModule,
+    WithdrawModule,
   ],
   providers: [],
 })

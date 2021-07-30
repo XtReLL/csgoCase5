@@ -1,0 +1,9 @@
+type Withdraw {
+  id: ID!
+}
+
+enum WithdrawStatusType {
+  PENDING
+  SUCCESSFUL
+  REJECTED
+}

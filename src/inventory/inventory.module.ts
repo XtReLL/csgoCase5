@@ -6,12 +6,15 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Inventory } from './entity/inventory.entity';
 import { RedisCacheModule } from 'redisCache/redisCache.module';
 import { UserModule } from 'user/user.module';
+import { WithdrawItem } from 'withdraw/entity/withdrawItem.entity';
+import { CsgoMarketModule } from 'csgo-market/csgo-market.module';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Item, Inventory]),
+    TypeOrmModule.forFeature([Item, Inventory, WithdrawItem]),
     RedisCacheModule,
     UserModule,
+    CsgoMarketModule,
   ],
   providers: [InventoryService, InventoryResolver],
   exports: [InventoryService],
