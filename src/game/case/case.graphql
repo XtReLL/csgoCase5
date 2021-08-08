@@ -12,6 +12,11 @@ enum CaseStatusType {
   HIDE
 }
 
+type CaseListData {
+  data: [Case]!
+  pagination: CursorBasedPaginationData!
+}
+
 input CreateCaseInput {
   name: String!
   price: Int
@@ -20,6 +25,7 @@ input CreateCaseInput {
   status: CaseStatusType
   discount: Int
   icon: String
+  bankPercent: Int
 }
 
 input OpenCaseInput {
@@ -36,6 +42,12 @@ input UpdateCaseInput {
   status: CaseStatusType
   discount: Int
   icon: String
+  bankPercent: Int
+}
+
+type Query {
+  cases(pagination: Pagination): CaseListData!
+  case(id: ID!): Case!
 }
 
 type Mutation {

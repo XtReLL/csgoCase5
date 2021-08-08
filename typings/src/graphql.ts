@@ -32,6 +32,10 @@ export enum InventoryStatus {
     AVAILABLE = "AVAILABLE"
 }
 
+export enum LiveDropType {
+    CASE = "CASE"
+}
+
 export enum PaymentMethodType {
     LOCAL = "LOCAL"
 }
@@ -68,6 +72,7 @@ export interface CreateCaseInput {
     status?: CaseStatusType;
     discount?: number;
     icon?: string;
+    bankPercent?: number;
 }
 
 export interface OpenCaseInput {
@@ -84,6 +89,7 @@ export interface UpdateCaseInput {
     status?: CaseStatusType;
     discount?: number;
     icon?: string;
+    bankPercent?: number;
 }
 
 export interface CreateGameCaseDto {
@@ -108,6 +114,13 @@ export interface Pagination {
     direction: string;
     limit: number;
     offset?: number;
+}
+
+export interface CreateLiveDropInput {
+    userId: string;
+    caseId?: string;
+    itemId: string;
+    price: number;
 }
 
 export interface CreatePaymentInput {
@@ -161,6 +174,17 @@ export interface Case {
     id: string;
 }
 
+export interface CaseListData {
+    data: Case[];
+    pagination: CursorBasedPaginationData;
+}
+
+export interface IQuery {
+    cases(pagination?: Pagination): CaseListData | Promise<CaseListData>;
+    case(id: string): Case | Promise<Case>;
+    user(id?: string): User | Promise<User>;
+}
+
 export interface GameCase {
     id: string;
 }
@@ -194,6 +218,10 @@ export interface CursorBasedPaginationData {
     id: string;
 }
 
+export interface LiveDrop {
+    id: string;
+}
+
 export interface Payment {
     id?: string;
 }
@@ -214,10 +242,6 @@ export interface User {
     avatar?: string;
     trade_url?: string;
     balance?: number;
-}
-
-export interface IQuery {
-    user(id?: string): User | Promise<User>;
 }
 
 export interface Withdraw {

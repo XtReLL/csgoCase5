@@ -1,0 +1,14 @@
+type LiveDrop {
+  id: ID!
+}
+
+enum LiveDropType {
+  CASE
+}
+
+input CreateLiveDropInput {
+  userId: ID!
+  caseId: ID
+  itemId: ID!
+  price: Int!
+}

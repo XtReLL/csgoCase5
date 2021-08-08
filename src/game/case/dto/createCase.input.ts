@@ -14,4 +14,5 @@ export class CreateCaseInput implements CreateCaseInputInterface {
   status?: CaseStatusType;
   discount?: number;
   icon?: string;
+  bankPercent?: number;
 }

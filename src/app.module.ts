@@ -20,6 +20,8 @@ import { GameModule } from './game/game/game.module';
 import { GiveawayModule } from './giveaway/giveaway.module';
 import { PaymentModule } from './payment/payment.module';
 import { WithdrawModule } from './withdraw/withdraw.module';
+import { PaybackSystemModule } from './payback-system/payback-system.module';
+import { LiveDropModule } from './live-drop/live-drop.module';
 
 @Module({
   imports: [
@@ -56,6 +58,8 @@ import { WithdrawModule } from './withdraw/withdraw.module';
     GiveawayModule,
     PaymentModule,
     WithdrawModule,
+    PaybackSystemModule,
+    LiveDropModule,
   ],
   providers: [],
 })

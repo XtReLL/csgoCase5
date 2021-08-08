@@ -15,4 +15,5 @@ export class UpdateCaseInput implements UpdateCaseInputInterface {
   status?: CaseStatusType;
   discount?: number;
   icon?: string;
+  bankPercent?: number;
 }

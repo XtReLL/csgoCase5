@@ -12,6 +12,7 @@ import { Giveaway } from 'giveaway/entity/giveaway.entity';
 import { GiveawayBet } from 'giveaway/entity/giveaway-bet.entity';
 import { Payment } from 'payment/entity/payment.entity';
 import { WithdrawItem } from 'withdraw/entity/withdrawItem.entity';
+import { LiveDrop } from 'live-drop/entity/live-drop.entity';
 
 const config: TypeOrmModuleOptions = {
   type: 'mysql',
@@ -20,7 +21,7 @@ const config: TypeOrmModuleOptions = {
   username: process.env.MYSQL_USER,
   password: process.env.MYSQL_PASSWORD,
   database: process.env.MYSQL_DATABASE,
-  acquireTimeout: 60000,
+  // acquireTimeout: 60000,
   connectTimeout: 60000,
   entities: [
     User,
@@ -36,6 +37,7 @@ const config: TypeOrmModuleOptions = {
     GiveawayBet,
     Payment,
     WithdrawItem,
+    LiveDrop,
   ],
   synchronize: true,
 

@@ -2,6 +2,7 @@ import { CaseItems } from 'game/case/entity/caseItems.entity';
 import { GameCase } from 'game/game/entity/game-case.entity';
 import { Giveaway } from 'giveaway/entity/giveaway.entity';
 import { Inventory } from 'inventory/entity/inventory.entity';
+import { LiveDrop } from 'live-drop/entity/live-drop.entity';
 import {
   BaseEntity,
   Column,
@@ -50,6 +51,9 @@ export class Item {
 
   @OneToMany(() => WithdrawItem, (withdrawItem) => withdrawItem.item)
   withdrawItem!: Promise<WithdrawItem[]>;
+
+  @OneToMany(() => LiveDrop, (liveDrop) => liveDrop.item)
+  liveDrop!: Promise<LiveDrop[]>;
 
   @CreateDateColumn()
   createdAt!: Date;
