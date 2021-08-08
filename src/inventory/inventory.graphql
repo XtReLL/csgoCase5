@@ -9,3 +9,7 @@ type Inventory {
 enum InventoryStatus {
   AVAILABLE
 }
+
+type Mutation {
+  sellItem(id: ID!): Boolean!
+}

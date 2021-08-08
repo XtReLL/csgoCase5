@@ -119,4 +119,27 @@ export class InventoryService {
     );
     //
   }
+
+  async sellItem(itemId: string, author: User): Promise<boolean> {
+    if (
+      typeof (await this.redisCacheService.get(`sell_item_${author.id}`)) !==
+      'undefined'
+    ) {
+      throw 'Please, wait a bit and try again';
+    }
+
+    await this.redisCacheService.set(`sell_item_${author.id}`, 1, {
+      ttl: 5,
+    });
+
+    const inventory = await this.inventoryRepository.findOneOrFail({
+      where: { itemId: parseInt(itemId, 10), userId: author.id },
+    });
+
+    author.balance += inventory.price;
+
+    await this.inventoryRepository.delete(inventory);
+
+    return true;
+  }
 }

@@ -2,6 +2,7 @@ import { forwardRef, Inject, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { AuthorizedModel } from 'auth/model/authorized.model';
 import { GameCaseService } from 'game/game/game-case.service';
+import { InventoryService } from 'inventory/inventory.service';
 import { Item } from 'item/entity/item.entity';
 import { defaultPagination, Pagination } from 'list/pagination.input';
 import { paramsToBuilder } from 'list/params';
@@ -32,6 +33,7 @@ export class CaseService {
     private casePaybackService: CasePaybackSystemService,
     // private readonly casePaybackService: CasePaybackSystemService,
     private readonly liveDropService: LiveDropService,
+    private readonly inventoryService: InventoryService,
   ) {}
 
   async findOne(author: AuthorizedModel, caseId: string): Promise<Case> {
@@ -104,10 +106,6 @@ export class CaseService {
         throw new Error('Insufficient user balance');
       }
 
-      const items = await this.caseItemsRepository.find({
-        where: { caseId: box.id },
-      });
-
       const [winItems, price] = await this.casePaybackService.openCase(
         box,
         openCaseInput,
@@ -120,7 +118,14 @@ export class CaseService {
             itemId: item.id,
             caseId: box.id,
           });
-          return await this.liveDropService.create({
+
+          await this.inventoryService.addItems({
+            userId: author.model.id,
+            itemId: item.id,
+            price: item.price,
+          });
+
+          await this.liveDropService.create({
             userId: String(author.model.id),
             caseId: String(box.id),
             itemId: String(item.id),

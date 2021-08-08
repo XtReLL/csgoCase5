@@ -2,27 +2,13 @@ import { HttpService, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { BackpackApiService } from 'backpack-api/backpack-api.service';
 import { CsgoMarketService } from 'csgo-market/csgo-market.service';
-import { stringify } from 'querystring';
 import { RedisCacheService } from 'redisCache/redisCache.service';
 import { Repository } from 'typeorm';
-import {
-  makeLimiterFromLimiters,
-  makeLimiterWorkPerSecond,
-  makeLimiterWorkPerTime,
-  RateLimitQueue,
-} from 'utils/limiter';
+
 import { Item } from './entity/item.entity';
 
 @Injectable()
 export class ItemService {
-  protected readonly itemLoaderQueue = new RateLimitQueue(
-    makeLimiterFromLimiters([
-      makeLimiterWorkPerSecond(1),
-      makeLimiterWorkPerTime(5, 1000 * 60),
-      makeLimiterWorkPerTime(15, 1000 * 60 * 5),
-    ]),
-  );
-
   constructor(
     @InjectRepository(Item)
     private readonly itemRepository: Repository<Item>,

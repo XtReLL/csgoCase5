@@ -162,6 +162,7 @@ export interface IMutation {
     updateGiveaway(updateGiveawayInput: UpdateGiveawayInput): Giveaway | Promise<Giveaway>;
     joinToGiveaway(id: string): GiveawayBet | Promise<GiveawayBet>;
     removeGiveaway(id: string): boolean | Promise<boolean>;
+    sellItem(id: string): boolean | Promise<boolean>;
     createPayment(createPaymentInput: CreatePaymentInput): Payment | Promise<Payment>;
     createPromocode(createPromocodeInput: CreatePromocodeInput): Promocode | Promise<Promocode>;
     updatePromocode(updatePromocodeInput: UpdatePromocodeInput): Promocode | Promise<Promocode>;
