@@ -25,7 +25,7 @@ export class Payment {
   @Column({ default: PaymentStatusType.PENDING })
   status!: PaymentStatusType;
 
-  @Column({ default: PaymentMethodType.LOCAL })
+  @Column({ default: PaymentMethodType.FREE_KASSA })
   method!: PaymentMethodType;
 
   @ManyToOne(() => User, (user) => user.payment, {

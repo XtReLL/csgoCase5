@@ -10,7 +10,7 @@ export class CreateCaseInput implements CreateCaseInputInterface {
   name!: string;
   price?: number;
   rarirty?: CaseRarityType;
-  category?: string;
+  categories!: string[];
   status?: CaseStatusType;
   discount?: number;
   icon?: string;

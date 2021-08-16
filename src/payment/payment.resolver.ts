@@ -14,10 +14,11 @@ export class PaymentResolver {
   async createPayment(
     @Authorized() author: AuthorizedModel,
     @Args('createPaymentInput') createPaymentInput: CreatePaymentInput,
-  ): Promise<Payment> {
-    return await this.paymentService.createPayment(
+  ): Promise<string> {
+    const { payment, url } = await this.paymentService.createPayment(
       author.model,
       createPaymentInput,
     );
+    return url;
   }
 }

@@ -13,6 +13,8 @@ import { GiveawayBet } from 'giveaway/entity/giveaway-bet.entity';
 import { Payment } from 'payment/entity/payment.entity';
 import { WithdrawItem } from 'withdraw/entity/withdrawItem.entity';
 import { LiveDrop } from 'live-drop/entity/live-drop.entity';
+import { Category } from 'game/case/entity/category.entity';
+import { CategoryCase } from 'game/case/entity/category_case.entity';
 
 const config: TypeOrmModuleOptions = {
   type: 'mysql',
@@ -38,6 +40,8 @@ const config: TypeOrmModuleOptions = {
     Payment,
     WithdrawItem,
     LiveDrop,
+    Category,
+    CategoryCase,
   ],
   synchronize: true,
 

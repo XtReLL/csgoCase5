@@ -2,10 +2,13 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { RedisCacheService } from 'redisCache/redisCache.service';
 import { Repository } from 'typeorm';
-import { PaymentStatusType } from 'typings/graphql';
+import { PaymentMethodType, PaymentStatusType } from 'typings/graphql';
 import { User } from 'user/entity/user.entity';
 import { CreatePaymentInput } from './dto/createPaymentInput.input';
 import { Payment } from './entity/payment.entity';
+import crypto from 'crypto-js';
+
+import { UserService } from 'user/user.service';
 
 @Injectable()
 export class PaymentService {
@@ -13,9 +16,14 @@ export class PaymentService {
     private readonly redisCacheService: RedisCacheService,
     @InjectRepository(Payment)
     private readonly paymentRepository: Repository<Payment>,
+
+    private readonly userService: UserService,
   ) {}
 
-  async createPayment(user: User, createPaymentInput: CreatePaymentInput) {
+  async createPayment(
+    user: User,
+    createPaymentInput: CreatePaymentInput,
+  ): Promise<{ payment: Payment; url: string }> {
     if (
       createPaymentInput.sum <
       (await this.redisCacheService.get('config')).minPayment
@@ -42,11 +50,62 @@ export class PaymentService {
       this.paymentRepository.create({
         sum: createPaymentInput.sum,
         userId: user.id,
+        status: PaymentStatusType.PENDING,
       }),
     );
-    //... method logic
-    return payment;
+    if (createPaymentInput.method === PaymentMethodType.FREE_KASSA) {
+      const sign = crypto.MD5(
+        `${(await this.redisCacheService.get('config')).freekassaId}:${
+          createPaymentInput.sum
+        }:${(await this.redisCacheService.get('config')).freekassaSecret1}:${
+          payment.id
+        }`,
+      );
+
+      return {
+        payment,
+        url: `https://www.free-kassa.ru/merchant/cash.php?m=${
+          (await this.redisCacheService.get('config')).freekassaId
+        }&oa=${createPaymentInput.sum}&o=${payment.id}&s=${sign}`,
+      };
+    }
+    return {
+      payment,
+      url: ``,
+    };
   }
 
-  async callbackPayment(query: any) {}
+  async callbackFreeKassaPayment(query: any): Promise<boolean> {
+    const payment = await this.paymentRepository.findOneOrFail({
+      where: {
+        id: query.MERCHANT_ORDER_ID,
+        status: PaymentStatusType.PENDING,
+      },
+    });
+    const user = await this.userService.findOne(payment.userId);
+
+    const sign = crypto
+      .MD5(
+        `${(await this.redisCacheService.get('config')).freekassaId}:${
+          payment.sum
+        }:${(await this.redisCacheService.get('config')).freekassaSecret2}:${
+          payment.id
+        }`,
+      )
+      .toString();
+
+    if (sign !== query.SIGN) {
+      throw new Error('Error sign');
+    }
+
+    payment.status = PaymentStatusType.SUCCESSFUL;
+    await this.paymentRepository.save(payment);
+
+    // const sum = payment.sum + (await this.getBonus(user, payment));
+
+    user.balance += payment.sum;
+    await this.userService.update(user);
+
+    return true;
+  }
 }

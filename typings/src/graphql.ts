@@ -37,7 +37,7 @@ export enum LiveDropType {
 }
 
 export enum PaymentMethodType {
-    LOCAL = "LOCAL"
+    FREE_KASSA = "FREE_KASSA"
 }
 
 export enum PaymentStatusType {
@@ -68,11 +68,11 @@ export interface CreateCaseInput {
     name: string;
     price?: number;
     rarirty?: CaseRarityType;
-    category?: string;
     status?: CaseStatusType;
     discount?: number;
     icon?: string;
     bankPercent?: number;
+    categories: string[];
 }
 
 export interface OpenCaseInput {
@@ -85,11 +85,15 @@ export interface UpdateCaseInput {
     name?: string;
     price?: number;
     rarirty?: CaseRarityType;
-    category?: string;
     status?: CaseStatusType;
     discount?: number;
     icon?: string;
     bankPercent?: number;
+    categories?: string[];
+}
+
+export interface CreateCategoryInput {
+    name: string;
 }
 
 export interface CreateGameCaseDto {
@@ -163,7 +167,7 @@ export interface IMutation {
     joinToGiveaway(id: string): GiveawayBet | Promise<GiveawayBet>;
     removeGiveaway(id: string): boolean | Promise<boolean>;
     sellItem(id: string): boolean | Promise<boolean>;
-    createPayment(createPaymentInput: CreatePaymentInput): Payment | Promise<Payment>;
+    createPayment(createPaymentInput: CreatePaymentInput): string | Promise<string>;
     createPromocode(createPromocodeInput: CreatePromocodeInput): Promocode | Promise<Promocode>;
     updatePromocode(updatePromocodeInput: UpdatePromocodeInput): Promocode | Promise<Promocode>;
     removePromocode(id: string): boolean | Promise<boolean>;
@@ -184,6 +188,11 @@ export interface IQuery {
     cases(pagination?: Pagination): CaseListData | Promise<CaseListData>;
     case(id: string): Case | Promise<Case>;
     user(id?: string): User | Promise<User>;
+}
+
+export interface Category {
+    id: string;
+    name?: string;
 }
 
 export interface GameCase {

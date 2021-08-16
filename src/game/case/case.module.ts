@@ -10,10 +10,12 @@ import { CaseResolver } from './case.resolver';
 import { CaseService } from './case.service';
 import { Case } from './entity/case.entity';
 import { CaseItems } from './entity/caseItems.entity';
+import { Category } from './entity/category.entity';
+import { CategoryCase } from './entity/category_case.entity';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Case, CaseItems]),
+    TypeOrmModule.forFeature([Case, CaseItems, Category, CategoryCase]),
     forwardRef(() => UserModule),
     forwardRef(() => GameModule),
     RedisCacheModule,
