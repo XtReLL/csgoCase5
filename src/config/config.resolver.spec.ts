@@ -3,8 +3,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthorizedFactory } from 'auth/factory/authorized.factory';
 import { RedisCacheModule } from 'redisCache/redisCache.module';
 import { getTestModules } from 'testModules';
-import { User } from 'user/entity/user.entity';
-import { UserFactory } from 'user/factories/user.factory';
+import { User } from 'user/user/entity/user.entity';
+import { UserFactory } from 'user/user/factories/user.factory';
 import { ConfigModule } from './config.module';
 import { ConfigResolver } from './config.resolver';
 import { ConfigService } from './config.service';
@@ -35,7 +35,7 @@ describe('ConfigResolver', () => {
   });
 
   it('should be defined entity database', async () => {
-    expect(await service.initialConfig()).not.toBeNull();
+    expect(await service.onApplicationBootstrap()).not.toBeNull();
   });
 
   afterAll(async () => {
