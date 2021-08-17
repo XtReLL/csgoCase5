@@ -37,7 +37,7 @@ export enum LiveDropType {
 }
 
 export enum PaymentMethodType {
-    LOCAL = "LOCAL"
+    FREE_KASSA = "FREE_KASSA"
 }
 
 export enum PaymentStatusType {
@@ -49,6 +49,14 @@ export enum PaymentStatusType {
 export enum PromocodeType {
     SUM = "SUM",
     PERCENT = "PERCENT"
+}
+
+export enum ReferallLevel {
+    FIRST = "FIRST",
+    SECOND = "SECOND",
+    THIRD = "THIRD",
+    FOURTH = "FOURTH",
+    FIFTH = "FIFTH"
 }
 
 export enum WithdrawStatusType {
@@ -68,11 +76,11 @@ export interface CreateCaseInput {
     name: string;
     price?: number;
     rarirty?: CaseRarityType;
-    category?: string;
     status?: CaseStatusType;
     discount?: number;
     icon?: string;
     bankPercent?: number;
+    categories: string[];
 }
 
 export interface OpenCaseInput {
@@ -85,11 +93,15 @@ export interface UpdateCaseInput {
     name?: string;
     price?: number;
     rarirty?: CaseRarityType;
-    category?: string;
     status?: CaseStatusType;
     discount?: number;
     icon?: string;
     bankPercent?: number;
+    categories?: string[];
+}
+
+export interface CreateCaseCategoryInput {
+    name: string;
 }
 
 export interface CreateGameCaseDto {
@@ -163,16 +175,29 @@ export interface IMutation {
     joinToGiveaway(id: string): GiveawayBet | Promise<GiveawayBet>;
     removeGiveaway(id: string): boolean | Promise<boolean>;
     sellItem(id: string): boolean | Promise<boolean>;
-    createPayment(createPaymentInput: CreatePaymentInput): Payment | Promise<Payment>;
+    createPayment(createPaymentInput: CreatePaymentInput): string | Promise<string>;
     createPromocode(createPromocodeInput: CreatePromocodeInput): Promocode | Promise<Promocode>;
     updatePromocode(updatePromocodeInput: UpdatePromocodeInput): Promocode | Promise<Promocode>;
     removePromocode(id: string): boolean | Promise<boolean>;
     usePromocode(code: string): boolean | Promise<boolean>;
+    setReferallCode(code: string): ReferallCode | Promise<ReferallCode>;
     setTradeLink(link?: string): boolean | Promise<boolean>;
 }
 
 export interface Case {
     id: string;
+    name?: string;
+    price?: number;
+    rarirty?: CaseRarityType;
+    status?: CaseStatusType;
+    discount?: number;
+    icon?: string;
+    bank?: number;
+    bankPercent?: number;
+    profit?: number;
+    opened?: number;
+    categories?: CaseCategory[];
+    items?: Item[];
 }
 
 export interface CaseListData {
@@ -183,7 +208,19 @@ export interface CaseListData {
 export interface IQuery {
     cases(pagination?: Pagination): CaseListData | Promise<CaseListData>;
     case(id: string): Case | Promise<Case>;
+    categories(pagination?: Pagination): CaseCategoryListData | Promise<CaseCategoryListData>;
+    category(id: string): CaseCategory | Promise<CaseCategory>;
     user(id?: string): User | Promise<User>;
+}
+
+export interface CaseCategory {
+    id: string;
+    name?: string;
+}
+
+export interface CaseCategoryListData {
+    data: CaseCategory[];
+    pagination: CursorBasedPaginationData;
 }
 
 export interface GameCase {
@@ -211,6 +248,12 @@ export interface Inventory {
 
 export interface Item {
     id?: string;
+    marketHashName?: string;
+    iconUrl?: string;
+    exterior?: string;
+    rarity?: string;
+    color?: string;
+    price?: number;
 }
 
 export interface CursorBasedPaginationData {
@@ -236,6 +279,13 @@ export interface Promocode {
     endTime?: Date;
 }
 
+export interface ReferallCode {
+    id?: string;
+    code?: string;
+    userId?: number;
+    level?: ReferallLevel;
+}
+
 export interface User {
     id?: string;
     username?: string;
@@ -243,6 +293,7 @@ export interface User {
     avatar?: string;
     trade_url?: string;
     balance?: number;
+    referallCode?: ReferallCode;
 }
 
 export interface Withdraw {

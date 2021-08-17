@@ -39,6 +39,15 @@ export class Config {
   @Column({ default: 1.5, type: 'double' })
   maxBuyPercent!: number;
 
+  @Column({ nullable: true })
+  freekassaId!: number;
+
+  @Column({ nullable: true })
+  freekassaSecret1!: string;
+
+  @Column({ nullable: true })
+  freekassaSecret2!: string;
+
   @CreateDateColumn()
   createdAt!: Date;
 

@@ -8,10 +8,10 @@ import {
 @InputType()
 export class UpdateCaseInput implements UpdateCaseInputInterface {
   id!: string;
+  categories?: string[];
   name?: string;
   price?: number;
   rarirty?: CaseRarityType;
-  category?: string;
   status?: CaseStatusType;
   discount?: number;
   icon?: string;

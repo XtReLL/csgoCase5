@@ -5,7 +5,7 @@ import { Item } from 'item/entity/item.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Inventory } from './entity/inventory.entity';
 import { RedisCacheModule } from 'redisCache/redisCache.module';
-import { UserModule } from 'user/user.module';
+import { UserModule } from 'user/user/user.module';
 import { WithdrawItem } from 'withdraw/entity/withdrawItem.entity';
 import { CsgoMarketModule } from 'csgo-market/csgo-market.module';
 

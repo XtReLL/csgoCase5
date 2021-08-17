@@ -11,6 +11,7 @@ import {
 } from 'typeorm';
 import { CaseRarityType, CaseStatusType } from 'typings/graphql';
 import { CaseItems } from './caseItems.entity';
+import { CategoryCase } from './category_case.entity';
 
 @Entity('case')
 export class Case {
@@ -25,9 +26,6 @@ export class Case {
 
   @Column({ default: CaseRarityType.CUSTOM })
   rarirty!: CaseRarityType;
-
-  @Column({ nullable: true })
-  category!: string;
 
   @Column({ default: CaseStatusType.ACTIVE })
   status!: CaseStatusType;
@@ -49,6 +47,9 @@ export class Case {
 
   @Column({ default: 0 })
   opened!: number;
+
+  @OneToMany(() => CategoryCase, (categoryCase) => categoryCase.case)
+  category!: Promise<CategoryCase[]>;
 
   @OneToMany(() => CaseItems, (caseItems) => caseItems.case)
   caseItems!: Promise<CaseItems[]>;

@@ -3,7 +3,7 @@ import { GqlExecutionContext } from '@nestjs/graphql';
 import { ForbiddenError } from 'apollo-server-errors';
 import { Request } from 'express';
 import { getManager } from 'typeorm';
-import { User } from 'user/entity/user.entity';
+import { User } from 'user/user/entity/user.entity';
 import { AuthorizedFactory } from './factory/authorized.factory';
 import { AuthorizedModel } from './model/authorized.model';
 
@@ -25,7 +25,9 @@ export const getUser = async (
   }
 
   const id = req.headers.login as string;
-  const model = await getManager().getRepository(User).findOne({where: {id: parseInt(id) }  });
+  const model = await getManager()
+    .getRepository(User)
+    .findOne({ where: { id: parseInt(id) } });
   if (!model) {
     throw new ForbiddenError('auth not found');
   }
@@ -34,6 +36,5 @@ export const getUser = async (
   req.user = res;
   return res;
 };
-
 
 export const Authorized = createParamDecorator(getUser);

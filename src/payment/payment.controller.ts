@@ -5,10 +5,10 @@ import { PaymentService } from './payment.service';
 export class PaymentController {
   constructor(private readonly paymentService: PaymentService) {}
 
-  @Get('callback')
-  async callback(@Query() query: any) {
+  @Get('callback/freekassa')
+  async callbackFreekassa(@Query() query: any) {
     try {
-      return await this.paymentService.callbackPayment(query);
+      return await this.paymentService.callbackFreeKassaPayment(query);
     } catch (e) {
       throw new HttpException(e, 400);
     }

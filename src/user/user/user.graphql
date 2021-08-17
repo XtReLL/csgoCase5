@@ -5,6 +5,8 @@ type User {
   avatar: String
   trade_url: String
   balance: Int
+  "Реферальный код"
+  referallCode: ReferallCode
 }
 
 type Query {

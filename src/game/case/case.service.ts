@@ -11,12 +11,14 @@ import { CasePaybackSystemService } from 'payback-system/case/casePaybackSystem.
 import { RedisCacheModule } from 'redisCache/redisCache.module';
 import { RedisCacheService } from 'redisCache/redisCache.service';
 import { Connection, In, Repository } from 'typeorm';
-import { UserService } from 'user/user.service';
+import { UserService } from 'user/user/user.service';
 import { CreateCaseInput } from './dto/createCase.input';
 import { OpenCaseInput } from './dto/openCase.input';
 import { UpdateCaseInput } from './dto/updateCase.input';
 import { Case } from './entity/case.entity';
 import { CaseItems } from './entity/caseItems.entity';
+import { Category } from './entity/category.entity';
+import { CategoryCase } from './entity/category_case.entity';
 
 @Injectable()
 export class CaseService {
@@ -34,6 +36,10 @@ export class CaseService {
     // private readonly casePaybackService: CasePaybackSystemService,
     private readonly liveDropService: LiveDropService,
     private readonly inventoryService: InventoryService,
+    @InjectRepository(CategoryCase)
+    private readonly categoryCaseRepository: Repository<CategoryCase>,
+    @InjectRepository(Category)
+    private readonly categoryRepository: Repository<Category>,
   ) {}
 
   async findOne(author: AuthorizedModel, caseId: string): Promise<Case> {
@@ -43,17 +49,51 @@ export class CaseService {
     createCaseInput: CreateCaseInput,
     author: AuthorizedModel,
   ): Promise<Case> {
-    return await this.caseRepository.save(
-      this.caseRepository.create({
-        name: createCaseInput.name,
-        discount: createCaseInput.discount,
-        status: createCaseInput.status,
-        price: createCaseInput.price,
-        rarirty: createCaseInput.rarirty,
-        category: createCaseInput.category,
-        icon: createCaseInput.icon,
-      }),
-    );
+    return await this.createManyEntities(createCaseInput, author);
+  }
+  async createManyEntities(
+    createCaseInput: CreateCaseInput,
+    author: AuthorizedModel,
+  ): Promise<Case> {
+    const caseCategoryEntities: CategoryCase[] = [];
+    const queryRunner = this.connection.createQueryRunner();
+    await queryRunner.connect();
+    await queryRunner.startTransaction();
+
+    try {
+      const box = await this.caseRepository.save(
+        this.caseRepository.create({
+          name: createCaseInput.name,
+          discount: createCaseInput.discount,
+          status: createCaseInput.status,
+          price: createCaseInput.price,
+          rarirty: createCaseInput.rarirty,
+          icon: createCaseInput.icon,
+        }),
+      );
+
+      for (const categoryId of createCaseInput.categories) {
+        const category = await this.categoryRepository.findOneOrFail(
+          parseInt(categoryId),
+        );
+        caseCategoryEntities.push(
+          this.categoryCaseRepository.create({
+            caseId: box.id,
+            categoryId: category.id,
+          }),
+        );
+      }
+      await this.categoryCaseRepository.save(caseCategoryEntities);
+
+      await queryRunner.commitTransaction();
+
+      return box;
+    } catch (error) {
+      await queryRunner.rollbackTransaction();
+      throw new Error(error);
+    } finally {
+      await queryRunner.release();
+    }
   }
 
   async update(
@@ -66,8 +106,33 @@ export class CaseService {
     const result = await this.caseRepository.save(
       this.caseRepository.merge(entity, { ...updateCaseInput, id }),
     );
+    await this.categoriesReplace(
+      parseInt(updateCaseInput.id),
+      updateCaseInput.categories,
+    );
 
     return result;
+  }
+
+  async categoriesReplace(
+    caseId: number,
+    categories: string[] = [],
+  ): Promise<void> {
+    await this.categoryCaseRepository.delete({
+      caseId: caseId,
+    });
+    for (const categoryId of categories) {
+      await this.categoryCaseRepository.save(
+        this.categoryCaseRepository.create({
+          categoryId: (
+            await this.categoryRepository.findOneOrFail({
+              where: { id: parseInt(categoryId) },
+            })
+          ).id,
+          caseId: caseId,
+        }),
+      );
+    }
   }
 
   async remove(id: string, author: AuthorizedModel): Promise<boolean> {
@@ -184,6 +249,26 @@ export class CaseService {
 
     const result = await query.getManyAndCount();
 
+    return result;
+  }
+
+  async getCaseCategories(box: Case): Promise<Category[]> {
+    let result: Category[] = [];
+    (
+      await this.categoryCaseRepository.find({
+        where: { caseId: box.id },
+      })
+    ).map(async (caseCategory) => result.push(await caseCategory.category));
+    return result;
+  }
+
+  async getCaseItems(box: Case): Promise<Item[]> {
+    let result: Item[] = [];
+    (
+      await this.caseItemsRepository.find({
+        where: { caseId: box.id },
+      })
+    ).map(async (caseItem) => result.push(await caseItem.item));
     return result;
   }
 }

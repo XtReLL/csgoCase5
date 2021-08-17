@@ -5,7 +5,7 @@ import { InventoryService } from 'inventory/inventory.service';
 import { defaultPagination } from 'list/pagination.input';
 import { paramsToBuilder } from 'list/params';
 import { IsNull, Raw, Repository } from 'typeorm';
-import { User } from 'user/entity/user.entity';
+import { User } from 'user/user/entity/user.entity';
 import { CreateGiveawayInput } from './dto/createGiveawayInput.input';
 import { UpdateGiveawayInput } from './dto/updateGiveawayInput.input';
 import { GiveawayBet } from './entity/giveaway-bet.entity';

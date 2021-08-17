@@ -9,7 +9,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { PaymentMethodType, PaymentStatusType } from 'typings/graphql';
-import { User } from 'user/entity/user.entity';
+import { User } from 'user/user/entity/user.entity';
 
 @Entity('payments')
 export class Payment {
@@ -25,7 +25,7 @@ export class Payment {
   @Column({ default: PaymentStatusType.PENDING })
   status!: PaymentStatusType;
 
-  @Column({ default: PaymentMethodType.LOCAL })
+  @Column({ default: PaymentMethodType.FREE_KASSA })
   method!: PaymentMethodType;
 
   @ManyToOne(() => User, (user) => user.payment, {

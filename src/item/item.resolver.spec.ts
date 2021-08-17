@@ -4,7 +4,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { CsgoMarketModule } from 'csgo-market/csgo-market.module';
 import { RedisCacheModule } from 'redisCache/redisCache.module';
 import { getTestModules } from 'testModules';
-import { User } from 'user/entity/user.entity';
+import { User } from 'user/user/entity/user.entity';
 import { Item } from './entity/item.entity';
 import { ItemModule } from './item.module';
 import { ItemResolver } from './item.resolver';

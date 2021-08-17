@@ -11,7 +11,7 @@ import {
   ManyToOne,
 } from 'typeorm';
 import { CaseRarityType, CaseStatusType } from 'typings/graphql';
-import { User } from 'user/entity/user.entity';
+import { User } from 'user/user/entity/user.entity';
 
 @Entity('game_case')
 export class GameCase {

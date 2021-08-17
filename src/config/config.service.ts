@@ -29,7 +29,7 @@ export class ConfigService {
     );
   }
 
-  async initialConfig(): Promise<Config> {
+  async onApplicationBootstrap(): Promise<Config> {
     const config = await findOrCreate(this.configRepository, {
       id: 1,
       siteName: process.env.APP_URL,

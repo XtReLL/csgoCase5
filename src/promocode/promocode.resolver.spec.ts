@@ -2,8 +2,8 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthorizedFactory } from 'auth/factory/authorized.factory';
 import { getTestModules } from 'testModules';
-import { User } from 'user/entity/user.entity';
-import { UserFactory } from 'user/factories/user.factory';
+import { User } from 'user/user/entity/user.entity';
+import { UserFactory } from 'user/user/factories/user.factory';
 import { Promocode } from './entity/promocode.entity';
 import { PromocodeModule } from './promocode.module';
 import { PromocodeResolver } from './promocode.resolver';
@@ -17,7 +17,7 @@ describe('PromocodeResolver', () => {
       imports: [
         ...getTestModules(),
         TypeOrmModule.forFeature([User, Promocode]),
-        PromocodeModule
+        PromocodeModule,
       ],
       providers: [PromocodeResolver],
     }).compile();
@@ -33,9 +33,12 @@ describe('PromocodeResolver', () => {
     test('correct create promocode', async () => {
       const user = await UserFactory().create();
       const name = 'newPromocode';
-      const promocode = await resolver.createPromocode({name, sum: 10}, AuthorizedFactory(user))
+      const promocode = await resolver.createPromocode(
+        { name, sum: 10 },
+        AuthorizedFactory(user),
+      );
 
-      expect(promocode.name).toEqual(name)
+      expect(promocode.name).toEqual(name);
     });
   });
 

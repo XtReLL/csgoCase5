@@ -1,3 +1,9 @@
 type Item {
   id: ID
+  marketHashName: String
+  iconUrl: String
+  exterior: String
+  rarity: String
+  color: String
+  price: Int
 }

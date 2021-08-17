@@ -9,7 +9,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { LiveDropType } from 'typings/graphql';
-import { User } from 'user/entity/user.entity';
+import { User } from 'user/user/entity/user.entity';
 
 @Entity('live_drop')
 export class LiveDrop {

@@ -12,7 +12,10 @@ import {
   UpdateDateColumn,
   PrimaryGeneratedColumn,
   OneToMany,
+  OneToOne,
 } from 'typeorm';
+import { ReferallCode } from 'user/referall/entity/referallCode.entity';
+import { ReferallUser } from 'user/referall/entity/referallUser.entity';
 import { WithdrawItem } from 'withdraw/entity/withdrawItem.entity';
 
 @Entity('users')
@@ -64,6 +67,12 @@ export class User {
 
   @OneToMany(() => LiveDrop, (liveDrop) => liveDrop.user)
   liveDrop!: Promise<LiveDrop[]>;
+
+  @OneToMany(() => ReferallUser, (referallUser) => referallUser.referall)
+  refer!: Promise<ReferallUser[]>;
+
+  @OneToOne(() => ReferallCode, (referallCode) => referallCode.user)
+  referallCode!: Promise<ReferallCode>;
 
   @CreateDateColumn()
   created_at!: Date;
