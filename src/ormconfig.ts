@@ -7,7 +7,7 @@ import { Inventory } from 'inventory/entity/inventory.entity';
 import { Item } from 'item/entity/item.entity';
 import { PromocodeUse } from 'promocode/entity/promocode-use.entity';
 import { Promocode } from 'promocode/entity/promocode.entity';
-import { User } from 'user/entity/user.entity';
+import { User } from 'user/user/entity/user.entity';
 import { Giveaway } from 'giveaway/entity/giveaway.entity';
 import { GiveawayBet } from 'giveaway/entity/giveaway-bet.entity';
 import { Payment } from 'payment/entity/payment.entity';
@@ -15,6 +15,8 @@ import { WithdrawItem } from 'withdraw/entity/withdrawItem.entity';
 import { LiveDrop } from 'live-drop/entity/live-drop.entity';
 import { Category } from 'game/case/entity/category.entity';
 import { CategoryCase } from 'game/case/entity/category_case.entity';
+import { ReferallCode } from 'user/referall/entity/referallCode.entity';
+import { ReferallUser } from 'user/referall/entity/referallUser.entity';
 
 const config: TypeOrmModuleOptions = {
   type: 'mysql',
@@ -42,6 +44,8 @@ const config: TypeOrmModuleOptions = {
     LiveDrop,
     Category,
     CategoryCase,
+    ReferallCode,
+    ReferallUser,
   ],
   synchronize: true,
 

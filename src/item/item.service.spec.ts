@@ -6,7 +6,7 @@ import { CsgoMarketModule } from 'csgo-market/csgo-market.module';
 import { CsgoMarketService } from 'csgo-market/csgo-market.service';
 import { RedisCacheModule } from 'redisCache/redisCache.module';
 import { getTestModules } from 'testModules';
-import { UserFactory } from 'user/factories/user.factory';
+import { UserFactory } from 'user/user/factories/user.factory';
 import { Item } from './entity/item.entity';
 import { ItemModule } from './item.module';
 import { ItemService } from './item.service';

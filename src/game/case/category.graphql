@@ -1,8 +1,18 @@
-type Category {
+type CaseCategory {
   id: ID!
   name: String
 }
 
-input CreateCategoryInput {
+type CaseCategoryListData {
+  data: [CaseCategory]!
+  pagination: CursorBasedPaginationData!
+}
+
+input CreateCaseCategoryInput {
   name: String!
+}
+
+type Query {
+  categories(pagination: Pagination): CaseCategoryListData!
+  category(id: ID!): CaseCategory!
 }

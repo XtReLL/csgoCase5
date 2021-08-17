@@ -1,5 +1,17 @@
 type Case {
   id: ID!
+  name: String
+  price: Int
+  rarirty: CaseRarityType
+  status: CaseStatusType
+  discount: Int
+  icon: String
+  bank: Int
+  bankPercent: Int
+  profit: Int
+  opened: Int
+  categories: [CaseCategory]
+  items: [Item]
 }
 enum CaseRarityType {
   CUSTOM

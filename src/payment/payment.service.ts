@@ -3,12 +3,12 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { RedisCacheService } from 'redisCache/redisCache.service';
 import { Repository } from 'typeorm';
 import { PaymentMethodType, PaymentStatusType } from 'typings/graphql';
-import { User } from 'user/entity/user.entity';
+import { User } from 'user/user/entity/user.entity';
 import { CreatePaymentInput } from './dto/createPaymentInput.input';
 import { Payment } from './entity/payment.entity';
 import crypto from 'crypto-js';
 
-import { UserService } from 'user/user.service';
+import { UserService } from 'user/user/user.service';
 
 @Injectable()
 export class PaymentService {

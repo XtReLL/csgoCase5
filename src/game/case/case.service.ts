@@ -11,7 +11,7 @@ import { CasePaybackSystemService } from 'payback-system/case/casePaybackSystem.
 import { RedisCacheModule } from 'redisCache/redisCache.module';
 import { RedisCacheService } from 'redisCache/redisCache.service';
 import { Connection, In, Repository } from 'typeorm';
-import { UserService } from 'user/user.service';
+import { UserService } from 'user/user/user.service';
 import { CreateCaseInput } from './dto/createCase.input';
 import { OpenCaseInput } from './dto/openCase.input';
 import { UpdateCaseInput } from './dto/updateCase.input';
@@ -249,6 +249,26 @@ export class CaseService {
 
     const result = await query.getManyAndCount();
 
+    return result;
+  }
+
+  async getCaseCategories(box: Case): Promise<Category[]> {
+    let result: Category[] = [];
+    (
+      await this.categoryCaseRepository.find({
+        where: { caseId: box.id },
+      })
+    ).map(async (caseCategory) => result.push(await caseCategory.category));
+    return result;
+  }
+
+  async getCaseItems(box: Case): Promise<Item[]> {
+    let result: Item[] = [];
+    (
+      await this.caseItemsRepository.find({
+        where: { caseId: box.id },
+      })
+    ).map(async (caseItem) => result.push(await caseItem.item));
     return result;
   }
 }

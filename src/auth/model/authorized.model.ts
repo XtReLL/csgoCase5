@@ -1,4 +1,4 @@
-import { User } from "user/entity/user.entity";
+import { User } from 'user/user/entity/user.entity';
 
 export interface AuthorizedModel {
   role: string | 'client';

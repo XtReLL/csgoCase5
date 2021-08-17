@@ -9,7 +9,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { PaymentMethodType, PaymentStatusType } from 'typings/graphql';
-import { User } from 'user/entity/user.entity';
+import { User } from 'user/user/entity/user.entity';
 
 @Entity('payments')
 export class Payment {

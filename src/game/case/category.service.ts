@@ -3,7 +3,10 @@ import { Repository } from 'typeorm';
 
 import { InjectRepository } from '@nestjs/typeorm';
 import { Category } from './entity/category.entity';
-import { CreateCategoryInput } from './dto/createCategory.input';
+import { CreateCaseCategoryInput } from './dto/createCategory.input';
+import { paramsToBuilder } from 'list/params';
+import { defaultPagination, Pagination } from 'list/pagination.input';
+import { AuthorizedModel } from 'auth/model/authorized.model';
 
 @Injectable()
 export class СategoryService {
@@ -12,7 +15,9 @@ export class СategoryService {
     private categoryRepository: Repository<Category>,
   ) {}
 
-  async create(createCategoryInput: CreateCategoryInput): Promise<Category> {
+  async create(
+    createCategoryInput: CreateCaseCategoryInput,
+  ): Promise<Category> {
     return await this.categoryRepository.save(
       this.categoryRepository.create({ ...createCategoryInput }),
     );
@@ -33,5 +38,19 @@ export class СategoryService {
 
   async findById(id: string): Promise<Category> {
     return await this.categoryRepository.findOneOrFail(parseInt(id));
+  }
+
+  async list(
+    model: AuthorizedModel,
+    pagination: Pagination = defaultPagination,
+  ): Promise<[Category[], number]> {
+    const query = await paramsToBuilder<Category>(
+      this.categoryRepository.createQueryBuilder(),
+      pagination,
+    );
+
+    const result = await query.getManyAndCount();
+
+    return result;
   }
 }

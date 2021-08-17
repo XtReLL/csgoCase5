@@ -1,7 +1,9 @@
 import { InputType } from '@nestjs/graphql';
-import { CreateCategoryInput as CreateCategoryInputInterface } from 'typings/graphql';
+import { CreateCaseCategoryInput as CreateCaseCategoryInputInterface } from 'typings/graphql';
 
 @InputType()
-export class CreateCategoryInput implements CreateCategoryInputInterface {
+export class CreateCaseCategoryInput
+  implements CreateCaseCategoryInputInterface
+{
   name!: string;
 }

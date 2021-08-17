@@ -1,16 +1,36 @@
-import { Args, Mutation, Resolver, Query } from '@nestjs/graphql';
+import {
+  Args,
+  Mutation,
+  Resolver,
+  Query,
+  ResolveField,
+  Parent,
+} from '@nestjs/graphql';
 import { Authorized } from 'auth/authorized.decorator';
 import { AuthorizedModel } from 'auth/model/authorized.model';
+import { Item } from 'item/entity/item.entity';
 import { formatList, ListData } from 'list/formatter';
 import { Pagination } from 'list/pagination.input';
+
 import { CaseService } from './case.service';
 import { CreateCaseInput } from './dto/createCase.input';
 import { UpdateCaseInput } from './dto/updateCase.input';
 import { Case } from './entity/case.entity';
+import { Category } from './entity/category.entity';
 
-@Resolver('case')
+@Resolver('Case')
 export class CaseResolver {
   constructor(private readonly caseService: CaseService) {}
+
+  @ResolveField('categories')
+  async caseCategories(@Parent() box: Case): Promise<Category[]> {
+    return await this.caseService.getCaseCategories(box);
+  }
+
+  @ResolveField('items')
+  async caseItems(@Parent() box: Case): Promise<Item[]> {
+    return await this.caseService.getCaseItems(box);
+  }
 
   @Query('cases')
   async cases(

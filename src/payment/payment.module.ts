@@ -6,7 +6,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Payment } from './entity/payment.entity';
 import { RedisCacheService } from 'redisCache/redisCache.service';
 import { RedisCacheModule } from 'redisCache/redisCache.module';
-import { UserModule } from 'user/user.module';
+import { UserModule } from 'user/user/user.module';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Payment]), RedisCacheModule, UserModule],

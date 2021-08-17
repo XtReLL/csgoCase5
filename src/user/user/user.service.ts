@@ -6,6 +6,8 @@ import { FindOrCreateUserDto } from './dto/findOrCreateUser.dto';
 import { User } from './entity/user.entity';
 import axios from 'axios';
 import { RedisCacheService } from 'redisCache/redisCache.service';
+import { ReferallService } from 'user/referall/referall.service';
+import { ReferallCode } from 'user/referall/entity/referallCode.entity';
 
 @Injectable()
 export class UserService {
@@ -14,6 +16,7 @@ export class UserService {
     private readonly userRepository: Repository<User>,
     private readonly redisCacheService: RedisCacheService,
     private readonly tradeService: TradeService,
+    private readonly referallService: ReferallService,
   ) {}
 
   async findAll(): Promise<User[]> {
@@ -28,11 +31,14 @@ export class UserService {
     let user = await this.findBySteamId(profile.steamid);
 
     if (!user) {
-      user = await this.userRepository.create({
-        username: profile.personaname,
-        steamId: profile.steamid,
-        avatar: profile.avatarfull,
-      });
+      user = await this.userRepository.save(
+        this.userRepository.create({
+          username: profile.personaname,
+          steamId: profile.steamid,
+          avatar: profile.avatarfull,
+        }),
+      );
+      await this.referallService.createReferallCode(user);
     } else {
       user.username = profile.personaname;
       user.steamId = profile.steamid;
@@ -147,5 +153,9 @@ export class UserService {
     } catch (e) {
       return 0;
     }
+  }
+
+  async getUserReferallCode(user: User): Promise<ReferallCode> {
+    return await this.referallService.findByUser(user.id);
   }
 }

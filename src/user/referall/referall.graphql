@@ -1,0 +1,18 @@
+type ReferallCode {
+  id: ID
+  code: String
+  userId: Int
+  level: ReferallLevel
+}
+
+enum ReferallLevel {
+  FIRST
+  SECOND
+  THIRD
+  FOURTH
+  FIFTH
+}
+
+type Mutation {
+  setReferallCode(code: String!): ReferallCode!
+}
