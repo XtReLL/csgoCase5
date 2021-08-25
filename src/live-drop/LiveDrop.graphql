@@ -11,4 +11,5 @@ input CreateLiveDropInput {
   caseId: ID
   itemId: ID!
   price: Int!
+  type: LiveDropType!
 }

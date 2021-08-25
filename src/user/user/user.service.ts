@@ -1,23 +1,35 @@
-import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
+import { forwardRef, Inject, Injectable } from '@nestjs/common';
+
 import { TradeService } from 'trade/trade.service';
-import { Repository } from 'typeorm';
+
 import { FindOrCreateUserDto } from './dto/findOrCreateUser.dto';
 import { User } from './entity/user.entity';
 import axios from 'axios';
 import { RedisCacheService } from 'redisCache/redisCache.service';
 import { ReferallService } from 'user/referall/referall.service';
 import { ReferallCode } from 'user/referall/entity/referallCode.entity';
+import { AuthorizedModel } from 'auth/model/authorized.model';
+import { SearchUserInput } from 'typings/graphql';
+import { defaultPagination, Pagination } from 'list/pagination.input';
+import { paramsToBuilder } from 'list/params';
+import { UserRepository } from './user.repository';
+import { Inventory } from 'inventory/entity/inventory.entity';
+import { InventoryService } from 'inventory/inventory.service';
 
 @Injectable()
 export class UserService {
   constructor(
-    @InjectRepository(User)
-    private readonly userRepository: Repository<User>,
+    private userRepository: UserRepository,
     private readonly redisCacheService: RedisCacheService,
     private readonly tradeService: TradeService,
     private readonly referallService: ReferallService,
+    @Inject(forwardRef(() => InventoryService))
+    private readonly inventoryService: InventoryService,
   ) {}
+
+  byIds(ids: number[]): Promise<User[]> {
+    return this.userRepository.findByIds(ids);
+  }
 
   async findAll(): Promise<User[]> {
     return this.userRepository.find();
@@ -157,5 +169,27 @@ export class UserService {
 
   async getUserReferallCode(user: User): Promise<ReferallCode> {
     return await this.referallService.findByUser(user.id);
+  }
+
+  async getUserInventory(
+    user: User,
+    pagination?: Pagination,
+  ): Promise<[Inventory[], number]> {
+    return await this.inventoryService.list(user.id, pagination);
+  }
+
+  async list(
+    model: AuthorizedModel,
+    search?: SearchUserInput,
+    pagination: Pagination = defaultPagination,
+  ): Promise<[User[], number]> {
+    const query = await paramsToBuilder(
+      this.userRepository.createQueryBuilder(),
+      pagination,
+    );
+    const result = query
+      // .processSearchInput(query, search)
+      .getManyAndCount();
+    return result;
   }
 }

@@ -1,6 +1,7 @@
 import { HttpModule } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { BackpackApiModule } from 'backpack-api/backpack-api.module';
 import { CsgoMarketModule } from 'csgo-market/csgo-market.module';
 import { RedisCacheModule } from 'redisCache/redisCache.module';
 import { getTestModules } from 'testModules';
@@ -24,6 +25,7 @@ describe('ItemResolver', () => {
         CsgoMarketModule,
         HttpModule,
         RedisCacheModule,
+        BackpackApiModule,
       ],
       providers: [ItemResolver, ItemService],
     }).compile();

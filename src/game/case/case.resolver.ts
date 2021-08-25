@@ -8,6 +8,7 @@ import {
 } from '@nestjs/graphql';
 import { Authorized } from 'auth/authorized.decorator';
 import { AuthorizedModel } from 'auth/model/authorized.model';
+import { OnlyAdmins } from 'auth/only-admins.decorator';
 import { Item } from 'item/entity/item.entity';
 import { formatList, ListData } from 'list/formatter';
 import { Pagination } from 'list/pagination.input';
@@ -54,7 +55,7 @@ export class CaseResolver {
 
   @Mutation('createCase')
   async createCase(
-    @Authorized() author: AuthorizedModel,
+    @OnlyAdmins() author: AuthorizedModel,
     @Args('createCaseInput') createCaseInput: CreateCaseInput,
   ): Promise<Case> {
     return await this.caseService.create(createCaseInput, author);
@@ -62,7 +63,7 @@ export class CaseResolver {
 
   @Mutation('updateCase')
   async updateCase(
-    @Authorized() author: AuthorizedModel,
+    @OnlyAdmins() author: AuthorizedModel,
     @Args('updateCaseInput') updateCaseInput: UpdateCaseInput,
   ): Promise<Case> {
     return await this.caseService.update(updateCaseInput, author);
@@ -70,7 +71,7 @@ export class CaseResolver {
 
   @Mutation('removeCase')
   async removeCase(
-    @Authorized() author: AuthorizedModel,
+    @OnlyAdmins() author: AuthorizedModel,
     @Args('id') caseId: string,
   ): Promise<boolean> {
     return await this.caseService.remove(caseId, author);

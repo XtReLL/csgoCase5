@@ -13,18 +13,20 @@ import {
   PrimaryGeneratedColumn,
   OneToMany,
   OneToOne,
+  Index,
 } from 'typeorm';
 import { ReferallCode } from 'user/referall/entity/referallCode.entity';
 import { ReferallUser } from 'user/referall/entity/referallUser.entity';
 import { WithdrawItem } from 'withdraw/entity/withdrawItem.entity';
 
 @Entity('users')
+@Index(['username'], { fulltext: true })
 export class User {
   @PrimaryGeneratedColumn()
   public id!: number;
 
   @Column()
-  public username!: string;
+  username!: string;
 
   @Column({ nullable: true })
   steamId!: string;
@@ -75,8 +77,8 @@ export class User {
   referallCode!: Promise<ReferallCode>;
 
   @CreateDateColumn()
-  created_at!: Date;
+  createdAt!: Date;
 
   @UpdateDateColumn()
-  updated_at!: Date;
+  updatedAt!: Date;
 }

@@ -1,0 +1,1 @@
+export {isAdminRole} from 'typings/roles'

@@ -10,15 +10,20 @@ export const formatList: <T extends { id: string | number }>(
   paginationId: string,
   pagination: Pagination | undefined,
 ) => ListData<T> = (items, paginationId, pagination) => {
-  const cursor =
-    items[0].length > 0 ? items[0][items[0].length - 1].id : undefined;
+  const data = items[0].filter((item) => !!item);
+  const cursor = data.length > 0 ? data[data.length - 1].id : undefined;
 
   return {
-    data: items[0].map(({ id, ...rest }) => ({ id: `${id}`, ...rest })),
+    data: data.map((item) =>
+      Object.assign(Object.create(Object.getPrototypeOf(item)), item, {
+        id: `${item.id}`,
+      }),
+    ),
     pagination: {
       id: paginationId,
-      hasMore: cursor ? items[1] > items[0].length : false,
+      hasMore: cursor ? items[1] > data.length : false,
       cursor: cursor ? `${cursor}` : pagination?.cursor,
+      total: items[1],
     },
   };
 };

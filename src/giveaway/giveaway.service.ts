@@ -88,7 +88,7 @@ export class GiveawayService {
     authorized: AuthorizedModel,
     pagination = defaultPagination,
   ): Promise<[Giveaway[], number]> {
-    const query = paramsToBuilder(
+    const query = await paramsToBuilder(
       this.giveawayRepository.createQueryBuilder(),
       pagination,
     );
@@ -99,7 +99,7 @@ export class GiveawayService {
     authorized: AuthorizedModel,
     pagination = defaultPagination,
   ): Promise<[Giveaway[], number]> {
-    const query = paramsToBuilder(
+    const query = await paramsToBuilder(
       this.giveawayRepository.createQueryBuilder(),
       pagination,
     );

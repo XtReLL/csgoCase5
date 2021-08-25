@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
 import { InventoryService } from './inventory.service';
 import { InventoryResolver } from './inventory.resolver';
 import { Item } from 'item/entity/item.entity';
@@ -13,7 +13,7 @@ import { CsgoMarketModule } from 'csgo-market/csgo-market.module';
   imports: [
     TypeOrmModule.forFeature([Item, Inventory, WithdrawItem]),
     RedisCacheModule,
-    UserModule,
+    forwardRef(() => UserModule),
     CsgoMarketModule,
   ],
   providers: [InventoryService, InventoryResolver],

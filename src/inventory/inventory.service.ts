@@ -3,6 +3,8 @@ import { EventEmitter2 } from '@nestjs/event-emitter';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CsgoMarketService } from 'csgo-market/csgo-market.service';
 import { Item } from 'item/entity/item.entity';
+import { defaultPagination, Pagination } from 'list/pagination.input';
+import { paramsToBuilder } from 'list/params';
 import { RedisCacheService } from 'redisCache/redisCache.service';
 import { Repository } from 'typeorm';
 import { InventoryStatus } from 'typings/graphql';
@@ -59,20 +61,38 @@ export class InventoryService {
 
   async findAllItemsByUserId(
     userId: number,
-    status: InventoryStatus,
-  ): Promise<Inventory[]> {
+    status?: InventoryStatus,
+  ): Promise<[Inventory[], number]> {
     const inventory = await this.redisCacheService.get(`inventory_${userId}`);
 
     if (inventory) {
       return inventory;
     }
 
-    const result = await this.inventoryRepository.find({
-      where: { userId: userId, status: status },
-    });
-    console.log(result);
+    const query = this.inventoryRepository
+      .createQueryBuilder()
+      .where('userId = :userId', { userId });
 
+    if (status === InventoryStatus.AVAILABLE) {
+      query.andWhere('status = :status', { status: InventoryStatus.AVAILABLE });
+    }
+
+    const result = query.getManyAndCount();
     await this.redisCacheService.set(`inventory_${userId}`, result);
+
+    return result;
+  }
+
+  async list(
+    userId: number,
+    pagination: Pagination = defaultPagination,
+  ): Promise<[Inventory[], number]> {
+    const query = await paramsToBuilder(
+      this.inventoryRepository.createQueryBuilder(),
+      pagination,
+    );
+    query.andWhere('userId = :userId', { userId });
+    const result = query.getManyAndCount();
 
     return result;
   }
@@ -113,11 +133,12 @@ export class InventoryService {
     }
   }
 
-  async removeItem(inventoryId: number) {
+  async removeItem(inventoryId: number): Promise<boolean> {
     const inventoryItem = await this.inventoryRepository.findOneOrFail(
       inventoryId,
     );
-    //
+    await this.inventoryRepository.delete(inventoryItem);
+    return true;
   }
 
   async sellItem(itemId: string, author: User): Promise<boolean> {
@@ -138,7 +159,7 @@ export class InventoryService {
 
     author.balance += inventory.price;
 
-    await this.inventoryRepository.delete(inventory);
+    await this.removeItem(inventory.id);
 
     return true;
   }

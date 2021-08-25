@@ -22,6 +22,12 @@ import { PaymentModule } from './payment/payment.module';
 import { WithdrawModule } from './withdraw/withdraw.module';
 import { PaybackSystemModule } from './payback-system/payback-system.module';
 import { LiveDropModule } from './live-drop/live-drop.module';
+import { SocketModule } from './socket/socket.module';
+import { SocketGateway } from './socket/socket.gateway';
+import { APP_INTERCEPTOR } from '@nestjs/core';
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+import { DataLoaderInterceptor } from 'nestjs-graphql-dataloader';
 
 @Module({
   imports: [
@@ -60,7 +66,14 @@ import { LiveDropModule } from './live-drop/live-drop.module';
     WithdrawModule,
     PaybackSystemModule,
     LiveDropModule,
+    SocketModule,
   ],
-  providers: [],
+  providers: [
+    SocketGateway,
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: DataLoaderInterceptor,
+    },
+  ],
 })
 export class AppModule {}

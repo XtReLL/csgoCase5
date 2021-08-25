@@ -1,5 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { CsgoMarketModule } from 'csgo-market/csgo-market.module';
 import { Item } from 'item/entity/item.entity';
 
 import { ItemModule } from 'item/item.module';
@@ -8,6 +9,7 @@ import { getTestModules } from 'testModules';
 import { InventoryStatus } from 'typings/graphql';
 import { UserFactory } from 'user/user/factories/user.factory';
 import { UserModule } from 'user/user/user.module';
+import { WithdrawItem } from 'withdraw/entity/withdrawItem.entity';
 import { Inventory } from './entity/inventory.entity';
 import { InventoryFactory } from './factories/inventory.factory';
 import { InventoryResolver } from './inventory.resolver';
@@ -21,12 +23,13 @@ describe('InventoryResolver', () => {
     const module = await Test.createTestingModule({
       imports: [
         ...getTestModules(),
-        TypeOrmModule.forFeature([Inventory, Item]),
+        TypeOrmModule.forFeature([Inventory, Item, WithdrawItem]),
         ItemModule,
         RedisCacheModule,
         UserModule,
+        CsgoMarketModule,
       ],
-      providers: [InventoryResolver],
+      providers: [InventoryResolver, InventoryService],
     }).compile();
 
     resolver = module.get<InventoryResolver>(InventoryResolver);

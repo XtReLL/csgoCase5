@@ -10,6 +10,11 @@ enum InventoryStatus {
   AVAILABLE
 }
 
+type InventoryListData {
+  data: [Inventory]!
+  pagination: CursorBasedPaginationData!
+}
+
 type Mutation {
   sellItem(id: ID!): Boolean!
 }

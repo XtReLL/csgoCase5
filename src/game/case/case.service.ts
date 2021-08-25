@@ -11,6 +11,7 @@ import { CasePaybackSystemService } from 'payback-system/case/casePaybackSystem.
 import { RedisCacheModule } from 'redisCache/redisCache.module';
 import { RedisCacheService } from 'redisCache/redisCache.service';
 import { Connection, In, Repository } from 'typeorm';
+import { LiveDropType } from 'typings/graphql';
 import { UserService } from 'user/user/user.service';
 import { CreateCaseInput } from './dto/createCase.input';
 import { OpenCaseInput } from './dto/openCase.input';
@@ -195,6 +196,7 @@ export class CaseService {
             caseId: String(box.id),
             itemId: String(item.id),
             price: item.price,
+            type: LiveDropType.CASE,
           });
         }),
       ]);
@@ -208,9 +210,9 @@ export class CaseService {
       box.profit += openCaseInput.count * box.price - price;
       await this.caseRepository.save(box);
 
-      // setTimeout(async () => {
-      //   this.liveDropService.updateLiveDrop();
-      // }, 5000);
+      setTimeout(async () => {
+        await this.liveDropService.updateLiveDrop();
+      }, 4000);
 
       await queryRunner.commitTransaction();
     } catch (error) {

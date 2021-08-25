@@ -1,9 +1,11 @@
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { InventoryModule } from 'inventory/inventory.module';
 import { RedisCacheModule } from 'redisCache/redisCache.module';
 import { TradeModule } from 'trade/trade.module';
 import { ReferallModule } from 'user/referall/referall.module';
 import { User } from './entity/user.entity';
+import { UserLoader } from './user.loader';
 import { UserResolver } from './user.resolver';
 import { UserService } from './user.service';
 
@@ -13,8 +15,9 @@ import { UserService } from './user.service';
     RedisCacheModule,
     TradeModule,
     ReferallModule,
+    forwardRef(() => InventoryModule),
   ],
-  providers: [UserResolver, UserService],
+  providers: [UserResolver, UserService, UserLoader],
   exports: [UserService],
 })
 export class UserModule {}

@@ -133,6 +133,7 @@ export interface CreateLiveDropInput {
     caseId?: string;
     itemId: string;
     price: number;
+    type: LiveDropType;
 }
 
 export interface CreatePaymentInput {
@@ -155,6 +156,10 @@ export interface UpdatePromocodeInput {
     percent?: number;
     count?: number;
     endTime?: Date;
+}
+
+export interface SearchUserInput {
+    query?: string;
 }
 
 export interface Config {
@@ -211,6 +216,7 @@ export interface IQuery {
     categories(pagination?: Pagination): CaseCategoryListData | Promise<CaseCategoryListData>;
     category(id: string): CaseCategory | Promise<CaseCategory>;
     user(id?: string): User | Promise<User>;
+    users(search?: SearchUserInput, pagination?: Pagination): UsersListData | Promise<UsersListData>;
 }
 
 export interface CaseCategory {
@@ -244,6 +250,11 @@ export interface Inventory {
     itemId?: number;
     price?: number;
     status?: number;
+}
+
+export interface InventoryListData {
+    data: Inventory[];
+    pagination: CursorBasedPaginationData;
 }
 
 export interface Item {
@@ -294,6 +305,12 @@ export interface User {
     trade_url?: string;
     balance?: number;
     referallCode?: ReferallCode;
+    inventory?: InventoryListData;
+}
+
+export interface UsersListData {
+    data: User[];
+    pagination: CursorBasedPaginationData;
 }
 
 export interface Withdraw {

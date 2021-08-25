@@ -1,4 +1,5 @@
 import {
+  Brackets,
   FindConditions,
   FindManyOptions,
   LessThan,
@@ -42,15 +43,34 @@ export const paramsToQuery = async <T extends BaseEntity>(
   };
 };
 
-export const paramsToBuilder = <T extends BaseEntity>(
+export const paramsToBuilder = async <T extends BaseEntity>(
   builder: SelectQueryBuilder<T>,
   pagination: Pagination,
   sortColumn: keyof T = 'createdAt',
   cursorColumn: keyof T = 'id',
-): SelectQueryBuilder<T> => {
+  sortByNonUniqueCustomColumn?: boolean,
+  findedCursorEntity: T | null = null,
+): Promise<SelectQueryBuilder<T>> => {
+  const cursorEntity =
+    sortByNonUniqueCustomColumn && pagination.cursor
+      ? findedCursorEntity
+        ? findedCursorEntity
+        : await builder
+            .clone()
+            .where(`${cursorColumn} = :cursor`, { cursor: pagination.cursor })
+            .getRawOne()
+      : null;
+
   let tempBuilder = builder
     .limit(pagination.limit)
     .orderBy(sortColumn as string, pagination.direction.toUpperCase() as any);
+
+  if (sortByNonUniqueCustomColumn) {
+    tempBuilder = tempBuilder.addOrderBy(
+      cursorColumn as string,
+      pagination.direction.toUpperCase() as any,
+    );
+  }
 
   if (pagination.offset) {
     tempBuilder = tempBuilder.offset(pagination.offset);
@@ -60,10 +80,32 @@ export const paramsToBuilder = <T extends BaseEntity>(
   tempBuilder = tempBuilder.where('1 = 1');
 
   if (pagination.cursor) {
-    tempBuilder = tempBuilder.andWhere(
-      `${cursorColumn} ${pagination.direction === 'desc' ? '<' : '>'} :cursor`,
-      { cursor: parseInt(pagination.cursor, 10) },
-    );
+    if (!sortByNonUniqueCustomColumn) {
+      tempBuilder = tempBuilder.andWhere(
+        `${cursorColumn} ${
+          pagination.direction === 'desc' ? '<' : '>'
+        } :cursor`,
+        { cursor: parseInt(pagination.cursor, 10) },
+      );
+    } else {
+      tempBuilder = tempBuilder.andWhere(
+        new Brackets((qb) =>
+          qb
+            .where(
+              `${sortColumn} ${
+                pagination.direction === 'desc' ? '<' : '>'
+              } :cursor`,
+              { cursor: cursorEntity![sortColumn] },
+            )
+            .orWhere(
+              `${sortColumn} = :cursor and ${cursorColumn}${
+                pagination.direction === 'desc' ? '<' : '>'
+              } :cursorColumn`,
+              { cursorColumn: cursorEntity![cursorColumn] },
+            ),
+        ),
+      );
+    }
   }
 
   return tempBuilder;

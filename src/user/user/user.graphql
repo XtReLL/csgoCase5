@@ -7,10 +7,22 @@ type User {
   balance: Int
   "Реферальный код"
   referallCode: ReferallCode
+  "Инвентарь пользователя"
+  inventory: InventoryListData
+}
+
+type UsersListData {
+  data: [User]!
+  pagination: CursorBasedPaginationData!
+}
+
+input SearchUserInput {
+  query: String
 }
 
 type Query {
   user(id: ID): User!
+  users(search: SearchUserInput, pagination: Pagination): UsersListData!
 }
 
 type Mutation {
