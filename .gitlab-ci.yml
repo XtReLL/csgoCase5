@@ -1,19 +1,15 @@
-default:
-  before_script:
-    - docker login -u $DOCKER_LOGIN -p $DOCKER_PASSWORD $DOCKER_REGISTRY
-
 case-build:
   stage: build
   tags:
     - build
   script:
-    - bash build.bash $DOCKER_REGISTRY/$DOCKER_PREFFIX/$CI_PROJECT_NAME:$CI_COMMIT_SHORT_SHA
+    - bash build.bash case
 
 case-test:
   stage: test
   tags:
     - build
-  script: bash test.bash $DOCKER_REGISTRY/$DOCKER_PREFFIX/$CI_PROJECT_NAME:$CI_COMMIT_SHORT_SHA && docker push $DOCKER_REGISTRY/$DOCKER_PREFFIX/$CI_PROJECT_NAME:$CI_COMMIT_SHORT_SHA
+  script: bash test.bash case
   coverage: /All\sfiles.*?\s+(\d+.\d+)/
 
 case-deploy-dev:
