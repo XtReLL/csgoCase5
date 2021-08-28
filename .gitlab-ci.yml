@@ -1,26 +1,7 @@
-case-build:
-  stage: build
-  tags:
-    - build
-  script:
-    - bash build.bash case
+before_script:
+  - docker info
 
-case-test:
-  stage: test
-  tags:
-    - build
-  script: bash test.bash case
-  coverage: /All\sfiles.*?\s+(\d+.\d+)/
-
-case-deploy-dev:
-  stage: deploy
-  environment:
-    name: dev
-  tags:
-    - trading
+build_image:
   script:
-    - docker pull $DOCKER_REGISTRY/$DOCKER_PREFFIX/$CI_PROJECT_NAME:$CI_COMMIT_SHORT_SHA
-    - docker tag $DOCKER_REGISTRY/$DOCKER_PREFFIX/$CI_PROJECT_NAME:$CI_COMMIT_SHORT_SHA $DOCKER_REGISTRY/$DOCKER_PREFFIX/$CI_PROJECT_NAME:latest
-    - docker push $DOCKER_REGISTRY/$DOCKER_PREFFIX/$CI_PROJECT_NAME:latest
-    - cd $DEPLOY_PATH_DEV
-    - docker-compose up -d case-dev
+    - docker build -t case .
+    - docker run case /app
