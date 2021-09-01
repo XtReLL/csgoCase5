@@ -10,8 +10,13 @@ type Case {
   bankPercent: Int
   profit: Int
   opened: Int
-  categories: [CaseCategory]
+  categories: [Category]
   items: [Item]
+}
+
+type CaseItems {
+  caseId: ID
+  itemId: ID
 }
 enum CaseRarityType {
   CUSTOM
@@ -45,6 +50,11 @@ input OpenCaseInput {
   count: Int!
 }
 
+input AddItemsInCaseInput {
+  caseId: ID!
+  itemsId: [ID]!
+}
+
 input UpdateCaseInput {
   id: ID!
   name: String
@@ -66,4 +76,6 @@ type Mutation {
   createCase(createCaseInput: CreateCaseInput!): Case!
   updateCase(updateCaseInput: UpdateCaseInput!): Case!
   removeCase(id: ID!): Boolean!
+  openCase(openCaseInput: OpenCaseInput!): [Item]
+  addItemsInCase(addItemsInCaseInput: AddItemsInCaseInput!): [CaseItems]!
 }

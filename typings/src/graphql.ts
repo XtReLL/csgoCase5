@@ -88,6 +88,11 @@ export interface OpenCaseInput {
     count: number;
 }
 
+export interface AddItemsInCaseInput {
+    caseId: string;
+    itemsId: string[];
+}
+
 export interface UpdateCaseInput {
     id: string;
     name?: string;
@@ -100,7 +105,7 @@ export interface UpdateCaseInput {
     categories?: string[];
 }
 
-export interface CreateCaseCategoryInput {
+export interface CreateCategoryInput {
     name: string;
 }
 
@@ -174,6 +179,8 @@ export interface IMutation {
     createCase(createCaseInput: CreateCaseInput): Case | Promise<Case>;
     updateCase(updateCaseInput: UpdateCaseInput): Case | Promise<Case>;
     removeCase(id: string): boolean | Promise<boolean>;
+    openCase(openCaseInput: OpenCaseInput): Item[] | Promise<Item[]>;
+    addItemsInCase(addItemsInCaseInput: AddItemsInCaseInput): CaseItems[] | Promise<CaseItems[]>;
     createGameCase(createGameCaseDto: CreateGameCaseDto): GameCase | Promise<GameCase>;
     createGiveaway(createGiveawayInput: CreateGiveawayInput): Giveaway | Promise<Giveaway>;
     updateGiveaway(updateGiveawayInput: UpdateGiveawayInput): Giveaway | Promise<Giveaway>;
@@ -201,8 +208,13 @@ export interface Case {
     bankPercent?: number;
     profit?: number;
     opened?: number;
-    categories?: CaseCategory[];
+    categories?: Category[];
     items?: Item[];
+}
+
+export interface CaseItems {
+    caseId?: string;
+    itemId?: string;
 }
 
 export interface CaseListData {
@@ -213,19 +225,19 @@ export interface CaseListData {
 export interface IQuery {
     cases(pagination?: Pagination): CaseListData | Promise<CaseListData>;
     case(id: string): Case | Promise<Case>;
-    categories(pagination?: Pagination): CaseCategoryListData | Promise<CaseCategoryListData>;
-    category(id: string): CaseCategory | Promise<CaseCategory>;
+    categories(pagination?: Pagination): CategoryListData | Promise<CategoryListData>;
+    category(id: string): Category | Promise<Category>;
     user(id?: string): User | Promise<User>;
     users(search?: SearchUserInput, pagination?: Pagination): UsersListData | Promise<UsersListData>;
 }
 
-export interface CaseCategory {
+export interface Category {
     id: string;
     name?: string;
 }
 
-export interface CaseCategoryListData {
-    data: CaseCategory[];
+export interface CategoryListData {
+    data: Category[];
     pagination: CursorBasedPaginationData;
 }
 

@@ -3,21 +3,19 @@ import { Repository } from 'typeorm';
 
 import { InjectRepository } from '@nestjs/typeorm';
 import { Category } from './entity/category.entity';
-import { CreateCaseCategoryInput } from './dto/createCategory.input';
+import { CreateCategoryInput } from './dto/createCategory.input';
 import { paramsToBuilder } from 'list/params';
 import { defaultPagination, Pagination } from 'list/pagination.input';
 import { AuthorizedModel } from 'auth/model/authorized.model';
 
 @Injectable()
-export class СategoryService {
+export class CategoryService {
   constructor(
     @InjectRepository(Category)
     private categoryRepository: Repository<Category>,
   ) {}
 
-  async create(
-    createCategoryInput: CreateCaseCategoryInput,
-  ): Promise<Category> {
+  async create(createCategoryInput: CreateCategoryInput): Promise<Category> {
     return await this.categoryRepository.save(
       this.categoryRepository.create({ ...createCategoryInput }),
     );

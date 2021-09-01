@@ -10,9 +10,8 @@ import { Item } from 'item/entity/item.entity';
 export class CasePaybackSystemService {
   constructor(
     @Inject(forwardRef(() => CaseService))
-    private caseService: CaseService,
-  ) // private readonly caseService: CaseService,
-  {}
+    private caseService: CaseService, // private readonly caseService: CaseService,
+  ) {}
 
   async openCase(
     box: Case,
@@ -24,7 +23,7 @@ export class CasePaybackSystemService {
 
     for (let i = 0; i < openCaseInput.count; i++) {
       if (box.price > bank) {
-        bank = randomInt(bank, box.price);
+        bank = Math.floor(Math.random() * (box.price - bank) + bank);
       }
 
       const minItem = await this.caseService.getMinItemInCase(box.id);
@@ -34,7 +33,13 @@ export class CasePaybackSystemService {
       }
 
       const item = await this.caseService.getItemByPrice(
-        randomInt((await minItem.item).price, bank),
+        Math.floor(
+          Math.random() * (bank - (await minItem.item).price) +
+            (
+              await minItem.item
+            ).price,
+        ),
+
         box.id,
       );
 

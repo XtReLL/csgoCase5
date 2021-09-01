@@ -14,9 +14,12 @@ import { formatList, ListData } from 'list/formatter';
 import { Pagination } from 'list/pagination.input';
 
 import { CaseService } from './case.service';
+import { AddItemsInCaseInput } from './dto/addItemsInCase.input';
 import { CreateCaseInput } from './dto/createCase.input';
+import { OpenCaseInput } from './dto/openCase.input';
 import { UpdateCaseInput } from './dto/updateCase.input';
 import { Case } from './entity/case.entity';
+import { CaseItems } from './entity/caseItems.entity';
 import { Category } from './entity/category.entity';
 
 @Resolver('Case')
@@ -75,5 +78,26 @@ export class CaseResolver {
     @Args('id') caseId: string,
   ): Promise<boolean> {
     return await this.caseService.remove(caseId, author);
+  }
+
+  @Mutation('addItemsInCase')
+  async addItemsInCase(
+    @OnlyAdmins() author: AuthorizedModel,
+    @Args('addItemsInCaseInput') addItemsInCaseInput: AddItemsInCaseInput,
+  ): Promise<CaseItems[]> {
+    return await this.caseService.addItemsInCase(addItemsInCaseInput);
+  }
+
+  @Mutation('openCase')
+  async openCase(
+    @Authorized() author: AuthorizedModel,
+    @Args('openCaseInput') openCaseInput: OpenCaseInput,
+  ): Promise<Item[]> {
+    const result = await this.caseService.open(openCaseInput, author);
+
+    if (!result) {
+      throw "Couldn't get a win";
+    }
+    return result;
   }
 }

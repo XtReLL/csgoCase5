@@ -13,6 +13,7 @@ import { RedisCacheService } from 'redisCache/redisCache.service';
 import { Connection, In, Repository } from 'typeorm';
 import { LiveDropType } from 'typings/graphql';
 import { UserService } from 'user/user/user.service';
+import { AddItemsInCaseInput } from './dto/addItemsInCase.input';
 import { CreateCaseInput } from './dto/createCase.input';
 import { OpenCaseInput } from './dto/openCase.input';
 import { UpdateCaseInput } from './dto/updateCase.input';
@@ -146,11 +147,10 @@ export class CaseService {
   async open(
     openCaseInput: OpenCaseInput,
     author: AuthorizedModel,
-  ): Promise<void> {
+  ): Promise<Item[] | undefined> {
     if (
-      typeof (await this.redisCacheService.get(
-        `open_case_${author.model.id}`,
-      )) !== 'undefined'
+      (await this.redisCacheService.get(`open_case_${author.model.id}`)) !==
+      null
     ) {
       throw 'Please, wait a bit and try again';
     }
@@ -158,7 +158,6 @@ export class CaseService {
     await this.redisCacheService.set(`open_case_${author.model.id}`, 1, {
       ttl: 5,
     });
-
     const queryRunner = this.connection.createQueryRunner();
     await queryRunner.connect();
     await queryRunner.startTransaction();
@@ -169,7 +168,7 @@ export class CaseService {
       );
 
       if (author.model.balance < box.price * openCaseInput.count) {
-        throw new Error('Insufficient user balance');
+        throw 'Insufficient user balance';
       }
 
       const [winItems, price] = await this.casePaybackService.openCase(
@@ -201,9 +200,13 @@ export class CaseService {
         }),
       ]);
 
-      author.model.balance -= openCaseInput.count * box.price;
-      author.model.profit += price - box.price * openCaseInput.count;
-      author.model.opened += openCaseInput.count;
+      author.model.balance =
+        author.model.balance - openCaseInput.count * box.price;
+
+      author.model.profit =
+        author.model.profit + price - box.price * openCaseInput.count;
+
+      author.model.opened = author.model.opened + openCaseInput.count;
       await this.userService.update(author.model);
 
       box.opened += openCaseInput.count;
@@ -215,7 +218,10 @@ export class CaseService {
       }, 4000);
 
       await queryRunner.commitTransaction();
+      return winItems;
     } catch (error) {
+      console.log(error);
+
       await queryRunner.rollbackTransaction();
     } finally {
       await queryRunner.release();
@@ -235,7 +241,7 @@ export class CaseService {
     return await this.caseItemsRepository
       .createQueryBuilder('caseItem')
       .innerJoinAndSelect('caseItem.item', 'item')
-      .where(`case_id = ${boxId} AND item.price <= ${price}`)
+      .where(`caseId = ${boxId} AND item.price <= ${price}`)
       .orderBy('item.price', 'DESC')
       .getOneOrFail();
   }
@@ -272,5 +278,23 @@ export class CaseService {
       })
     ).map(async (caseItem) => result.push(await caseItem.item));
     return result;
+  }
+
+  async addItemsInCase(
+    addItemsInCaseInput: AddItemsInCaseInput,
+  ): Promise<CaseItems[]> {
+    const entities: CaseItems[] = [];
+
+    await Promise.all(
+      addItemsInCaseInput.itemsId.map((itemId) => {
+        entities.push(
+          this.caseItemsRepository.create({
+            caseId: parseInt(addItemsInCaseInput.caseId),
+            itemId: parseInt(itemId),
+          }),
+        );
+      }),
+    );
+    return await this.caseItemsRepository.save(entities);
   }
 }

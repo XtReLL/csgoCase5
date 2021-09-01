@@ -8,6 +8,9 @@ import { RedisCacheModule } from 'redisCache/redisCache.module';
 import { UserModule } from 'user/user/user.module';
 import { CaseResolver } from './case.resolver';
 import { CaseService } from './case.service';
+import { CaseItemsResolver } from './caseItems.resolver';
+import { CategoryResolver } from './category.resolver';
+import { CategoryService } from './category.service';
 import { Case } from './entity/case.entity';
 import { CaseItems } from './entity/caseItems.entity';
 import { Category } from './entity/category.entity';
@@ -23,7 +26,13 @@ import { CategoryCase } from './entity/category_case.entity';
     LiveDropModule,
     InventoryModule,
   ],
-  providers: [CaseResolver, CaseService],
-  exports: [CaseService],
+  providers: [
+    CaseResolver,
+    CaseService,
+    CaseItemsResolver,
+    CategoryResolver,
+    CategoryService,
+  ],
+  exports: [CaseService, CategoryService],
 })
 export class CaseModule {}
