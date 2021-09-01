@@ -4,4 +4,4 @@ before_script:
 build_image:
   script:
     - docker build -t case .
-    - docker run case /app
+    - docker run case
