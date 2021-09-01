@@ -1,8 +1,16 @@
 before_script:
   - docker info
 
-case_build:
+case-build:
+  stage: build
   tags:
     - build
   script:
     - docker build -t case .
+
+case-test:
+  stage: test
+  tags:
+    - build
+  script: bash test.bash
+  coverage: /All\sfiles.*?\s+(\d+.\d+)/

@@ -5,8 +5,6 @@ docker stop case-db-test;
 docker rm case-db-test;
 docker stop case-redis-test;
 docker rm case-redis-test;
-docker stop case-manticore-test;
-docker rm case-manticore-test;
 docker network rm case-test;
 docker network create case-test;
 docker run -d --net=case-test -e REDIS_PASSWORD=secret -p 6379:6379 --name case-redis-test redis:4.0-alpine /bin/sh -c "redis-server";
