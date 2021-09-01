@@ -1,5 +1,5 @@
 before_script:
-  - docker info
+  - docker login -u $DOCKER_LOGIN -p $DOCKER_PASSWORD
 
 case-build:
   stage: build
