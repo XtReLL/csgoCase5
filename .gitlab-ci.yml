@@ -1,7 +1,8 @@
 before_script:
   - docker info
 
-build_image:
+case_build:
+  tags:
+    - build
   script:
     - docker build -t case .
-    - docker run case
