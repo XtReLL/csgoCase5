@@ -1,6 +1,8 @@
 import { HttpException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { AuthorizedModel } from 'auth/model/authorized.model';
+import { defaultPagination, Pagination } from 'list/pagination.input';
+import { paramsToBuilder } from 'list/params';
 import { RedisCacheService } from 'redisCache/redisCache.service';
 import { IsNull, Repository } from 'typeorm';
 import { PromocodeType } from 'typings/graphql';
@@ -139,6 +141,27 @@ export class PromocodeService {
     );
 
     return true;
+  }
+
+  async list(
+    model: AuthorizedModel,
+    pagination: Pagination = defaultPagination,
+  ): Promise<[Promocode[], number]> {
+    const query = await paramsToBuilder<Promocode>(
+      this.promocodeRepository.createQueryBuilder(),
+      pagination,
+    );
+
+    const result = await query.getManyAndCount();
+
+    return result;
+  }
+
+  async findOne(
+    author: AuthorizedModel,
+    promocodeId: string,
+  ): Promise<Promocode> {
+    return this.promocodeRepository.findOneOrFail(parseInt(promocodeId, 10));
   }
 
   async getCountUsedPromocodeById(promoId: number): Promise<number> {

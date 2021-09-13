@@ -1,6 +1,7 @@
 import { forwardRef, Inject, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { AuthorizedModel } from 'auth/model/authorized.model';
+import { EventEmitter2 } from 'eventemitter2';
 import { GameCaseService } from 'game/game/game-case.service';
 import { InventoryService } from 'inventory/inventory.service';
 import { Item } from 'item/entity/item.entity';
@@ -21,6 +22,7 @@ import { Case } from './entity/case.entity';
 import { CaseItems } from './entity/caseItems.entity';
 import { Category } from './entity/category.entity';
 import { CategoryCase } from './entity/category_case.entity';
+import { CaseOpenEvent } from './events/case.event';
 
 @Injectable()
 export class CaseService {
@@ -42,6 +44,7 @@ export class CaseService {
     private readonly categoryCaseRepository: Repository<CategoryCase>,
     @InjectRepository(Category)
     private readonly categoryRepository: Repository<Category>,
+    private eventEmitter: EventEmitter2,
   ) {}
 
   async findOne(author: AuthorizedModel, caseId: string): Promise<Case> {
@@ -218,6 +221,8 @@ export class CaseService {
       }, 4000);
 
       await queryRunner.commitTransaction();
+
+      this.eventEmitter.emit('case.open', new CaseOpenEvent(box, author.model));
       return winItems;
     } catch (error) {
       console.log(error);

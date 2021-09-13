@@ -1,6 +1,7 @@
 import { HttpService, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { BackpackApiService } from 'backpack-api/backpack-api.service';
+import { randomInt } from 'crypto';
 import { CsgoMarketService } from 'csgo-market/csgo-market.service';
 import { RedisCacheService } from 'redisCache/redisCache.service';
 import { Repository } from 'typeorm';
@@ -17,6 +18,14 @@ export class ItemService {
     private readonly redisCacheService: RedisCacheService,
     private readonly backpackService: BackpackApiService,
   ) {}
+
+  async findOne(itemId: number): Promise<Item> {
+    return await this.itemRepository.findOneOrFail(itemId);
+  }
+
+  async getRandomItem(): Promise<Item> {
+    return await this.findOne(randomInt(10000));
+  }
 
   async checkItems(): Promise<boolean> {
     try {

@@ -5,6 +5,15 @@ type Giveaway {
   item: Item
 }
 
+type GiveawayListData {
+  data: [Giveaway]!
+  pagination: CursorBasedPaginationData!
+}
+
+input SearchGiveawayInput {
+  type: GiveawayType
+}
+
 type GiveawayBet {
   id: ID
 }
@@ -18,12 +27,22 @@ enum GiveawayType {
 input CreateGiveawayInput {
   itemId: Int!
   endDate: Date
+  type: GiveawayType
 }
 
 input UpdateGiveawayInput {
   id: ID!
   itemId: Int
   endDate: Date
+  type: GiveawayType
+}
+
+type Query {
+  giveaways(
+    pagination: Pagination
+    search: SearchGiveawayInput
+  ): GiveawayListData!
+  giveaway(id: ID!): Giveaway!
 }
 
 type Mutation {

@@ -9,6 +9,11 @@ type Promocode {
   endTime: Date
 }
 
+type PromocodeListData {
+  data: [Promocode]!
+  pagination: CursorBasedPaginationData!
+}
+
 input CreatePromocodeInput {
   name: String!
   sum: Float
@@ -29,6 +34,11 @@ input UpdatePromocodeInput {
 enum PromocodeType {
   SUM
   PERCENT
+}
+
+type Query {
+  promocodes(pagination: Pagination): PromocodeListData!
+  promocode(id: ID!): Promocode!
 }
 
 type Mutation {

@@ -28,10 +28,12 @@ import { APP_INTERCEPTOR } from '@nestjs/core';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import { DataLoaderInterceptor } from 'nestjs-graphql-dataloader';
+import { ScheduleModule } from '@nestjs/schedule';
 
 @Module({
   imports: [
     EventEmitterModule.forRoot(),
+    ScheduleModule.forRoot(),
     GraphQLModule.forRoot({
       debug: true,
       playground: {

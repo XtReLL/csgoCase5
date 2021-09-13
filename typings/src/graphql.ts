@@ -115,15 +115,21 @@ export interface CreateGameCaseDto {
     itemId: string;
 }
 
+export interface SearchGiveawayInput {
+    type?: GiveawayType;
+}
+
 export interface CreateGiveawayInput {
     itemId: number;
     endDate?: Date;
+    type?: GiveawayType;
 }
 
 export interface UpdateGiveawayInput {
     id: string;
     itemId?: number;
     endDate?: Date;
+    type?: GiveawayType;
 }
 
 export interface Pagination {
@@ -227,6 +233,10 @@ export interface IQuery {
     case(id: string): Case | Promise<Case>;
     categories(pagination?: Pagination): CategoryListData | Promise<CategoryListData>;
     category(id: string): Category | Promise<Category>;
+    giveaways(pagination?: Pagination, search?: SearchGiveawayInput): GiveawayListData | Promise<GiveawayListData>;
+    giveaway(id: string): Giveaway | Promise<Giveaway>;
+    promocodes(pagination?: Pagination): PromocodeListData | Promise<PromocodeListData>;
+    promocode(id: string): Promocode | Promise<Promocode>;
     user(id?: string): User | Promise<User>;
     users(search?: SearchUserInput, pagination?: Pagination): UsersListData | Promise<UsersListData>;
 }
@@ -250,6 +260,11 @@ export interface Giveaway {
     winner?: User;
     giveawayBet?: GiveawayBet;
     item?: Item;
+}
+
+export interface GiveawayListData {
+    data: Giveaway[];
+    pagination: CursorBasedPaginationData;
 }
 
 export interface GiveawayBet {
@@ -300,6 +315,11 @@ export interface Promocode {
     percent?: number;
     count?: number;
     endTime?: Date;
+}
+
+export interface PromocodeListData {
+    data: Promocode[];
+    pagination: CursorBasedPaginationData;
 }
 
 export interface ReferallCode {
