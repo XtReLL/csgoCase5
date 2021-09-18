@@ -20,7 +20,7 @@
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "console:dev": "ts-node -r tsconfig-paths/register src/console.ts",
-    "console": "node dist/src/console.js"
+    "console": "node dist/src/console.js" 
   },
   "dependencies": {
     "@nestjs/common": "^7.6.15",
@@ -34,6 +34,7 @@
     "@nestjs/schedule": "^1.0.1",
     "@nestjs/typeorm": "^7.1.5",
     "@nestjs/websockets": "^8.0.6",
+    "@types/cache-manager-redis-store": "^2.0.0",
     "@types/cron": "^1.7.3",
     "@types/graphql": "^14.5.0",
     "@types/ioredis": "^4.26.4",

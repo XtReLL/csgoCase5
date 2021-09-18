@@ -19,6 +19,10 @@ export class ItemService {
     private readonly backpackService: BackpackApiService,
   ) {}
 
+  // async onApplicationBootstrap(): Promise<boolean> {
+  //   await this.checkItems();
+  //   return true;
+  // }
   async findOne(itemId: number): Promise<Item> {
     return await this.itemRepository.findOneOrFail(itemId);
   }
@@ -30,6 +34,7 @@ export class ItemService {
   async checkItems(): Promise<boolean> {
     try {
       const itemsCount = await this.itemRepository.count();
+
       if (itemsCount === 0) {
         await this.getItems();
       }
