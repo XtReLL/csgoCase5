@@ -27,7 +27,7 @@ export class GiveawayService {
     private readonly itemService: ItemService,
   ) {}
 
-  async onApplicationBootstrap(): Promise<void> {
+  async bootstrap(): Promise<void> {
     try {
       this.dailyGiveaway();
       this.weeklyGiveaway();
