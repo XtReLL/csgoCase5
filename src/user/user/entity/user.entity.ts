@@ -18,6 +18,7 @@ import {
 import { ReferallCode } from 'user/referall/entity/referallCode.entity';
 import { ReferallUser } from 'user/referall/entity/referallUser.entity';
 import { WithdrawItem } from 'withdraw/entity/withdrawItem.entity';
+import { UserRole } from './user-role.entity';
 
 @Entity('users')
 @Index(['username'], { fulltext: true })
@@ -45,6 +46,9 @@ export class User {
 
   @Column({ default: 0 })
   opened!: number;
+
+  @OneToMany(() => UserRole, (userRole) => userRole.user)
+  userRole!: Promise<UserRole[]>;
 
   @OneToMany(() => PromocodeUse, (promocodeUse) => promocodeUse.user)
   usePromocodes!: Promise<PromocodeUse[]>;

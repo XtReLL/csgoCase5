@@ -15,6 +15,10 @@ import { paramsToBuilder } from 'list/params';
 import { UserRepository } from './user.repository';
 import { Inventory } from 'inventory/entity/inventory.entity';
 import { InventoryService } from 'inventory/inventory.service';
+import { UserRole } from './entity/user-role.entity';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { Role } from './entity/role.entity';
 
 @Injectable()
 export class UserService {
@@ -25,7 +29,15 @@ export class UserService {
     private readonly referallService: ReferallService,
     @Inject(forwardRef(() => InventoryService))
     private readonly inventoryService: InventoryService,
+    @InjectRepository(UserRole)
+    private readonly userRoleRepository: Repository<UserRole>,
   ) {}
+
+  async findUserRole(userId: number): Promise<Role> {
+    return await (
+      await this.userRoleRepository.findOneOrFail({ where: { userId } })
+    ).role;
+  }
 
   byIds(ids: number[]): Promise<User[]> {
     return this.userRepository.findByIds(ids);

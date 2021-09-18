@@ -1,13 +1,27 @@
-import { Entity, Column, CreateDateColumn, UpdateDateColumn, PrimaryGeneratedColumn } from 'typeorm'
+import {
+  Entity,
+  Column,
+  CreateDateColumn,
+  UpdateDateColumn,
+  PrimaryGeneratedColumn,
+  OneToMany,
+} from 'typeorm';
+import { UserRole } from './user-role.entity';
 
-@Entity('users_roles')
+@Entity('roles')
 export class Role {
-    @PrimaryGeneratedColumn()
-    public id!: number
+  @PrimaryGeneratedColumn()
+  public id!: number;
 
-    @CreateDateColumn()
-    created_at!: Date
+  @Column()
+  roleName!: string;
 
-    @UpdateDateColumn()
-    updated_at!: Date
+  @OneToMany(() => UserRole, (userRole) => userRole.role)
+  userRole!: Promise<UserRole[]>;
+
+  @CreateDateColumn()
+  created_at!: Date;
+
+  @UpdateDateColumn()
+  updated_at!: Date;
 }

@@ -36,6 +36,8 @@ services:
       CSGO_MARKET_APIKEY: testkey
       AUTH_URL: http://localhost:5000
       STEAM_APPID: 730
+      OAUTH_GOOGLE_ID: 342491636133-k5bp1vdkdpe5pma9kf2a872888f9q96t.apps.googleusercontent.com
+      OAUTH_GOOGLE_SECRET: is7W8a2RG-bkIRLjPsoxSnn9
 
   case-redis:
     image: redis:4.0-alpine

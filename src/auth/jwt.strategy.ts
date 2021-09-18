@@ -3,6 +3,8 @@ import { PassportStrategy } from '@nestjs/passport';
 import { Injectable } from '@nestjs/common';
 import { UserService } from '../user/user/user.service';
 
+export type JwtPayload = { sub: number; username: string };
+
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
   constructor(private userService: UserService) {
@@ -16,4 +18,8 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   async validate(payload: any) {
     return this.userService.findBySteamId(payload.steamId);
   }
+
+  // async validate(payload: JwtPayload) {
+  //   return { id: payload.sub, username: payload.username };
+  // }
 }

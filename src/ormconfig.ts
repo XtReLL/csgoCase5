@@ -17,6 +17,8 @@ import { Category } from 'game/case/entity/category.entity';
 import { CategoryCase } from 'game/case/entity/category_case.entity';
 import { ReferallCode } from 'user/referall/entity/referallCode.entity';
 import { ReferallUser } from 'user/referall/entity/referallUser.entity';
+import { Role } from 'user/user/entity/role.entity';
+import { UserRole } from 'user/user/entity/user-role.entity';
 
 const config: TypeOrmModuleOptions = {
   type: 'mysql',
@@ -46,6 +48,8 @@ const config: TypeOrmModuleOptions = {
     CategoryCase,
     ReferallCode,
     ReferallUser,
+    Role,
+    UserRole,
   ],
   synchronize: true,
 
