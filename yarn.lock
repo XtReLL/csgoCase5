@@ -3457,6 +3457,11 @@ commander@^2.20.0, commander@^2.20.3:
   resolved "https://registry.npmjs.org/commander/-/commander-2.20.3.tgz"
   integrity sha512-GpVkmM8vF2vQUkj2LvZmD35JxeJOLCwJ9cUkugyk2nuhbv3+mJvpLYYt+0+USMxE+oj+ey/lJEnhZw75x/OMcQ==
 
+commander@^8.1.0:
+  version "8.2.0"
+  resolved "https://registry.yarnpkg.com/commander/-/commander-8.2.0.tgz#37fe2bde301d87d47a53adeff8b5915db1381ca8"
+  integrity sha512-LLKxDvHeL91/8MIyTAD5BFMNtoIwztGPMiM/7Bl8rIPmHCZXRxmSWr91h57dpOpnQ6jIUqEWdXE/uBYMfiVZDA==
+
 component-emitter@^1.2.1, component-emitter@^1.3.0, component-emitter@~1.3.0:
   version "1.3.0"
   resolved "https://registry.npmjs.org/component-emitter/-/component-emitter-1.3.0.tgz"
@@ -7163,6 +7168,13 @@ nest-access-control@^2.0.2:
   dependencies:
     accesscontrol "^2.2.1"
 
+nestjs-console@^7.0.0:
+  version "7.0.0"
+  resolved "https://registry.yarnpkg.com/nestjs-console/-/nestjs-console-7.0.0.tgz#b2fe1c38c5836ba9322e46c408cd6d9e02f26daa"
+  integrity sha512-TtmPTnNLRmI2nK6/fZwujKBmsadkESzRQUdsaAlLtjE5wUMdCuYBdQrUVKeIO50nTj6TVWRwAlAUBiXLXKJAIg==
+  dependencies:
+    ora "5.4.1"
+
 nestjs-graphql-dataloader@^0.1.28:
   version "0.1.28"
   resolved "https://registry.yarnpkg.com/nestjs-graphql-dataloader/-/nestjs-graphql-dataloader-0.1.28.tgz#d488e1870d5c3678c3c39aac3bbed713b86a8e97"
@@ -7577,6 +7589,21 @@ ora@5.4.0:
   version "5.4.0"
   resolved "https://registry.npmjs.org/ora/-/ora-5.4.0.tgz"
   integrity sha512-1StwyXQGoU6gdjYkyVcqOLnVlbKj+6yPNNOxJVgpt9t4eksKjiriiHuxktLYkgllwk+D6MbC4ihH84L1udRXPg==
+  dependencies:
+    bl "^4.1.0"
+    chalk "^4.1.0"
+    cli-cursor "^3.1.0"
+    cli-spinners "^2.5.0"
+    is-interactive "^1.0.0"
+    is-unicode-supported "^0.1.0"
+    log-symbols "^4.1.0"
+    strip-ansi "^6.0.0"
+    wcwidth "^1.0.1"
+
+ora@5.4.1:
+  version "5.4.1"
+  resolved "https://registry.yarnpkg.com/ora/-/ora-5.4.1.tgz#1b2678426af4ac4a509008e5e4ac9e9959db9e18"
+  integrity sha512-5b6Y85tPxZZ7QytO+BQzysW31HJku27cRIlkbAXaNx+BdcVi+LlRFmVXzeF6a7JCwJpyw5c4b+YSVImQIrBpuQ==
   dependencies:
     bl "^4.1.0"
     chalk "^4.1.0"
