@@ -158,6 +158,7 @@ export interface CreatePromocodeInput {
     percent?: number;
     count?: number;
     endTime?: Date;
+    onMainPage?: boolean;
 }
 
 export interface UpdatePromocodeInput {
@@ -167,6 +168,7 @@ export interface UpdatePromocodeInput {
     percent?: number;
     count?: number;
     endTime?: Date;
+    onMainPage?: boolean;
 }
 
 export interface SearchUserInput {
@@ -237,6 +239,7 @@ export interface IQuery {
     giveaway(id: string): Giveaway | Promise<Giveaway>;
     promocodes(pagination?: Pagination): PromocodeListData | Promise<PromocodeListData>;
     promocode(id: string): Promocode | Promise<Promocode>;
+    mainPromocode(): Promocode | Promise<Promocode>;
     user(id?: string): User | Promise<User>;
     users(search?: SearchUserInput, pagination?: Pagination): UsersListData | Promise<UsersListData>;
 }

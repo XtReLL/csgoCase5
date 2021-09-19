@@ -32,6 +32,13 @@ export class PromocodeResolver {
     return await this.promocodeService.findOne(author, promocodeId);
   }
 
+  @Query('mainPromocode')
+  async mainPromocode(
+    @Authorized() author: AuthorizedModel,
+  ): Promise<Promocode> {
+    return await this.promocodeService.getMainPagePromocode();
+  }
+
   @Mutation('createPromocode')
   async createPromocode(
     @Args('createPromocodeInput') createPromocodeInput: CreatePromocodeInput,

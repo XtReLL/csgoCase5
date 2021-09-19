@@ -20,6 +20,7 @@ input CreatePromocodeInput {
   percent: Int
   count: Int
   endTime: Date
+  onMainPage: Boolean
 }
 
 input UpdatePromocodeInput {
@@ -29,6 +30,7 @@ input UpdatePromocodeInput {
   percent: Int
   count: Int
   endTime: Date
+  onMainPage: Boolean
 }
 
 enum PromocodeType {
@@ -39,6 +41,7 @@ enum PromocodeType {
 type Query {
   promocodes(pagination: Pagination): PromocodeListData!
   promocode(id: ID!): Promocode!
+  mainPromocode: Promocode!
 }
 
 type Mutation {

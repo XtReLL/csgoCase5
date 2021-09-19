@@ -1,38 +1,47 @@
-import {BaseEntity, Column, CreateDateColumn, DeleteDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn} from "typeorm"
-import { PromocodeUse } from "./promocode-use.entity"
+import {
+  BaseEntity,
+  Column,
+  CreateDateColumn,
+  DeleteDateColumn,
+  Entity,
+  OneToMany,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
+import { PromocodeUse } from './promocode-use.entity';
 
 @Entity('promocodes')
 export class Promocode {
-	@PrimaryGeneratedColumn()
-	id!: number
+  @PrimaryGeneratedColumn()
+  id!: number;
 
-	@Column()
-	name!: string 
+  @Column()
+  name!: string;
 
-	@Column({ precision: 255, scale: 2, nullable: true , type: "double" })
-	sum!: number | null
+  @Column({ precision: 255, scale: 2, nullable: true, type: 'double' })
+  sum!: number | null;
 
-	@Column({ nullable: true, type: "int" })
-	percent!: number | null
+  @Column({ nullable: true, type: 'int' })
+  percent!: number | null;
 
-	@Column({ nullable: true })
-	count!: number
+  @Column({ nullable: true })
+  count!: number;
 
-	@Column({ nullable: true })
-	endTime!: Date
+  @Column({ nullable: true })
+  endTime!: Date;
 
-	@OneToMany(
-		() => PromocodeUse,
-		promocodeUse => promocodeUse.promocode,
-	)
-	usePromocodes!: Promise<PromocodeUse[]>;
+  @Column({ default: false })
+  onMainPage!: boolean;
 
-	@CreateDateColumn()
-	createdAt!: Date
+  @OneToMany(() => PromocodeUse, (promocodeUse) => promocodeUse.promocode)
+  usePromocodes!: Promise<PromocodeUse[]>;
 
-	@DeleteDateColumn()
-	deletedAt!: Date
+  @CreateDateColumn()
+  createdAt!: Date;
 
-	@UpdateDateColumn()
-	updatedAt!: Date
+  @DeleteDateColumn()
+  deletedAt!: Date;
+
+  @UpdateDateColumn()
+  updatedAt!: Date;
 }

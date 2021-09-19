@@ -4,8 +4,9 @@ import { CreatePromocodeInput as CreatePromocodeInputInterface } from 'typings/g
 @InputType()
 export class CreatePromocodeInput implements CreatePromocodeInputInterface {
   name!: string;
-  sum?: number; 
+  sum?: number;
   percent?: number;
   count?: number;
-  endTime?: Date; 
+  endTime?: Date;
+  onMainPage?: boolean;
 }

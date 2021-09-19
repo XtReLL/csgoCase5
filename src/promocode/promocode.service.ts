@@ -34,6 +34,7 @@ export class PromocodeService {
       percent: input.percent,
       count: input.count,
       endTime: input.endTime,
+      onMainPage: input.onMainPage,
     });
 
     return await this.promocodeRepository.save(entity);
@@ -172,5 +173,11 @@ export class PromocodeService {
       .getRawOne();
 
     return usedPromocode.count === null ? 0 : usedPromocode.count;
+  }
+
+  async getMainPagePromocode(): Promise<Promocode> {
+    return this.promocodeRepository.findOneOrFail({
+      where: { onMainPage: true },
+    });
   }
 }

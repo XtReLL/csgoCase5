@@ -9,4 +9,5 @@ export class UpdatePromocodeInput implements UpdatePromocodeInputInterface {
   percent?: number;
   count?: number;
   endTime?: Date;
+  onMainPage?: boolean;
 }
