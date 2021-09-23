@@ -14,6 +14,10 @@ type Case {
   items: [Item]
 }
 
+type CasesStats {
+  opened: Int
+}
+
 type CaseItems {
   caseId: ID
   itemId: ID
@@ -70,6 +74,7 @@ input UpdateCaseInput {
 type Query {
   cases(pagination: Pagination): CaseListData!
   case(id: ID!): Case!
+  casesStats: CasesStats!
 }
 
 type Mutation {

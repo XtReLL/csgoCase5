@@ -20,7 +20,10 @@
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "console:dev": "ts-node -r tsconfig-paths/register src/console.ts",
-    "console": "node dist/src/console.js" 
+    "console": "node dist/src/console.js",
+    "typeorm": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js --config src/ormconfig.ts",
+    "typeorm:migrate": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js --config ./src/ormconfig.ts migration:run",
+    "typeorm:generate": "npx ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js --config ./src/ormconfig.ts migration:generate"
   },
   "dependencies": {
     "@nestjs/common": "^7.6.15",

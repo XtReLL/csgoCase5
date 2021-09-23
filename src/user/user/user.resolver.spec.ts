@@ -9,6 +9,8 @@ import { getTestModules } from 'testModules';
 import { TradeModule } from 'trade/trade.module';
 import { getConnection, getManager } from 'typeorm';
 import { ReferallModule } from 'user/referall/referall.module';
+import { Role } from './entity/role.entity';
+import { UserRole } from './entity/user-role.entity';
 import { User } from './entity/user.entity';
 
 import { UserFactory } from './factories/user.factory';
@@ -26,7 +28,7 @@ describe('UserResolver', () => {
     module = await Test.createTestingModule({
       imports: [
         ...getTestModules(),
-        TypeOrmModule.forFeature([User]),
+        TypeOrmModule.forFeature([User, Role, UserRole]),
         ReferallModule,
         RedisCacheModule,
         TradeModule,

@@ -3,6 +3,7 @@ import {
   BaseEntity,
   Column,
   CreateDateColumn,
+  DeleteDateColumn,
   Entity,
   JoinColumn,
   ManyToOne,
@@ -42,6 +43,9 @@ export class Giveaway {
 
   @CreateDateColumn()
   createdAt!: Date;
+
+  @DeleteDateColumn()
+  deletedAt!: Date;
 
   @UpdateDateColumn()
   updatedAt!: Date;

@@ -32,6 +32,20 @@ export enum InventoryStatus {
     AVAILABLE = "AVAILABLE"
 }
 
+export enum ItemRarity {
+    classified = "classified",
+    baseGrade = "baseGrade",
+    consumerGrade = "consumerGrade",
+    covert = "covert",
+    exotic = "exotic",
+    extraordinary = "extraordinary",
+    highGrade = "highGrade",
+    industrialGrade = "industrialGrade",
+    milspecGrade = "milspecGrade",
+    remarkable = "remarkable",
+    restricted = "restricted"
+}
+
 export enum LiveDropType {
     CASE = "CASE"
 }
@@ -228,6 +242,10 @@ export interface Case {
     items?: Item[];
 }
 
+export interface CasesStats {
+    opened?: number;
+}
+
 export interface CaseItems {
     caseId?: string;
     itemId?: string;
@@ -241,6 +259,7 @@ export interface CaseListData {
 export interface IQuery {
     cases(pagination?: Pagination): CaseListData | Promise<CaseListData>;
     case(id: string): Case | Promise<Case>;
+    casesStats(): CasesStats | Promise<CasesStats>;
     categories(pagination?: Pagination): CategoryListData | Promise<CategoryListData>;
     category(id: string): Category | Promise<Category>;
     giveaways(pagination?: Pagination, search?: SearchGiveawayInput): GiveawayListData | Promise<GiveawayListData>;

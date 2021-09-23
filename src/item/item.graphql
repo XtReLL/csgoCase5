@@ -7,3 +7,17 @@ type Item {
   color: String
   price: Int
 }
+
+enum ItemRarity {
+  classified
+  baseGrade
+  consumerGrade
+  covert
+  exotic
+  extraordinary
+  highGrade
+  industrialGrade
+  milspecGrade
+  remarkable
+  restricted
+}

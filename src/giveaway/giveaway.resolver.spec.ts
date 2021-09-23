@@ -72,7 +72,7 @@ describe('GiveawayResolver', () => {
     });
 
     test('correct get promocodes', async () => {
-      await getConnection().getRepository(Giveaway).delete({});
+      await getConnection().getRepository(Giveaway).softDelete({});
       const user = await UserFactory().create();
       const item = await ItemFactory().create();
       await GiveawayFactory().createList(6, { itemId: item.id });
@@ -85,7 +85,7 @@ describe('GiveawayResolver', () => {
 
   describe('correct join to daily/weekly giveaway', () => {
     test('correct join to daily giveaway', async () => {
-      await getConnection().getRepository(Giveaway).delete({});
+      await getConnection().getRepository(Giveaway).softRemove({});
 
       const spy = jest.spyOn(module.get(GiveawayListener), 'openCase');
       const user = await UserFactory().create({ balance: 1000000 });

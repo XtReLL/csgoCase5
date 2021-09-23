@@ -42,4 +42,7 @@ export class CategoryResolver {
   ): Promise<Category> {
     return await this.categoryService.findById(id);
   }
+
+  @Query('casesStats')
+  async casesStats(@Authorized() author: AuthorizedModel): Promise<void> {}
 }
