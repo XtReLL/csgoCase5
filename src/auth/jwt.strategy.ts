@@ -15,9 +15,11 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     });
   }
 
-  async validate(payload: any) {
-    return this.userService.findBySteamId(payload.steamId);
-  }
+  // async validate(payload: any) {
+  //   console.log(11);
+
+  //   return this.userService.findBySocialId(payload.steamId);
+  // }
 
   // async validate(payload: JwtPayload) {
   //   return { id: payload.sub, username: payload.username };

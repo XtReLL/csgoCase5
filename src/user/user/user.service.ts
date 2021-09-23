@@ -9,7 +9,7 @@ import { RedisCacheService } from 'redisCache/redisCache.service';
 import { ReferallService } from 'user/referall/referall.service';
 import { ReferallCode } from 'user/referall/entity/referallCode.entity';
 import { AuthorizedModel } from 'auth/model/authorized.model';
-import { SearchUserInput } from 'typings/graphql';
+import { AuthProviders, SearchUserInput } from 'typings/graphql';
 import { defaultPagination, Pagination } from 'list/pagination.input';
 import { paramsToBuilder } from 'list/params';
 import { UserRepository } from './user.repository';
@@ -19,6 +19,7 @@ import { UserRole } from './entity/user-role.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Role } from './entity/role.entity';
+import { Profile } from 'passport';
 
 @Injectable()
 export class UserService {
@@ -51,29 +52,31 @@ export class UserService {
     return this.userRepository.findOneOrFail(id);
   }
 
-  async findOrCreate(profile: FindOrCreateUserDto): Promise<User> {
-    let user = await this.findBySteamId(profile.steamid);
+  async findOrCreate(profile: Profile): Promise<User> {
+    let user = await this.findBySocialId(profile.id, profile.provider);
 
     if (!user) {
       user = await this.userRepository.save(
         this.userRepository.create({
-          username: profile.personaname,
-          steamId: profile.steamid,
-          avatar: profile.avatarfull,
+          username: profile.displayName,
+          socialId: profile.id,
+          avatar: profile.photos ? profile.photos[0].value : '',
+          authProvider: profile.provider as AuthProviders,
         }),
       );
       await this.referallService.createReferallCode(user);
     } else {
-      user.username = profile.personaname;
-      user.steamId = profile.steamid;
-      user.avatar = profile.avatarfull;
+      user.username = profile.displayName;
+      user.avatar = profile.photos ? profile.photos[0].value : '';
     }
 
     return await this.update(user);
   }
 
-  async findBySteamId(steamId: string): Promise<User> {
-    let user = await this.redisCacheService.get(`user_${steamId}`);
+  async findBySocialId(socialId: string, authProvider: string): Promise<User> {
+    let user = await this.redisCacheService.get(
+      `user__${authProvider}_${socialId}`,
+    );
 
     if (user) {
       return user;
@@ -81,7 +84,8 @@ export class UserService {
 
     user = await this.userRepository.findOne({
       where: {
-        steamId,
+        socialId: socialId,
+        authProvider: authProvider,
       },
     });
 
@@ -94,7 +98,10 @@ export class UserService {
 
   async update(user: User): Promise<User> {
     user = await this.userRepository.save(user);
-    await this.redisCacheService.set(`user_${user.steamId}`, user);
+    await this.redisCacheService.set(
+      `user_${user.authProvider}_${user.socialId}`,
+      user,
+    );
     return user;
   }
 
@@ -107,7 +114,7 @@ export class UserService {
           const offer =
             this.tradeService.tradeOfferManager.createOffer(tradeUrl);
 
-          if (offer.partner.getSteamID64() !== user.steamId) {
+          if (offer.partner.getSteamID64() !== user.socialId) {
             throw new Error('This is not your trade link');
           }
 
@@ -126,7 +133,7 @@ export class UserService {
     }
   }
 
-  async getPlayTimeCSGO(steamId: string): Promise<number> {
+  async getPlayTimeCSGO(steamId: number): Promise<number> {
     try {
       const response = await axios.get(
         `http://api.steampowered.com/IPlayerService/GetOwnedGames/v0001/?key=${process.env.STEAM_APIKEY}&steamid=${steamId}&format=json`,
@@ -147,7 +154,7 @@ export class UserService {
     }
   }
 
-  async getProfileVisibleSteam(steamId: string): Promise<boolean> {
+  async getProfileVisibleSteam(steamId: number): Promise<boolean> {
     try {
       const response = await axios.get(
         `http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=${process.env.STEAM_APIKEY}&steamids=${steamId}`,
@@ -166,7 +173,7 @@ export class UserService {
     }
   }
 
-  async getSteamLevel(steamId: string): Promise<number> {
+  async getSteamLevel(steamId: number): Promise<number> {
     try {
       const response = await axios.get(
         `http://api.steampowered.com/IPlayerService/GetSteamLevel/v1/?key=${process.env.STEAM_APIKEY}&steamid=${steamId}`,

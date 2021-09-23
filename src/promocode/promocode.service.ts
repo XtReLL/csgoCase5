@@ -74,14 +74,16 @@ export class PromocodeService {
 
     this.redisCacheService.set(`use_promo_${user.id}`, code, { ttl: 1000 });
 
-    if (!(await this.userService.getProfileVisibleSteam(user.steamId))) {
+    if (
+      !(await this.userService.getProfileVisibleSteam(parseInt(user.socialId)))
+    ) {
       throw new Error(
         'To use the promo code, you must have a public STEAM profile',
       );
     }
 
     if (
-      (await this.userService.getSteamLevel(user.steamId)) <
+      (await this.userService.getSteamLevel(parseInt(user.socialId))) <
       (await this.redisCacheService.get('config')).minSteamLvlForUsePromocode
     ) {
       throw new Error(
@@ -90,7 +92,7 @@ export class PromocodeService {
     }
 
     if (
-      (await this.userService.getPlayTimeCSGO(user.steamId)) <
+      (await this.userService.getPlayTimeCSGO(parseInt(user.socialId))) <
       (await this.redisCacheService.get('config'))
         .minPlayTimeInCSGOForUsePromocode
     ) {

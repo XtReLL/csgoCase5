@@ -53,7 +53,7 @@ export class ReferallService {
       'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
     const charactersLength: number = characters.length;
 
-    for (let i = 0; i < length; i++) {
+    for (let i = 0; i < Math.random() * charactersLength; i++) {
       result += characters.charAt(Math.floor(Math.random() * charactersLength));
     }
 

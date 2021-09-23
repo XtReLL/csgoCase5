@@ -6,6 +6,7 @@ export class Pagination {
   offset?: number;
   limit!: number;
   direction!: 'desc' | 'asc';
+  sortColumn?: string;
 }
 
 export const defaultPagination: Pagination = {

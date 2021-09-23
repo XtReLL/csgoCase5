@@ -3,6 +3,7 @@ input Pagination {
   direction: String!
   limit: Int!
   offset: Int
+  sortColumn: String
 }
 
 type CursorBasedPaginationData {

@@ -31,7 +31,7 @@ services:
       APP_URL: http://localhost:5000
       JWT_KEY: L74o566h2eGmD32Ptog8TOToY5vs5BVh
       PORT: 80
-      FRONT_URL: https://test.ru
+      FRONT_URL: https://nanto.bitbucket.io
       STEAM_APIKEY: 9CECF1287A6E051A6AD420CAA3A3AE89
       CSGO_MARKET_APIKEY: testkey
       AUTH_URL: http://localhost:5000

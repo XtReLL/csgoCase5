@@ -3,7 +3,14 @@ import { PassportStrategy } from '@nestjs/passport';
 import { Injectable } from '@nestjs/common';
 import { User } from 'user/user/entity/user.entity';
 import { AuthService } from './auth.service';
+import { AuthProviders } from 'typings/graphql';
 
+export type SteamPayload = {
+  id: number;
+  socialId: string;
+  provider: AuthProviders;
+  role?: string;
+};
 @Injectable()
 export class SteamStrategy extends PassportStrategy(Strategy) {
   constructor(private authService: AuthService) {

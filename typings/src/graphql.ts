@@ -59,6 +59,13 @@ export enum ReferallLevel {
     FIFTH = "FIFTH"
 }
 
+export enum AuthProviders {
+    local = "local",
+    steam = "steam",
+    vk = "vk",
+    google = "google"
+}
+
 export enum WithdrawStatusType {
     PENDING = "PENDING",
     SUCCESSFUL = "SUCCESSFUL",
@@ -137,6 +144,7 @@ export interface Pagination {
     direction: string;
     limit: number;
     offset?: number;
+    sortColumn?: string;
 }
 
 export interface CreateLiveDropInput {

@@ -11,6 +11,13 @@ type User {
   inventory: InventoryListData
 }
 
+enum AuthProviders {
+  local
+  steam
+  vk
+  google
+}
+
 type UsersListData {
   data: [User]!
   pagination: CursorBasedPaginationData!

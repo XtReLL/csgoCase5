@@ -6,6 +6,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { AuthController } from './auth.controller';
 import { SteamStrategy } from './steam.strategy';
 import { JwtStrategy } from './jwt.strategy';
+import { GoogleStrategy } from './google.strategy';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { JwtStrategy } from './jwt.strategy';
     SteamStrategy,
     AuthController,
     JwtStrategy,
+    GoogleStrategy,
   ],
   exports: [AuthService, AuthController],
   controllers: [AuthController],

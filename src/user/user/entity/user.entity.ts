@@ -15,6 +15,7 @@ import {
   OneToOne,
   Index,
 } from 'typeorm';
+import { AuthProviders } from 'typings/graphql';
 import { ReferallCode } from 'user/referall/entity/referallCode.entity';
 import { ReferallUser } from 'user/referall/entity/referallUser.entity';
 import { WithdrawItem } from 'withdraw/entity/withdrawItem.entity';
@@ -30,7 +31,10 @@ export class User {
   username!: string;
 
   @Column({ nullable: true })
-  steamId!: string;
+  socialId!: string;
+
+  @Column({ default: AuthProviders.local })
+  authProvider!: AuthProviders;
 
   @Column({ nullable: true })
   avatar!: string;
