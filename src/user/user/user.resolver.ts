@@ -48,7 +48,7 @@ export class UserResolver {
     result[0].forEach((item) => userLoader.prime(item.id, item));
     return formatList(result, 'users', pagination);
   }
-
+ 
   @ResolveField('referallCode')
   async userReferallCode(
     @Authorized() author: AuthorizedModel,

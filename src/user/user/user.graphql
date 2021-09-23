@@ -1,7 +1,7 @@
 type User {
   id: ID
   username: String
-  steamId: String
+  socialId: String
   avatar: String
   trade_url: String
   balance: Int

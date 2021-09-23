@@ -30,7 +30,8 @@ export const getUser = async (
   if (!req.headers.authorization) {
     throw new ForbiddenError('has no authorization');
   }
-  const jwtData = jwtService.verify(req.headers.login as string);
+
+  const jwtData = jwtService.verify(req.headers.authorization as string);
 
   const model = await getManager()
     .getRepository(User)
@@ -41,7 +42,7 @@ export const getUser = async (
 
   const t = await model.userRole;
 
-  const res = AuthorizedFactory(model, model.userRole as any);
+  const res = AuthorizedFactory(model);
   req.user = res;
   return res;
 };

@@ -362,7 +362,7 @@ export interface ReferallCode {
 export interface User {
     id?: string;
     username?: string;
-    steamId?: string;
+    socialId?: string;
     avatar?: string;
     trade_url?: string;
     balance?: number;
