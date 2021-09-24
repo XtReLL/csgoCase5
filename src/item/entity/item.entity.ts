@@ -20,10 +20,10 @@ export class Item {
   id!: number;
 
   @Column({ nullable: true })
-  market_hash_name!: string;
+  marketHashName!: string;
 
   @Column({ nullable: true, type: 'longtext' })
-  icon_url!: string;
+  iconUrl!: string;
 
   @Column({ nullable: true })
   exterior!: string;

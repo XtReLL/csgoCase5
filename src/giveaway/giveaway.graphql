@@ -1,8 +1,14 @@
 type Giveaway {
   id: ID
+  endDate: Date
   winner: User
-  giveawayBet: GiveawayBet
+  giveawayBets(pagination: Pagination): GiveawayBetListData
   item: Item
+  participants(pagination: Pagination): UsersListData
+}
+
+type GiveawayBet {
+  id: ID
 }
 
 type GiveawayListData {
@@ -10,12 +16,13 @@ type GiveawayListData {
   pagination: CursorBasedPaginationData!
 }
 
-input SearchGiveawayInput {
-  type: GiveawayType
+type GiveawayBetListData {
+  data: [GiveawayBet]!
+  pagination: CursorBasedPaginationData!
 }
 
-type GiveawayBet {
-  id: ID
+input SearchGiveawayInput {
+  type: GiveawayType
 }
 
 enum GiveawayType {

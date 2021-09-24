@@ -120,8 +120,33 @@ export class GiveawayService {
     return await query.andWhere('winnerId IS NOT NULL').getManyAndCount();
   }
 
+  async giveawayBets(
+    giveaway: Giveaway,
+    pagination: Pagination = defaultPagination,
+  ): Promise<[GiveawayBet[], number]> {
+    const query = await paramsToBuilder(
+      this.giveawayBetRepository.createQueryBuilder(),
+      pagination,
+    );
+    query.andWhere(`giveawayId = :giveaway`, { giveaway: giveaway.id });
+
+    return query.getManyAndCount();
+  }
+
+  async participants(
+    giveaway: Giveaway,
+    pagination: Pagination = defaultPagination,
+  ): Promise<[GiveawayBet[], number]> {
+    const query = await paramsToBuilder(
+      this.giveawayBetRepository.createQueryBuilder(),
+      pagination,
+    );
+    query.andWhere(`giveawayId = :giveaway`, { giveaway: giveaway.id });
+
+    return await query.getManyAndCount();
+  }
+
   async list(
-    model: AuthorizedModel,
     pagination: Pagination = defaultPagination,
     search?: SearchGiveawayInput,
   ): Promise<[Giveaway[], number]> {

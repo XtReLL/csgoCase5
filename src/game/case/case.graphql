@@ -23,9 +23,12 @@ type CaseItems {
   itemId: ID
 }
 enum CaseRarityType {
-  CUSTOM
-  CONSUMER
-  INDUSTRIAL
+  DEFAULT
+  PURPLE
+  GREEN
+  PINK
+  ORANGE
+  RED
 }
 
 enum CaseStatusType {
@@ -54,6 +57,10 @@ input OpenCaseInput {
   count: Int!
 }
 
+input CaseSearchInput {
+  status: CaseStatusType
+}
+
 input AddItemsInCaseInput {
   caseId: ID!
   itemsId: [ID]!
@@ -72,8 +79,8 @@ input UpdateCaseInput {
 }
 
 type Query {
-  cases(pagination: Pagination): CaseListData!
-  case(id: ID!): Case!
+  cases(pagination: Pagination, search: CaseSearchInput): CaseListData!
+  case(id: ID!, search: CaseSearchInput): Case!
   casesStats: CasesStats!
 }
 

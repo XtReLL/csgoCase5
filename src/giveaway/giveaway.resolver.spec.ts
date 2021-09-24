@@ -48,7 +48,7 @@ describe('GiveawayResolver', () => {
   describe('create/remove/update giveaway', () => {
     test('correct create giveaway', async () => {
       const user = await UserFactory().create();
-      const item = await ItemFactory().create({ market_hash_name: 'testName' });
+      const item = await ItemFactory().create({ marketHashName: 'testName' });
       const giveaway = await resolver.createGiveaway(AuthorizedFactory(user), {
         itemId: item.id,
         endDate: new Date('2000-01-01'),
@@ -77,7 +77,7 @@ describe('GiveawayResolver', () => {
       const item = await ItemFactory().create();
       await GiveawayFactory().createList(6, { itemId: item.id });
 
-      const result = await resolver.giveaways(AuthorizedFactory(user));
+      const result = await resolver.giveaways();
 
       expect(result.data).toHaveLength(6);
     });
@@ -89,7 +89,7 @@ describe('GiveawayResolver', () => {
 
       const spy = jest.spyOn(module.get(GiveawayListener), 'openCase');
       const user = await UserFactory().create({ balance: 1000000 });
-      const item = await ItemFactory().create({ market_hash_name: 'testName' });
+      const item = await ItemFactory().create({ marketHashName: 'testName' });
       const dailyGiveaway = await resolver.createGiveaway(
         AuthorizedFactory(user),
         {

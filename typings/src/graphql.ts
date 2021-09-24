@@ -8,9 +8,12 @@
 /* tslint:disable */
 /* eslint-disable */
 export enum CaseRarityType {
-    CUSTOM = "CUSTOM",
-    CONSUMER = "CONSUMER",
-    INDUSTRIAL = "INDUSTRIAL"
+    DEFAULT = "DEFAULT",
+    PURPLE = "PURPLE",
+    GREEN = "GREEN",
+    PINK = "PINK",
+    ORANGE = "ORANGE",
+    RED = "RED"
 }
 
 export enum CaseStatusType {
@@ -107,6 +110,10 @@ export interface CreateCaseInput {
 export interface OpenCaseInput {
     id: string;
     count: number;
+}
+
+export interface CaseSearchInput {
+    status?: CaseStatusType;
 }
 
 export interface AddItemsInCaseInput {
@@ -257,8 +264,8 @@ export interface CaseListData {
 }
 
 export interface IQuery {
-    cases(pagination?: Pagination): CaseListData | Promise<CaseListData>;
-    case(id: string): Case | Promise<Case>;
+    cases(pagination?: Pagination, search?: CaseSearchInput): CaseListData | Promise<CaseListData>;
+    case(id: string, search?: CaseSearchInput): Case | Promise<Case>;
     casesStats(): CasesStats | Promise<CasesStats>;
     categories(pagination?: Pagination): CategoryListData | Promise<CategoryListData>;
     category(id: string): Category | Promise<Category>;
@@ -287,9 +294,15 @@ export interface GameCase {
 
 export interface Giveaway {
     id?: string;
+    endDate?: Date;
     winner?: User;
-    giveawayBet?: GiveawayBet;
+    giveawayBets?: GiveawayBetListData;
     item?: Item;
+    participants?: UsersListData;
+}
+
+export interface GiveawayBet {
+    id?: string;
 }
 
 export interface GiveawayListData {
@@ -297,8 +310,9 @@ export interface GiveawayListData {
     pagination: CursorBasedPaginationData;
 }
 
-export interface GiveawayBet {
-    id?: string;
+export interface GiveawayBetListData {
+    data: GiveawayBet[];
+    pagination: CursorBasedPaginationData;
 }
 
 export interface Inventory {

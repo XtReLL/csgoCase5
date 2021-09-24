@@ -66,7 +66,7 @@ describe('CaseResolver', () => {
       const user = await UserFactory().create();
       await CaseFactory().createList(10);
 
-      const result = await resolver.cases(AuthorizedFactory(user));
+      const result = await resolver.cases();
 
       expect(result.data).toHaveLength(10);
     });
@@ -75,7 +75,7 @@ describe('CaseResolver', () => {
       const user = await UserFactory().create();
       const [box, secondBox] = await CaseFactory().createList(2);
 
-      const result = await resolver.case(AuthorizedFactory(user), `${box.id}`);
+      const result = await resolver.case(`${box.id}`);
       expect(result.id).toEqual(box.id);
     });
   });
@@ -90,7 +90,7 @@ describe('CaseResolver', () => {
         price: 10,
         categories: [`${category.id}`],
       });
-      const result = await resolver.case(AuthorizedFactory(user), `${box.id}`);
+      const result = await resolver.case(`${box.id}`);
       expect(box.id).toEqual(result.id);
     });
   });

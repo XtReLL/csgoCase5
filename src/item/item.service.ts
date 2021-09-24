@@ -81,8 +81,8 @@ export class ItemService {
 
             entities.push(
               this.itemRepository.create({
-                market_hash_name: value.name,
-                icon_url:
+                marketHashName: value.name,
+                iconUrl:
                   value.icon_url_large === ''
                     ? value.icon_url
                     : value.icon_url_large,

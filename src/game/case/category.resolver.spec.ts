@@ -72,7 +72,7 @@ describe('CaseResolver', () => {
       const user = await UserFactory().create();
       await CategoryFactory().createList(6);
 
-      const result = await resolver.caseCategories(AuthorizedFactory(user));
+      const result = await resolver.caseCategories();
 
       expect(result.data).toHaveLength(6);
     });
@@ -83,10 +83,7 @@ describe('CaseResolver', () => {
         name: 'testCategoryName',
       });
 
-      const result = await resolver.caseCategory(
-        `${category.id}`,
-        AuthorizedFactory(user),
-      );
+      const result = await resolver.caseCategory(`${category.id}`);
       expect(result.id).toEqual(category.id);
     });
   });

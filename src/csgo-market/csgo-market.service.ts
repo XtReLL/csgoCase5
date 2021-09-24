@@ -31,7 +31,7 @@ export class CsgoMarketService {
       axios
         .get(
           `https://market.csgo.com/api/v2/search-item-by-hash-name?key=${process.env.CSGO_MARKET_APIKEY}` +
-            `&hash_name=${encodeURI(item.market_hash_name)}`,
+            `&hash_name=${encodeURI(item.marketHashName)}`,
         )
         .then((data) => {
           const result = data.data;

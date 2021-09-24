@@ -8,6 +8,7 @@ import { Giveaway } from './entity/giveaway.entity';
 import { GiveawayListener } from './giveaway.listener';
 import { GiveawayResolver } from './giveaway.resolver';
 import { GiveawayService } from './giveaway.service';
+import { GiveawayBetResolver } from './giveawayBet.resolver';
 
 @Module({
   imports: [
@@ -15,7 +16,12 @@ import { GiveawayService } from './giveaway.service';
     InventoryModule,
     ItemModule,
   ],
-  providers: [GiveawayResolver, GiveawayService, GiveawayListener],
+  providers: [
+    GiveawayResolver,
+    GiveawayService,
+    GiveawayListener,
+    GiveawayBetResolver,
+  ],
   exports: [GiveawayService],
 })
 export class GiveawayModule {}

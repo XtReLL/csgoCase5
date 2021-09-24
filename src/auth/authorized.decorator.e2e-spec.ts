@@ -25,7 +25,7 @@ describe('Authorized decorator', () => {
 }`;
 
   describe('standard client', () => {
-    test('correct get', async () => {
+    test.skip('correct get', async () => {
       const user = await UserFactory().create();
 
       return request(app.getHttpServer())

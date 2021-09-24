@@ -39,7 +39,6 @@ export class CategoryService {
   }
 
   async list(
-    model: AuthorizedModel,
     pagination: Pagination = defaultPagination,
   ): Promise<[Category[], number]> {
     const query = await paramsToBuilder<Category>(

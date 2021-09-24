@@ -11,10 +11,11 @@ import { LiveDropService } from 'live-drop/live-drop.service';
 import { CasePaybackSystemService } from 'payback-system/case/casePaybackSystem.service';
 import { RedisCacheModule } from 'redisCache/redisCache.module';
 import { RedisCacheService } from 'redisCache/redisCache.service';
-import { Connection, In, Repository } from 'typeorm';
-import { LiveDropType } from 'typings/graphql';
+import { Brackets, Connection, In, Repository } from 'typeorm';
+import { CaseStatusType, LiveDropType } from 'typings/graphql';
 import { UserService } from 'user/user/user.service';
 import { AddItemsInCaseInput } from './dto/addItemsInCase.input';
+import { CaseSearchInput } from './dto/caseSearch.input';
 import { CreateCaseInput } from './dto/createCase.input';
 import { OpenCaseInput } from './dto/openCase.input';
 import { UpdateCaseInput } from './dto/updateCase.input';
@@ -47,8 +48,10 @@ export class CaseService {
     private eventEmitter: EventEmitter2,
   ) {}
 
-  async findOne(author: AuthorizedModel, caseId: string): Promise<Case> {
-    return this.caseRepository.findOneOrFail(parseInt(caseId, 10));
+  async findOne(caseId: string): Promise<Case> {
+    return this.caseRepository.findOneOrFail({
+      where: { id: parseInt(caseId, 10) },
+    });
   }
   async create(
     createCaseInput: CreateCaseInput,
@@ -252,13 +255,22 @@ export class CaseService {
   }
 
   async list(
-    model: AuthorizedModel,
     pagination: Pagination = defaultPagination,
+    search?: CaseSearchInput,
   ): Promise<[Case[], number]> {
     const query = await paramsToBuilder<Case>(
       this.caseRepository.createQueryBuilder(),
       pagination,
     );
+
+    if (search?.status) {
+      query.andWhere('status >= :status', {
+        status:
+          search.status === CaseStatusType.ACTIVE
+            ? CaseStatusType.ACTIVE
+            : CaseStatusType.HIDE,
+      });
+    }
 
     const result = await query.getManyAndCount();
 
@@ -267,11 +279,18 @@ export class CaseService {
 
   async getCaseCategories(box: Case): Promise<Category[]> {
     let result: Category[] = [];
-    (
-      await this.categoryCaseRepository.find({
-        where: { caseId: box.id },
-      })
-    ).map(async (caseCategory) => result.push(await caseCategory.category));
+    const caseCategories = await this.categoryCaseRepository.find({
+      where: { caseId: box.id },
+    });
+
+    await Promise.all(
+      caseCategories.map(async (caseCategory) => {
+        const res = await caseCategory.category;
+
+        result.push(res);
+      }),
+    );
+
     return result;
   }
 

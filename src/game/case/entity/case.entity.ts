@@ -24,7 +24,7 @@ export class Case {
   @Column({ type: 'double', default: 0.0 })
   price!: number;
 
-  @Column({ default: CaseRarityType.CUSTOM })
+  @Column({ default: CaseRarityType.DEFAULT })
   rarirty!: CaseRarityType;
 
   @Column({ default: CaseStatusType.ACTIVE })
