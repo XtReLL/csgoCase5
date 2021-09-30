@@ -1,0 +1,18 @@
+type Tag {
+  id: ID!
+  name: String
+}
+
+type TagListData {
+  data: [Tag]!
+  pagination: CursorBasedPaginationData!
+}
+
+input CreateTagInput {
+  name: String!
+}
+
+type Query {
+  tags(pagination: Pagination): TagListData!
+  tag(id: ID!): Tag!
+}

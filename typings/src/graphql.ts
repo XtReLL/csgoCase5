@@ -142,6 +142,10 @@ export interface CreateCategoryInput {
     name: string;
 }
 
+export interface CreateTagInput {
+    name: string;
+}
+
 export interface CreateGameCaseDto {
     caseId: string;
     userId: string;
@@ -284,6 +288,8 @@ export interface IQuery {
     casesStats(): CasesStats | Promise<CasesStats>;
     categories(pagination?: Pagination): CategoryListData | Promise<CategoryListData>;
     category(id: string): Category | Promise<Category>;
+    tags(pagination?: Pagination): TagListData | Promise<TagListData>;
+    tag(id: string): Tag | Promise<Tag>;
     giveaways(pagination?: Pagination, search?: SearchGiveawayInput): GiveawayListData | Promise<GiveawayListData>;
     giveaway(id: string): Giveaway | Promise<Giveaway>;
     liveDrops(pagination?: Pagination, search?: SearchLiveDropInput): LiveDropListData | Promise<LiveDropListData>;
@@ -301,6 +307,16 @@ export interface Category {
 
 export interface CategoryListData {
     data: Category[];
+    pagination: CursorBasedPaginationData;
+}
+
+export interface Tag {
+    id: string;
+    name?: string;
+}
+
+export interface TagListData {
+    data: Tag[];
     pagination: CursorBasedPaginationData;
 }
 
