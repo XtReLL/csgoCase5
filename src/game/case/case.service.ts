@@ -153,7 +153,7 @@ export class CaseService {
   async open(
     openCaseInput: OpenCaseInput,
     author: AuthorizedModel,
-  ): Promise<Item[] | undefined> {
+  ): Promise<Item[]> {
     if (
       (await this.redisCacheService.get(`open_case_${author.model.id}`)) !==
       null
@@ -181,6 +181,10 @@ export class CaseService {
         box,
         openCaseInput,
       );
+
+      if (!winItems) {
+        throw "Couldn't get a win";
+      }
 
       await Promise.all([
         winItems.map(async (item) => {
@@ -231,6 +235,7 @@ export class CaseService {
       console.log(error);
 
       await queryRunner.rollbackTransaction();
+      throw error;
     } finally {
       await queryRunner.release();
     }

@@ -3,7 +3,7 @@ type User {
   username: String
   socialId: String
   avatar: String
-  trade_url: String
+  tradeUrl: String
   balance: Int
   "Реферальный код"
   referallCode: ReferallCode

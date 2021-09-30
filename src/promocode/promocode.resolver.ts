@@ -1,6 +1,7 @@
 import { Args, Mutation, Resolver, Query } from '@nestjs/graphql';
 import { Authorized } from 'auth/authorized.decorator';
 import { AuthorizedModel } from 'auth/model/authorized.model';
+import { OnlyAdmins } from 'auth/only-admins.decorator';
 import { formatList, ListData } from 'list/formatter';
 import { Pagination } from 'list/pagination.input';
 import { CreatePromocodeInput } from './dto/create-promocode.input';
@@ -14,7 +15,7 @@ export class PromocodeResolver {
 
   @Query('promocodes')
   async promocodes(
-    @Authorized() author: AuthorizedModel,
+    @OnlyAdmins() author: AuthorizedModel,
     @Args('pagination') pagination?: Pagination,
   ): Promise<ListData<Promocode>> {
     return formatList(
@@ -26,16 +27,14 @@ export class PromocodeResolver {
 
   @Query('promocode')
   async promocode(
-    @Authorized() author: AuthorizedModel,
+    @OnlyAdmins() author: AuthorizedModel,
     @Args('id') promocodeId: string,
   ): Promise<Promocode> {
     return await this.promocodeService.findOne(author, promocodeId);
   }
 
   @Query('mainPromocode')
-  async mainPromocode(
-    @Authorized() author: AuthorizedModel,
-  ): Promise<Promocode> {
+  async mainPromocode(): Promise<Promocode> {
     return await this.promocodeService.getMainPagePromocode();
   }
 

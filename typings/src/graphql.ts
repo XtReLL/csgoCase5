@@ -378,7 +378,7 @@ export interface User {
     username?: string;
     socialId?: string;
     avatar?: string;
-    trade_url?: string;
+    tradeUrl?: string;
     balance?: number;
     referallCode?: ReferallCode;
     inventory?: InventoryListData;

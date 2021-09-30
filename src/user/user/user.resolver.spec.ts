@@ -81,10 +81,7 @@ describe('UserResolver', () => {
   describe('users', () => {
     test('correct get list', async () => {
       const users = await UserFactory().createList(10);
-      const result = await userResolver.list(
-        AuthorizedFactory(users[0]),
-        userLoader,
-      );
+      const result = await userResolver.list(userLoader);
       expect(result.data).toHaveLength(10);
     });
 

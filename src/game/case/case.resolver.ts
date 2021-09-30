@@ -113,11 +113,6 @@ export class CaseResolver {
     @Authorized() author: AuthorizedModel,
     @Args('openCaseInput') openCaseInput: OpenCaseInput,
   ): Promise<Item[]> {
-    const result = await this.caseService.open(openCaseInput, author);
-
-    if (!result) {
-      throw "Couldn't get a win";
-    }
-    return result;
+    return await this.caseService.open(openCaseInput, author);
   }
 }

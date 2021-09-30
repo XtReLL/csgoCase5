@@ -60,14 +60,14 @@ export class UserService {
         this.userRepository.create({
           username: profile.displayName,
           socialId: profile.id,
-          avatar: profile.photos ? profile.photos[0].value : '',
+          avatar: profile.photos ? profile.photos[1].value : '',
           authProvider: profile.provider as AuthProviders,
         }),
       );
       await this.referallService.createReferallCode(user);
     } else {
       user.username = profile.displayName;
-      user.avatar = profile.photos ? profile.photos[0].value : '';
+      user.avatar = profile.photos ? profile.photos[1].value : '';
     }
 
     return await this.update(user);
@@ -118,7 +118,7 @@ export class UserService {
             throw new Error('This is not your trade link');
           }
 
-          user.trade_url = tradeUrl;
+          user.tradeUrl = tradeUrl;
           await this.update(user);
 
           return true;
@@ -198,7 +198,6 @@ export class UserService {
   }
 
   async list(
-    model: AuthorizedModel,
     search?: SearchUserInput,
     pagination: Pagination = defaultPagination,
   ): Promise<[User[], number]> {

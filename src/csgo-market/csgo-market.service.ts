@@ -54,8 +54,8 @@ export class CsgoMarketService {
 
   async buyItem(item: any, user: User): Promise<any> {
     return new Promise((res, rej) => {
-      const partner = user.trade_url.split('partner=')[1].split('&')[0];
-      const token = user.trade_url.split('token=')[1];
+      const partner = user.tradeUrl.split('partner=')[1].split('&')[0];
+      const token = user.tradeUrl.split('token=')[1];
       const customId = Math.random().toString(36).substring(2, 15);
 
       axios

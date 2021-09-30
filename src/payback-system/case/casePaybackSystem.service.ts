@@ -25,12 +25,15 @@ export class CasePaybackSystemService {
       if (box.price > bank) {
         bank = Math.floor(Math.random() * (box.price - bank) + bank);
       }
+      console.log(bank);
 
       const minItem = await this.caseService.getMinItemInCase(box.id);
+      console.log(minItem);
 
       if (bank <= 0) {
         bank = (await minItem.item).price;
       }
+      console.log('second ', bank);
 
       const item = await this.caseService.getItemByPrice(
         Math.floor(

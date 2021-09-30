@@ -21,6 +21,7 @@ import { SearchUserInput } from 'typings/graphql';
 import { Pagination } from 'list/pagination.input';
 import { formatList, ListData } from 'list/formatter';
 import { Inventory } from 'inventory/entity/inventory.entity';
+import { OnlyAdmins } from 'auth/only-admins.decorator';
 
 @Resolver('User')
 export class UserResolver {
@@ -38,22 +39,37 @@ export class UserResolver {
 
   @Query('users')
   async list(
-    @Authorized() auth: AuthorizedModel,
     @Loader(UserLoader)
     userLoader: DataLoader<User['id'], User>,
     @Args('search') search?: SearchUserInput,
     @Args('pagination') pagination?: Pagination,
   ): Promise<ListData<User>> {
-    const result = await this.userService.list(auth, search, pagination);
+    const result = await this.userService.list(search, pagination);
     result[0].forEach((item) => userLoader.prime(item.id, item));
     return formatList(result, 'users', pagination);
   }
- 
+
   @ResolveField('referallCode')
   async userReferallCode(
-    @Authorized() author: AuthorizedModel,
+    @OnlyAdmins() author: AuthorizedModel,
   ): Promise<ReferallCode> {
     return await this.userService.getUserReferallCode(author.model);
+  }
+
+  @ResolveField('tradeUrl')
+  async tradeUrl(
+    @OnlyAdmins() author: AuthorizedModel,
+    @Parent() parent: User,
+  ): Promise<string> {
+    return parent.tradeUrl;
+  }
+
+  @ResolveField('balance')
+  async balance(
+    @OnlyAdmins() author: AuthorizedModel,
+    @Parent() parent: User,
+  ): Promise<number> {
+    return parent.balance;
   }
 
   @ResolveField('inventory')

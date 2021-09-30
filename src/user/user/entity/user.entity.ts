@@ -40,7 +40,7 @@ export class User {
   avatar!: string;
 
   @Column('varchar', { nullable: true })
-  trade_url!: string;
+  tradeUrl!: string;
 
   @Column('double', { precision: 255, scale: 2, default: 0.0 })
   balance!: number;

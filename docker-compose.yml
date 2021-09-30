@@ -28,13 +28,13 @@ services:
       MYSQL_DATABASE: case
       MYSQL_USER: case-user
       MYSQL_PASSWORD: secret
-      APP_URL: http://185.217.198.106:5000
+      APP_URL: http://localhost:5000
       JWT_KEY: L74o566h2eGmD32Ptog8TOToY5vs5BVh
       PORT: 80
-      FRONT_URL: https://nanto.bitbucket.io
+      FRONT_URL: https://localhost:5000
       STEAM_APIKEY: 9CECF1287A6E051A6AD420CAA3A3AE89
       CSGO_MARKET_APIKEY: testkey
-      AUTH_URL: http://185.217.198.106:5000
+      AUTH_URL: http://localhost:5000
       STEAM_APPID: 730
       OAUTH_GOOGLE_ID: 342491636133-k5bp1vdkdpe5pma9kf2a872888f9q96t.apps.googleusercontent.com
       OAUTH_GOOGLE_SECRET: is7W8a2RG-bkIRLjPsoxSnn9
