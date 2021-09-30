@@ -1,9 +1,34 @@
 type LiveDrop {
   id: ID!
+  caseId: ID
+  userId: ID
+  itemId: ID
+  price: Int
+  tradeId: ID
+  type: LiveDropType
+}
+
+type LiveDropListData {
+  data: [LiveDrop]!
+  pagination: CursorBasedPaginationData!
 }
 
 enum LiveDropType {
   CASE
+}
+
+enum RarityLiveDropType {
+  ALL
+  TOP
+}
+
+input LiveDropFilters {
+  liveDropType: RarityLiveDropType
+  priceMoreThan: Int
+}
+input SearchLiveDropInput {
+  caseId: ID
+  liveDropFilters: LiveDropFilters
 }
 
 input CreateLiveDropInput {
@@ -12,4 +37,11 @@ input CreateLiveDropInput {
   itemId: ID!
   price: Int!
   type: LiveDropType!
+}
+
+type Query {
+  liveDrops(
+    pagination: Pagination
+    search: SearchLiveDropInput
+  ): LiveDropListData!
 }

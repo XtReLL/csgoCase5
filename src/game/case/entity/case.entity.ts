@@ -12,6 +12,7 @@ import {
 import { CaseRarityType, CaseStatusType } from 'typings/graphql';
 import { CaseItems } from './caseItems.entity';
 import { CategoryCase } from './category_case.entity';
+import { TagCase } from './tag_case.entity';
 
 @Entity('case')
 export class Case {
@@ -50,6 +51,9 @@ export class Case {
 
   @OneToMany(() => CategoryCase, (categoryCase) => categoryCase.case)
   category!: Promise<CategoryCase[]>;
+
+  @OneToMany(() => TagCase, (tagCase) => tagCase.case)
+  tag!: Promise<TagCase[]>;
 
   @OneToMany(() => CaseItems, (caseItems) => caseItems.case)
   caseItems!: Promise<CaseItems[]>;

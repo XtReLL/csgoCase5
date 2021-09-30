@@ -4,7 +4,7 @@ import { AuthorizedModel } from 'auth/model/authorized.model';
 
 import { InventoryService } from './inventory.service';
 
-@Resolver()
+@Resolver('Inventory')
 export class InventoryResolver {
   constructor(private readonly inventoryService: InventoryService) {}
 

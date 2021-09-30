@@ -53,6 +53,11 @@ export enum LiveDropType {
     CASE = "CASE"
 }
 
+export enum RarityLiveDropType {
+    ALL = "ALL",
+    TOP = "TOP"
+}
+
 export enum PaymentMethodType {
     FREE_KASSA = "FREE_KASSA"
 }
@@ -168,6 +173,16 @@ export interface Pagination {
     sortColumn?: string;
 }
 
+export interface LiveDropFilters {
+    liveDropType?: RarityLiveDropType;
+    priceMoreThan?: number;
+}
+
+export interface SearchLiveDropInput {
+    caseId?: string;
+    liveDropFilters?: LiveDropFilters;
+}
+
 export interface CreateLiveDropInput {
     userId: string;
     caseId?: string;
@@ -271,6 +286,7 @@ export interface IQuery {
     category(id: string): Category | Promise<Category>;
     giveaways(pagination?: Pagination, search?: SearchGiveawayInput): GiveawayListData | Promise<GiveawayListData>;
     giveaway(id: string): Giveaway | Promise<Giveaway>;
+    liveDrops(pagination?: Pagination, search?: SearchLiveDropInput): LiveDropListData | Promise<LiveDropListData>;
     promocodes(pagination?: Pagination): PromocodeListData | Promise<PromocodeListData>;
     promocode(id: string): Promocode | Promise<Promocode>;
     mainPromocode(): Promocode | Promise<Promocode>;
@@ -346,6 +362,17 @@ export interface CursorBasedPaginationData {
 
 export interface LiveDrop {
     id: string;
+    caseId?: string;
+    userId?: string;
+    itemId?: string;
+    price?: number;
+    tradeId?: string;
+    type?: LiveDropType;
+}
+
+export interface LiveDropListData {
+    data: LiveDrop[];
+    pagination: CursorBasedPaginationData;
 }
 
 export interface Payment {

@@ -15,10 +15,19 @@ import { Case } from './entity/case.entity';
 import { CaseItems } from './entity/caseItems.entity';
 import { Category } from './entity/category.entity';
 import { CategoryCase } from './entity/category_case.entity';
+import { Tag } from './entity/tag.entity';
+import { TagCase } from './entity/tag_case.entity';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Case, CaseItems, Category, CategoryCase]),
+    TypeOrmModule.forFeature([
+      Case,
+      CaseItems,
+      Category,
+      CategoryCase,
+      Tag,
+      TagCase,
+    ]),
     forwardRef(() => UserModule),
     forwardRef(() => GameModule),
     RedisCacheModule,

@@ -3,9 +3,10 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { defaultPagination, Pagination } from 'list/pagination.input';
 import { paramsToBuilder } from 'list/params';
 import { SocketGateway } from 'socket/socket.gateway';
-import { createQueryBuilder, Repository } from 'typeorm';
-import { LiveDropType } from 'typings/graphql';
+import { createQueryBuilder, MoreThanOrEqual, Repository } from 'typeorm';
+import { LiveDropType, RarityLiveDropType } from 'typings/graphql';
 import { CreateLiveDropInput } from './dto/createLiveDrop.input';
+import { SearchLiveDropInput } from './dto/searchLiveDrop.input';
 import { LiveDrop } from './entity/live-drop.entity';
 
 @Injectable()
@@ -47,5 +48,29 @@ export class LiveDropService {
       'updateLiveDrop',
       await this.getOpenedCases(),
     );
+  }
+  async getLiveDrop(
+    pagination: Pagination = defaultPagination,
+    search?: SearchLiveDropInput,
+  ): Promise<[LiveDrop[], number]> {
+    const query = await paramsToBuilder(
+      this.liveDropRepository.createQueryBuilder(),
+      pagination,
+    );
+    console.log(search);
+
+    if (
+      search?.liveDropFilters?.liveDropType === RarityLiveDropType.TOP &&
+      search.liveDropFilters.priceMoreThan
+    ) {
+      query.andWhere('price >= :price', {
+        price: search.liveDropFilters.priceMoreThan,
+      });
+    }
+
+    if (search?.caseId) {
+      query.andWhere('caseId = :caseId', { caseId: search.caseId });
+    }
+    return query.getManyAndCount();
   }
 }
