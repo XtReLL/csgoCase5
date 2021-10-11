@@ -34,6 +34,15 @@ export class Item {
   @Column({ nullable: true })
   color!: string;
 
+  @Column({ nullable: true })
+  type!: string;
+
+  @Column({ nullable: true })
+  weaponType!: string;
+
+  @Column({ nullable: true })
+  gunType!: string;
+
   @Column({ precision: 255, scale: 2, default: 0.0, type: 'double' })
   price!: number;
 

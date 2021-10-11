@@ -73,4 +73,11 @@ export class LiveDropService {
     }
     return query.getManyAndCount();
   }
+
+  async itemsCountByQuality(): Promise<void> {
+    this.liveDropRepository
+      .createQueryBuilder('live_drop')
+      .leftJoinAndSelect('live_drop.item', 'item')
+      .where('live_drop.itemId = ');
+  }
 }

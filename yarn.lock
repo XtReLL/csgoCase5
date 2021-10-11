@@ -1569,6 +1569,11 @@
   resolved "https://registry.npmjs.org/@types/cache-manager/-/cache-manager-3.4.0.tgz"
   integrity sha512-XVbn2HS+O+Mk2SKRCjr01/8oD5p2Tv1fxxdBqJ0+Cl+UBNiz0WVY5rusHpMGx+qF6Vc2pnRwPVwSKbGaDApCpw==
 
+"@types/coinbase-commerce-node@^1.0.6":
+  version "1.0.6"
+  resolved "https://registry.yarnpkg.com/@types/coinbase-commerce-node/-/coinbase-commerce-node-1.0.6.tgz#7c0f4140ffda80d9099b399b39ca53780a4a5692"
+  integrity sha512-GuDFd6Ht/dOZUUbUrJWCxoNwOmMt1sLmn8kY7AkF7x3Np5B0Xy40DVv6SPeFcdL4lO3TAeHI8sogix0D01NJOg==
+
 "@types/component-emitter@^1.2.10":
   version "1.2.10"
   resolved "https://registry.yarnpkg.com/@types/component-emitter/-/component-emitter-1.2.10.tgz#ef5b1589b9f16544642e473db5ea5639107ef3ea"
@@ -2657,7 +2662,7 @@ array-unique@^0.3.2:
   resolved "https://registry.npmjs.org/array-unique/-/array-unique-0.3.2.tgz"
   integrity sha1-qJS3XUvE9s1nnvMkSp/Y9Gri1Cg=
 
-asap@~2.0.3:
+asap@~2.0.3, asap@~2.0.6:
   version "2.0.6"
   resolved "https://registry.npmjs.org/asap/-/asap-2.0.6.tgz"
   integrity sha1-5QNHYR1+aQlDIIu9r+vLwvuGbUY=
@@ -3407,6 +3412,17 @@ code-point-at@^1.0.0:
   version "1.1.0"
   resolved "https://registry.npmjs.org/code-point-at/-/code-point-at-1.1.0.tgz"
   integrity sha1-DQcLTQQ6W+ozovGkDi7bPZpMz3c=
+
+coinbase-commerce-node@^1.0.4:
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/coinbase-commerce-node/-/coinbase-commerce-node-1.0.4.tgz#8606aa571dd635c9c0efb1939bf6efcadbf3f865"
+  integrity sha512-sDUErRYbBn06aQh3KqdWqoN4OQQnYfGjjmUu/hpVcq9M6xj/UIgE5TPVnFH8WwQNNRK4iUXaUzmmGxqbB5fKzg==
+  dependencies:
+    lodash "4.17.15"
+    object-assign "2.0.0"
+    promise "^8.0.1"
+    request "^2.88.2"
+    secure-compare "^3.0.1"
 
 collect-v8-coverage@^1.0.0:
   version "1.0.1"
@@ -6718,6 +6734,11 @@ lodash.xorby@^4.7.0:
   resolved "https://registry.npmjs.org/lodash.xorby/-/lodash.xorby-4.7.0.tgz"
   integrity sha1-nBmm+fBjputT3QPBtocXmYAUY9c=
 
+lodash@4.17.15:
+  version "4.17.15"
+  resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.15.tgz#b447f6670a0455bbfeedd11392eff330ea097548"
+  integrity sha512-8xOcRHvCjnocdS5cpwXQXVzmmh5e5+saE2QGoeQmbKmRS6J3VQppPOIt0MnmE+4xlZoumy0GPG0D0MVIQbNA1A==
+
 lodash@4.17.21, lodash@4.x, lodash@^4.14.0, lodash@^4.17.14, lodash@^4.17.19, lodash@^4.17.21, lodash@^4.7.0:
   version "4.17.21"
   resolved "https://registry.npmjs.org/lodash/-/lodash-4.17.21.tgz"
@@ -7440,6 +7461,11 @@ oauth@0.9.x:
   resolved "https://registry.yarnpkg.com/oauth/-/oauth-0.9.15.tgz#bd1fefaf686c96b75475aed5196412ff60cfb9c1"
   integrity sha1-vR/vr2hslrdUda7VGWQS/2DPucE=
 
+object-assign@2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/object-assign/-/object-assign-2.0.0.tgz#f8309b09083b01261ece3ef7373f2b57b8dd7042"
+  integrity sha1-+DCbCQg7ASYezj73Nz8rV7jdcEI=
+
 object-assign@^4, object-assign@^4.0.1, object-assign@^4.1.0, object-assign@^4.1.1:
   version "4.1.1"
   resolved "https://registry.npmjs.org/object-assign/-/object-assign-4.1.1.tgz"
@@ -7984,6 +8010,13 @@ promise@^7.1.1:
   dependencies:
     asap "~2.0.3"
 
+promise@^8.0.1:
+  version "8.1.0"
+  resolved "https://registry.yarnpkg.com/promise/-/promise-8.1.0.tgz#697c25c3dfe7435dd79fcd58c38a135888eaf05e"
+  integrity sha512-W04AqnILOL/sPRXziNicCjSNRruLAuIHEOVBazepu0545DDNGYHz7ar9ZgZ1fMU8/MA4mVxp5rkBWRi6OXIy3Q==
+  dependencies:
+    asap "~2.0.6"
+
 prompts@^2.0.1:
   version "2.4.1"
   resolved "https://registry.npmjs.org/prompts/-/prompts-2.4.1.tgz"
@@ -8293,7 +8326,7 @@ repeat-string@^1.6.1:
   resolved "https://registry.npmjs.org/repeat-string/-/repeat-string-1.6.1.tgz"
   integrity sha1-jcrkcOHIirwtYA//Sndihtp15jc=
 
-request@^2.72.0, request@^2.74.0, request@^2.87.0, request@^2.88.0:
+request@^2.72.0, request@^2.74.0, request@^2.87.0, request@^2.88.0, request@^2.88.2:
   version "2.88.2"
   resolved "https://registry.npmjs.org/request/-/request-2.88.2.tgz"
   integrity sha512-MsvtOrfG9ZcrOwAW+Qi+F6HbD0CWXEh9ou77uOb7FM2WPhwT7smM833PzanhJLsgXjN89Ir6V2PczXNnMpwKhw==
@@ -8503,6 +8536,11 @@ schema-utils@^3.0.0:
     "@types/json-schema" "^7.0.6"
     ajv "^6.12.5"
     ajv-keywords "^3.5.2"
+
+secure-compare@^3.0.1:
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/secure-compare/-/secure-compare-3.0.1.tgz#f1a0329b308b221fae37b9974f3d578d0ca999e3"
+  integrity sha1-8aAymzCLIh+uN7mXTz1XjQypmeM=
 
 "semver@2 || 3 || 4 || 5", semver@^5.3.0, semver@^5.5.0, semver@^5.6.0:
   version "5.7.1"

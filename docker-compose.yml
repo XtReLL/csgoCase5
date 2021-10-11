@@ -38,6 +38,7 @@ services:
       STEAM_APPID: 730
       OAUTH_GOOGLE_ID: 342491636133-k5bp1vdkdpe5pma9kf2a872888f9q96t.apps.googleusercontent.com
       OAUTH_GOOGLE_SECRET: is7W8a2RG-bkIRLjPsoxSnn9
+      COINBASE_APIKEY: 61d343cd-ea8b-44b0-9c34-f425b47164ce
 
   case-redis:
     image: redis:4.0-alpine

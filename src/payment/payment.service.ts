@@ -7,11 +7,13 @@ import { User } from 'user/user/entity/user.entity';
 import { CreatePaymentInput } from './dto/createPaymentInput.input';
 import { Payment } from './entity/payment.entity';
 import crypto from 'crypto-js';
+import { Client } from 'coinbase-commerce-node';
 
 import { UserService } from 'user/user/user.service';
 
 @Injectable()
 export class PaymentService {
+  public coinbaseClient: any = Client.init(process.env.COINBASE_APIKEY ?? '');
   constructor(
     private readonly redisCacheService: RedisCacheService,
     @InjectRepository(Payment)
@@ -53,6 +55,9 @@ export class PaymentService {
         status: PaymentStatusType.PENDING,
       }),
     );
+    // if (createPaymentInput.method === PaymentMethodType.COINBASE) {
+    //   this.coinbaseClient.
+    // }
     if (createPaymentInput.method === PaymentMethodType.FREE_KASSA) {
       const sign = crypto.MD5(
         `${(await this.redisCacheService.get('config')).freekassaId}:${

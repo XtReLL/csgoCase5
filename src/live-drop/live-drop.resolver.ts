@@ -1,6 +1,7 @@
 import { Args, Query, Resolver } from '@nestjs/graphql';
 import { formatList, ListData } from 'list/formatter';
 import { Pagination } from 'list/pagination.input';
+import { ItemsCountByQuality } from 'typings/graphql';
 import { SearchLiveDropInput } from './dto/searchLiveDrop.input';
 import { LiveDrop } from './entity/live-drop.entity';
 import { LiveDropService } from './live-drop.service';
@@ -9,7 +10,7 @@ import { LiveDropService } from './live-drop.service';
 export class LiveDropResolver {
   constructor(private readonly liveDropService: LiveDropService) {}
   @Query('liveDrops')
-  async cases(
+  async liveDrops(
     @Args('pagination') pagination?: Pagination,
     @Args('search') search?: SearchLiveDropInput,
   ): Promise<ListData<LiveDrop>> {
@@ -19,4 +20,7 @@ export class LiveDropResolver {
       pagination,
     );
   }
+
+  @Query('itemsCountByQuality')
+  async itemsCountByQuality(): Promise<void> {}
 }
