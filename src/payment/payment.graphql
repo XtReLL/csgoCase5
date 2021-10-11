@@ -9,6 +9,7 @@ input CreatePaymentInput {
 
 enum PaymentMethodType {
   FREE_KASSA
+  COINBASE
 }
 
 enum PaymentStatusType {

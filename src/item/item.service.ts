@@ -87,6 +87,9 @@ export class ItemService {
                     ? value.icon_url
                     : value.icon_url_large,
                 exterior: value.exterior,
+                type: value.type,
+                weaponType: value.weapon_type,
+                gunType: value.gun_type,
                 rarity: value.rarity,
                 color: value.rarity_color,
                 price,

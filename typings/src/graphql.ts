@@ -36,17 +36,10 @@ export enum InventoryStatus {
 }
 
 export enum ItemRarity {
-    classified = "classified",
-    baseGrade = "baseGrade",
-    consumerGrade = "consumerGrade",
-    covert = "covert",
-    exotic = "exotic",
-    extraordinary = "extraordinary",
-    highGrade = "highGrade",
-    industrialGrade = "industrialGrade",
-    milspecGrade = "milspecGrade",
-    remarkable = "remarkable",
-    restricted = "restricted"
+    Classified = "Classified",
+    Covert = "Covert",
+    MilSpecGrade = "MilSpecGrade",
+    Restricted = "Restricted"
 }
 
 export enum LiveDropType {
@@ -59,7 +52,8 @@ export enum RarityLiveDropType {
 }
 
 export enum PaymentMethodType {
-    FREE_KASSA = "FREE_KASSA"
+    FREE_KASSA = "FREE_KASSA",
+    COINBASE = "COINBASE"
 }
 
 export enum PaymentStatusType {
@@ -139,6 +133,10 @@ export interface UpdateCaseInput {
 }
 
 export interface CreateCategoryInput {
+    name: string;
+}
+
+export interface CreateTagInput {
     name: string;
 }
 
@@ -284,9 +282,12 @@ export interface IQuery {
     casesStats(): CasesStats | Promise<CasesStats>;
     categories(pagination?: Pagination): CategoryListData | Promise<CategoryListData>;
     category(id: string): Category | Promise<Category>;
+    tags(pagination?: Pagination): TagListData | Promise<TagListData>;
+    tag(id: string): Tag | Promise<Tag>;
     giveaways(pagination?: Pagination, search?: SearchGiveawayInput): GiveawayListData | Promise<GiveawayListData>;
     giveaway(id: string): Giveaway | Promise<Giveaway>;
     liveDrops(pagination?: Pagination, search?: SearchLiveDropInput): LiveDropListData | Promise<LiveDropListData>;
+    itemsCountByQuality(): ItemsCountByQuality | Promise<ItemsCountByQuality>;
     promocodes(pagination?: Pagination): PromocodeListData | Promise<PromocodeListData>;
     promocode(id: string): Promocode | Promise<Promocode>;
     mainPromocode(): Promocode | Promise<Promocode>;
@@ -301,6 +302,16 @@ export interface Category {
 
 export interface CategoryListData {
     data: Category[];
+    pagination: CursorBasedPaginationData;
+}
+
+export interface Tag {
+    id: string;
+    name?: string;
+}
+
+export interface TagListData {
+    data: Tag[];
     pagination: CursorBasedPaginationData;
 }
 
@@ -333,8 +344,8 @@ export interface GiveawayBetListData {
 
 export interface Inventory {
     id: string;
-    userId?: number;
-    itemId?: number;
+    user?: User;
+    item?: Item;
     price?: number;
     status?: number;
 }
@@ -354,6 +365,14 @@ export interface Item {
     price?: number;
 }
 
+export interface ItemsCountByQuality {
+    classified?: number;
+    milspec?: number;
+    covert?: number;
+    restricted?: number;
+    knife?: number;
+}
+
 export interface CursorBasedPaginationData {
     hasMore: boolean;
     cursor?: string;
@@ -362,9 +381,9 @@ export interface CursorBasedPaginationData {
 
 export interface LiveDrop {
     id: string;
-    caseId?: string;
-    userId?: string;
-    itemId?: string;
+    case?: Case;
+    user?: User;
+    item?: Item;
     price?: number;
     tradeId?: string;
     type?: LiveDropType;

@@ -1,7 +1,7 @@
 type Inventory {
   id: ID!
-  userId: Int
-  itemId: Int
+  user: User
+  item: Item
   price: Int
   status: Int
 }
