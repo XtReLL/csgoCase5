@@ -8,16 +8,17 @@ type Item {
   price: Int
 }
 
+type ItemsCountByQuality {
+  classified: Int
+  milspec: Int
+  covert: Int
+  restricted: Int
+  knife: Int
+}
+
 enum ItemRarity {
-  classified
-  baseGrade
-  consumerGrade
-  covert
-  exotic
-  extraordinary
-  highGrade
-  industrialGrade
-  milspecGrade
-  remarkable
-  restricted
+  Classified
+  Covert
+  MilSpecGrade
+  Restricted
 }

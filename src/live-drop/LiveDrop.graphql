@@ -1,8 +1,8 @@
 type LiveDrop {
   id: ID!
-  caseId: ID
-  userId: ID
-  itemId: ID
+  case: Case
+  user: User
+  item: Item
   price: Int
   tradeId: ID
   type: LiveDropType
@@ -44,4 +44,5 @@ type Query {
     pagination: Pagination
     search: SearchLiveDropInput
   ): LiveDropListData!
+  itemsCountByQuality: ItemsCountByQuality!
 }
