@@ -56,21 +56,19 @@ export class LiveDropService {
     const query = await paramsToBuilder(
       this.liveDropRepository.createQueryBuilder(),
       pagination,
+      search?.liveDropFilters?.liveDropType === RarityLiveDropType.TOP
+        ? 'price'
+        : 'createdAt',
     );
-    console.log(search);
 
-    if (
-      search?.liveDropFilters?.liveDropType === RarityLiveDropType.TOP &&
-      search.liveDropFilters.priceMoreThan
-    ) {
-      query.andWhere('price >= :price', {
-        price: search.liveDropFilters.priceMoreThan,
-      });
+    if (search?.liveDropFilters?.liveDropType === RarityLiveDropType.TOP) {
+      query.andWhere('DATEDIFF(createdAt, NOW()) <= 1');
     }
 
     if (search?.caseId) {
       query.andWhere('caseId = :caseId', { caseId: search.caseId });
     }
+
     return query.getManyAndCount();
   }
 
