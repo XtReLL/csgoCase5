@@ -10,6 +10,8 @@ import crypto from 'crypto-js';
 import { Client } from 'coinbase-commerce-node';
 
 import { UserService } from 'user/user/user.service';
+import { paramsToBuilder } from 'list/params';
+import { defaultPagination, Pagination } from 'list/pagination.input';
 
 @Injectable()
 export class PaymentService {
@@ -112,5 +114,18 @@ export class PaymentService {
     await this.userService.update(user);
 
     return true;
+  }
+
+  async getUserPayments(
+    userId: number,
+    pagination: Pagination = defaultPagination,
+  ): Promise<[Payment[], number]> {
+    const query = await paramsToBuilder(
+      this.paymentRepository.createQueryBuilder(),
+      pagination,
+    );
+
+    query.andWhere('userId = :userId', { userId });
+    return query.getManyAndCount();
   }
 }

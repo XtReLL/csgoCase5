@@ -2,6 +2,11 @@ type Payment {
   id: ID
 }
 
+type PaymentsListData {
+  data: [Payment]!
+  pagination: CursorBasedPaginationData!
+}
+
 input CreatePaymentInput {
   method: PaymentMethodType!
   sum: Float!
@@ -16,6 +21,10 @@ enum PaymentStatusType {
   PENDING
   SUCCESSFUL
   REJECTED
+}
+
+type Query {
+  getUserPayments(userId: Int!, pagination: Pagination): PaymentsListData!
 }
 
 type Mutation {

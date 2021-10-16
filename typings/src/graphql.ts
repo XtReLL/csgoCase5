@@ -288,6 +288,7 @@ export interface IQuery {
     giveaway(id: string): Giveaway | Promise<Giveaway>;
     liveDrops(pagination?: Pagination, search?: SearchLiveDropInput): LiveDropListData | Promise<LiveDropListData>;
     itemsCountByQuality(): ItemsCountByQuality | Promise<ItemsCountByQuality>;
+    getUserPayments(userId: number, pagination?: Pagination): PaymentsListData | Promise<PaymentsListData>;
     promocodes(pagination?: Pagination): PromocodeListData | Promise<PromocodeListData>;
     promocode(id: string): Promocode | Promise<Promocode>;
     mainPromocode(): Promocode | Promise<Promocode>;
@@ -396,6 +397,11 @@ export interface LiveDropListData {
 
 export interface Payment {
     id?: string;
+}
+
+export interface PaymentsListData {
+    data: Payment[];
+    pagination: CursorBasedPaginationData;
 }
 
 export interface Promocode {

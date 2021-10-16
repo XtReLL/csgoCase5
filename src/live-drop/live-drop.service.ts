@@ -62,7 +62,7 @@ export class LiveDropService {
     );
 
     if (search?.liveDropFilters?.liveDropType === RarityLiveDropType.TOP) {
-      query.andWhere('DATEDIFF(createdAt, NOW()) <= 1');
+      query.andWhere('DATEDIFF(createdAt, NOW()) <=/*/ 1');
     }
 
     if (search?.caseId) {

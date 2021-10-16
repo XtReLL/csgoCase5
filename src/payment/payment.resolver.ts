@@ -1,6 +1,8 @@
-import { Args, Mutation, Resolver } from '@nestjs/graphql';
+import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { Authorized } from 'auth/authorized.decorator';
 import { AuthorizedModel } from 'auth/model/authorized.model';
+import { formatList, ListData } from 'list/formatter';
+import { Pagination } from 'list/pagination.input';
 import { CreatePaymentInput } from './dto/createPaymentInput.input';
 import { Payment } from './entity/payment.entity';
 
@@ -20,5 +22,18 @@ export class PaymentResolver {
       createPaymentInput,
     );
     return url;
+  }
+
+  @Query('getUserPayments')
+  async getUserPayments(
+    @Authorized() author: AuthorizedModel,
+    @Args('userId') userId: number,
+    @Args('pagination') pagination?: Pagination,
+  ): Promise<ListData<Payment>> {
+    return formatList(
+      await this.paymentService.getUserPayments(userId, pagination),
+      `user-${userId}_payments`,
+      pagination,
+    );
   }
 }
