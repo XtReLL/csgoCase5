@@ -10,9 +10,9 @@ export class InventoryResolver {
 
   @Mutation('sellItem')
   async sellItem(
-    @Args('id') itemId: string,
+    @Args('itemIds') itemIds: number[],
     @Authorized() author: AuthorizedModel,
   ): Promise<boolean> {
-    return this.inventoryService.sellItem(itemId, author.model);
+    return this.inventoryService.sellItem(itemIds, author.model);
   }
 }

@@ -1,12 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { EventEmitter2 } from '@nestjs/event-emitter';
-import { InjectRepository } from '@nestjs/typeorm';
+import { InjectConnection, InjectRepository } from '@nestjs/typeorm';
 import { CsgoMarketService } from 'csgo-market/csgo-market.service';
 import { Item } from 'item/entity/item.entity';
 import { defaultPagination, Pagination } from 'list/pagination.input';
 import { paramsToBuilder } from 'list/params';
 import { RedisCacheService } from 'redisCache/redisCache.service';
-import { Repository } from 'typeorm';
+import { Connection, Repository } from 'typeorm';
 import { InventoryStatus } from 'typings/graphql';
 import { User } from 'user/user/entity/user.entity';
 import { UserService } from 'user/user/user.service';
@@ -28,6 +28,7 @@ export class InventoryService {
     private eventEmitter: EventEmitter2,
     private readonly userService: UserService,
     private readonly csgoMarketService: CsgoMarketService,
+    @InjectConnection() private readonly connection: Connection,
   ) {}
 
   async addItems(
@@ -104,6 +105,9 @@ export class InventoryService {
         itemId: inventoryItem.itemId,
       }),
     );
+    const queryRunner = this.connection.createQueryRunner();
+    queryRunner.connect();
+    queryRunner.startTransaction();
 
     try {
       const marketItem = await this.csgoMarketService.searchItemByHashName(
@@ -125,42 +129,59 @@ export class InventoryService {
       withdraw.customId = buyItem.custom_id;
       await this.withdrawItemRepository.save(withdraw);
 
-      await this.removeItem(inventoryItem.id);
-
+      await this.removeItems([inventoryItem.id]);
+      queryRunner.commitTransaction();
       return true;
     } catch (e) {
+      queryRunner.rollbackTransaction();
       throw e;
+    } finally {
+      queryRunner.release();
     }
   }
 
-  async removeItem(inventoryId: number): Promise<boolean> {
-    const inventoryItem = await this.inventoryRepository.findOneOrFail(
-      inventoryId,
-    );
-    await this.inventoryRepository.delete(inventoryItem);
+  async removeItems(inventoryIds: number[]): Promise<boolean> {
+    const builder = this.inventoryRepository.createQueryBuilder().delete();
+
+    builder.where('id IN (:...inventoryIds)', { inventoryIds });
+    await builder.execute();
     return true;
   }
 
-  async sellItem(itemId: string, author: User): Promise<boolean> {
-    if (
-      typeof (await this.redisCacheService.get(`sell_item_${author.id}`)) !==
-      'undefined'
-    ) {
+  async sellItem(itemIds: number[], author: User): Promise<boolean> {
+    if (await this.redisCacheService.get(`sell_item_${author.id}`)) {
       throw 'Please, wait a bit and try again';
     }
 
     await this.redisCacheService.set(`sell_item_${author.id}`, 1, {
       ttl: 5,
     });
+    const queryRunner = this.connection.createQueryRunner();
+    queryRunner.connect();
+    queryRunner.startTransaction();
+    try {
+      const builder = this.inventoryRepository.createQueryBuilder();
+      builder.where('id IN (:...itemIds)', { itemIds });
+      builder.andWhere('userId = :userId', { userId: author.id });
+      const inventories = await builder.getMany();
 
-    const inventory = await this.inventoryRepository.findOneOrFail({
-      where: { itemId: parseInt(itemId, 10), userId: author.id },
-    });
+      await Promise.all(
+        inventories.map((inventory) => {
+          author.balance += inventory.price;
+        }),
+      );
 
-    author.balance += inventory.price;
+      await this.userService.update(author);
 
-    await this.removeItem(inventory.id);
+      await this.removeItems(itemIds);
 
-    return true;
+      queryRunner.commitTransaction();
+      return true;
+    } catch (error) {
+      queryRunner.rollbackTransaction();
+      throw error;
+    } finally {
+      queryRunner.release();
+    }
   }
 }

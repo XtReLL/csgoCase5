@@ -16,5 +16,5 @@ type InventoryListData {
 }
 
 type Mutation {
-  sellItem(id: ID!): Boolean!
+  sellItem(itemIds: [Int]!): Boolean!
 }

@@ -236,7 +236,7 @@ export interface IMutation {
     updateGiveaway(updateGiveawayInput: UpdateGiveawayInput): Giveaway | Promise<Giveaway>;
     joinToGiveaway(id: string): GiveawayBet | Promise<GiveawayBet>;
     removeGiveaway(id: string): boolean | Promise<boolean>;
-    sellItem(id: string): boolean | Promise<boolean>;
+    sellItem(itemIds: number[]): boolean | Promise<boolean>;
     createPayment(createPaymentInput: CreatePaymentInput): string | Promise<string>;
     createPromocode(createPromocodeInput: CreatePromocodeInput): Promocode | Promise<Promocode>;
     updatePromocode(updatePromocodeInput: UpdatePromocodeInput): Promocode | Promise<Promocode>;
