@@ -60,6 +60,8 @@ export class PaymentService {
     // if (createPaymentInput.method === PaymentMethodType.COINBASE) {
     //   this.coinbaseClient.
     // }
+    console.log('test');
+
     if (createPaymentInput.method === PaymentMethodType.FREE_KASSA) {
       const sign = crypto.MD5(
         `${(await this.redisCacheService.get('config')).freekassaId}:${
