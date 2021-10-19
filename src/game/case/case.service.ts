@@ -96,7 +96,7 @@ export class CaseService {
       await queryRunner.commitTransaction();
 
       return box;
-    } catch (error) {
+    } catch (error: any) {
       await queryRunner.rollbackTransaction();
       throw new Error(error);
     } finally {

@@ -39,7 +39,7 @@ export class ItemService {
         await this.getItems();
       }
       return true;
-    } catch (error) {
+    } catch (error: any) {
       throw new Error(error);
     }
   }
@@ -96,7 +96,7 @@ export class ItemService {
               }),
             );
           }
-        } catch (error) {
+        } catch (error: any) {
           throw new Error(error);
         }
       }
@@ -104,7 +104,7 @@ export class ItemService {
       await this.itemRepository.save(entities);
 
       return true;
-    } catch (error) {
+    } catch (error: any) {
       throw new Error(error);
     }
   }

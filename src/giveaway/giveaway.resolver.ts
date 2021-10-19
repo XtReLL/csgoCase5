@@ -55,9 +55,10 @@ export class GiveawayResolver {
       parent,
       pagination,
     );
-    const users = (await userLoader.loadMany(
-      giveawayBets.map((item) => item.userId),
-    )) as User[];
+
+    const users = (await userLoader.loadMany([
+      ...new Set(giveawayBets.map((item) => item.userId)),
+    ])) as User[];
     return formatList([users, count], `giveaway_bets_${parent.id}`, pagination);
   }
 
