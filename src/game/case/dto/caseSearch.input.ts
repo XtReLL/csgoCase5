@@ -8,4 +8,6 @@ import {
 @InputType()
 export class CaseSearchInput implements CaseSearchInputInterface {
   status?: CaseStatusType;
+  casePriceEnd?: number;
+  casePriceStart?: number;
 }

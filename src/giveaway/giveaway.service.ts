@@ -146,6 +146,22 @@ export class GiveawayService {
     return await query.getManyAndCount();
   }
 
+  async participantsCount(giveaway: Giveaway): Promise<number> {
+    const giveawayBets = await this.giveawayBetRepository
+      .createQueryBuilder()
+      .andWhere(`giveawayId = :giveaway`, { giveaway: giveaway.id })
+      .getMany();
+
+    return [...new Set(giveawayBets.map((item) => item.userId))].length;
+  }
+
+  async ticketsCount(giveaway: Giveaway): Promise<number> {
+    return await this.giveawayBetRepository
+      .createQueryBuilder()
+      .andWhere(`giveawayId = :giveaway`, { giveaway: giveaway.id })
+      .getCount();
+  }
+
   async list(
     pagination: Pagination = defaultPagination,
     search?: SearchGiveawayInput,

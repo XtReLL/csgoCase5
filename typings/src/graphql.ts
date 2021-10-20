@@ -113,6 +113,8 @@ export interface OpenCaseInput {
 
 export interface CaseSearchInput {
     status?: CaseStatusType;
+    casePriceStart?: number;
+    casePriceEnd?: number;
 }
 
 export interface AddItemsInCaseInput {
@@ -327,6 +329,8 @@ export interface Giveaway {
     giveawayBets?: GiveawayBetListData;
     item?: Item;
     participants?: UsersListData;
+    participantsCount: number;
+    ticketsCount: number;
 }
 
 export interface GiveawayBet {
@@ -364,6 +368,8 @@ export interface Item {
     rarity?: string;
     color?: string;
     price?: number;
+    isStatTrak?: boolean;
+    gunType?: string;
 }
 
 export interface ItemsCountByQuality {

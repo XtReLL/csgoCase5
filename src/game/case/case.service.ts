@@ -96,7 +96,7 @@ export class CaseService {
       await queryRunner.commitTransaction();
 
       return box;
-    } catch (error) {
+    } catch (error: any) {
       await queryRunner.rollbackTransaction();
       throw new Error(error);
     } finally {
@@ -277,6 +277,13 @@ export class CaseService {
       });
     }
 
+    if (search?.casePriceEnd && search?.casePriceStart) {
+      query.andWhere('price >= :casePriceStart AND price <= :casePriceEnd', {
+        casePriceStart: search.casePriceStart,
+        casePriceEnd: search?.casePriceEnd,
+      });
+    }
+
     const result = await query.getManyAndCount();
 
     return result;
@@ -301,11 +308,13 @@ export class CaseService {
 
   async getCaseItems(box: Case): Promise<Item[]> {
     let result: Item[] = [];
-    (
-      await this.caseItemsRepository.find({
-        where: { caseId: box.id },
-      })
-    ).map(async (caseItem) => result.push(await caseItem.item));
+    await Promise.all(
+      (
+        await this.caseItemsRepository.find({
+          where: { caseId: box.id },
+        })
+      ).map(async (caseItem) => result.push(await caseItem.item)),
+    );
     return result;
   }
 
