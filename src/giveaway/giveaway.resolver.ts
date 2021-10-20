@@ -59,7 +59,21 @@ export class GiveawayResolver {
     const users = (await userLoader.loadMany([
       ...new Set(giveawayBets.map((item) => item.userId)),
     ])) as User[];
-    return formatList([users, count], `giveaway_bets_${parent.id}`, pagination);
+    return formatList(
+      [users, count],
+      `giveaway_participants_${parent.id}`,
+      pagination,
+    );
+  }
+
+  @ResolveField('participantsCount')
+  async participantsCount(@Parent() parent: Giveaway): Promise<number> {
+    return await this.giveawayService.participantsCount(parent);
+  }
+
+  @ResolveField('ticketsCount')
+  async ticketsCount(@Parent() parent: Giveaway): Promise<number> {
+    return await this.giveawayService.ticketsCount(parent);
   }
 
   @Query('giveaways')

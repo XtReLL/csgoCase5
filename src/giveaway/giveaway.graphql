@@ -5,6 +5,8 @@ type Giveaway {
   giveawayBets(pagination: Pagination): GiveawayBetListData
   item: Item
   participants(pagination: Pagination): UsersListData
+  participantsCount: Int!
+  ticketsCount: Int!
 }
 
 type GiveawayBet {

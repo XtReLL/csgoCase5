@@ -62,7 +62,7 @@ export class CaseResolver {
     @Args('search') search?: CaseSearchInput,
   ): Promise<ListData<Case>> {
     return formatList(
-      await this.caseService.list(pagination),
+      await this.caseService.list(pagination, search),
       `cases`,
       pagination,
     );

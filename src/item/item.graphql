@@ -6,6 +6,8 @@ type Item {
   rarity: String
   color: String
   price: Int
+  isStatTrak: Boolean
+  gunType: String
 }
 
 type ItemsCountByQuality {

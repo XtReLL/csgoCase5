@@ -59,6 +59,8 @@ input OpenCaseInput {
 
 input CaseSearchInput {
   status: CaseStatusType
+  casePriceStart: Int
+  casePriceEnd: Int
 }
 
 input AddItemsInCaseInput {
