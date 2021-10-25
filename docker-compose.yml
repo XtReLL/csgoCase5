@@ -10,6 +10,8 @@ services:
       MYSQL_DATABASE: case
       MYSQL_USER: case-user
       MYSQL_PASSWORD: secret
+    volumes:
+      - mysql_db_data_container:/var/lib/mysql
   case:
     image: case
     command: npm run start:debug
@@ -45,3 +47,14 @@ services:
     command: ['sh', '-c', 'exec redis-server']
     ports:
       - '6379:6379'
+
+  case-db-adminer:
+    image: adminer:latest
+    environment:
+      ADMINER_DEFAULT_SERVER: case-db
+      ADMINER_DESIGN: galkaev
+    ports:
+      - 8080:8080
+
+volumes:
+  mysql_db_data_container:
