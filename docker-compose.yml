@@ -35,9 +35,9 @@ services:
       APP_URL: https://api.dev.cased.tk
       JWT_KEY: L74o566h2eGmD32Ptog8TOToY5vs5BVh
       #PORT: 5000
-      FRONT_URL: https://dev.cased.tk:80
+      FRONT_URL: https://dev.cased.tk
       #STEAM_APIKEY: 9CECF1287A6E051A6AD420CAA3A3AE89
-      STEAM_APIKEY: 728B8C34EF3E07D6AD803D3F00107F65 
+      STEAM_APIKEY: 728B8C34EF3E07D6AD803D3F00107F65
       CSGO_MARKET_APIKEY: testkey
       AUTH_URL: https://api.dev.cased.tk
       STEAM_APPID: 730
