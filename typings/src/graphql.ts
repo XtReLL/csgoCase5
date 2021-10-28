@@ -181,6 +181,7 @@ export interface LiveDropFilters {
 }
 
 export interface SearchLiveDropInput {
+    userId?: string;
     caseId?: string;
     liveDropFilters?: LiveDropFilters;
 }

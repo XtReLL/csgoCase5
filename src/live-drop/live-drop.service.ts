@@ -69,6 +69,10 @@ export class LiveDropService {
       query.andWhere('caseId = :caseId', { caseId: search.caseId });
     }
 
+    if (search?.userId) {
+      query.andWhere('userId = :userId', { userId: search.userId });
+    }
+
     return query.getManyAndCount();
   }
 

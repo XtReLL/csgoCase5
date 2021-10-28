@@ -7,6 +7,7 @@ import {
 
 @InputType()
 export class SearchLiveDropInput implements SearchLiveDropInputInterface {
+  userId?: string;
   caseId?: string;
   liveDropFilters?: LiveDropFilters;
 }

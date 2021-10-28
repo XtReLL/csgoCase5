@@ -13,6 +13,10 @@ type User {
   inventory: InventoryListData
 }
 
+# type TopList {
+
+# }
+
 enum AuthProviders {
   local
   steam

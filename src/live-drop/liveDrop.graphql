@@ -3,7 +3,7 @@ type LiveDrop {
   case: Case
   user: User
   item: Item
-  price: Int
+  price: Float
   tradeId: ID
   type: LiveDropType
 }
@@ -27,6 +27,7 @@ input LiveDropFilters {
   priceMoreThan: Int
 }
 input SearchLiveDropInput {
+  userId: ID
   caseId: ID
   liveDropFilters: LiveDropFilters
 }
