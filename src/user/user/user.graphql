@@ -5,6 +5,8 @@ type User {
   avatar: String
   tradeUrl: String
   balance: Int
+  profit: Float
+  opened: Int
   "Реферальный код"
   referallCode: ReferallCode
   "Инвентарь пользователя"

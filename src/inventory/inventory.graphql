@@ -8,11 +8,17 @@ type Inventory {
 
 enum InventoryStatus {
   AVAILABLE
+  WITHDRAWN
+  SOLD
 }
 
 type InventoryListData {
   data: [Inventory]!
   pagination: CursorBasedPaginationData!
+}
+
+type Query {
+  getUserInventoryHistory(userId: Int!): InventoryListData!
 }
 
 type Mutation {

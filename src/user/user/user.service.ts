@@ -40,6 +40,10 @@ export class UserService {
     ).role;
   }
 
+  async isSame(user: User, auth: AuthorizedModel): Promise<boolean> {
+    return user.id === auth.model.id && auth.role == 'admin' ? true : false;
+  }
+
   byIds(ids: number[]): Promise<User[]> {
     return this.userRepository.findByIds(ids);
   }

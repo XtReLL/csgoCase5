@@ -32,7 +32,9 @@ export enum GiveawayType {
 }
 
 export enum InventoryStatus {
-    AVAILABLE = "AVAILABLE"
+    AVAILABLE = "AVAILABLE",
+    WITHDRAWN = "WITHDRAWN",
+    SOLD = "SOLD"
 }
 
 export enum ItemRarity {
@@ -288,6 +290,7 @@ export interface IQuery {
     tag(id: string): Tag | Promise<Tag>;
     giveaways(pagination?: Pagination, search?: SearchGiveawayInput): GiveawayListData | Promise<GiveawayListData>;
     giveaway(id: string): Giveaway | Promise<Giveaway>;
+    getUserInventoryHistory(userId: number): InventoryListData | Promise<InventoryListData>;
     liveDrops(pagination?: Pagination, search?: SearchLiveDropInput): LiveDropListData | Promise<LiveDropListData>;
     itemsCountByQuality(): ItemsCountByQuality | Promise<ItemsCountByQuality>;
     getUserPayments(userId: number, pagination?: Pagination): PaymentsListData | Promise<PaymentsListData>;
@@ -438,6 +441,8 @@ export interface User {
     avatar?: string;
     tradeUrl?: string;
     balance?: number;
+    profit?: number;
+    opened?: number;
     referallCode?: ReferallCode;
     inventory?: InventoryListData;
 }

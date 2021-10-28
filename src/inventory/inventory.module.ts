@@ -8,10 +8,11 @@ import { RedisCacheModule } from 'redisCache/redisCache.module';
 import { UserModule } from 'user/user/user.module';
 import { WithdrawItem } from 'withdraw/entity/withdrawItem.entity';
 import { CsgoMarketModule } from 'csgo-market/csgo-market.module';
+import { InventoryRepository } from './inventory.repository';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Item, Inventory, WithdrawItem]),
+    TypeOrmModule.forFeature([Item, InventoryRepository, WithdrawItem]),
     RedisCacheModule,
     forwardRef(() => UserModule),
     CsgoMarketModule,

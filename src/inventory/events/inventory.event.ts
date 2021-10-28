@@ -9,3 +9,7 @@ export class AddItemToInventoryEvent {
     public inventory: Inventory,
   ) {}
 }
+
+export class SellItemFromInventoryEvent {
+  constructor(public inventory: Inventory) {}
+}

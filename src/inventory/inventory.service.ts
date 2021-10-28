@@ -13,13 +13,17 @@ import { UserService } from 'user/user/user.service';
 import { WithdrawItem } from 'withdraw/entity/withdrawItem.entity';
 import { AddItemToInventoryDto } from './dto/addItemToInventory.dto';
 import { Inventory } from './entity/inventory.entity';
-import { AddItemToInventoryEvent } from './events/inventory.event';
+import {
+  AddItemToInventoryEvent,
+  SellItemFromInventoryEvent,
+} from './events/inventory.event';
+import { InventoryRepository } from './inventory.repository';
 
 @Injectable()
 export class InventoryService {
   constructor(
-    @InjectRepository(Inventory)
-    private readonly inventoryRepository: Repository<Inventory>,
+    @InjectRepository(InventoryRepository)
+    private readonly inventoryRepository: InventoryRepository,
     @InjectRepository(Item)
     private readonly itemRepository: Repository<Item>,
     @InjectRepository(WithdrawItem)
@@ -141,10 +145,10 @@ export class InventoryService {
   }
 
   async removeItems(inventoryIds: number[]): Promise<boolean> {
-    const builder = this.inventoryRepository.createQueryBuilder().delete();
+    const builder = this.inventoryRepository.createQueryBuilder();
 
     builder.where('id IN (:...inventoryIds)', { inventoryIds });
-    await builder.execute();
+    builder.softDelete();
     return true;
   }
 
@@ -167,6 +171,10 @@ export class InventoryService {
 
       await Promise.all(
         inventories.map((inventory) => {
+          this.eventEmitter.emit(
+            'inventory.sellItem',
+            new SellItemFromInventoryEvent(inventory),
+          );
           author.balance += inventory.price;
         }),
       );
@@ -183,5 +191,17 @@ export class InventoryService {
     } finally {
       queryRunner.release();
     }
+  }
+
+  async getUserInventoryHistory(
+    userId: number,
+    pagination: Pagination = defaultPagination,
+  ): Promise<[Inventory[], number]> {
+    const builder = await paramsToBuilder(
+      this.inventoryRepository.createQueryBuilder(),
+      pagination,
+    );
+    builder.andWhere('userId = :userId', { userId }).withDeleted();
+    return builder.getManyAndCount();
   }
 }

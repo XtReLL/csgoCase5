@@ -5,7 +5,7 @@ type Item {
   exterior: String
   rarity: String
   color: String
-  price: Int
+  price: Float
   isStatTrak: Boolean
   gunType: String
 }

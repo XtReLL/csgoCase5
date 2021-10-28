@@ -22,6 +22,7 @@ import { Pagination } from 'list/pagination.input';
 import { formatList, ListData } from 'list/formatter';
 import { Inventory } from 'inventory/entity/inventory.entity';
 import { OnlyAdmins } from 'auth/only-admins.decorator';
+import { ForbiddenError } from 'apollo-server-errors';
 
 @Resolver('User')
 export class UserResolver {
@@ -37,6 +38,15 @@ export class UserResolver {
     return id ? userLoader.load(parseInt(id, 10)) : Promise.resolve(auth.model);
   }
 
+  // @Query('getTopList')
+  // getTopList(
+  //   @Authorized() auth: AuthorizedModel,
+  //   @Loader(UserLoader)
+  //   userLoader: DataLoader<User['id'], User>,
+  // ): Promise<User> {
+  //   return id ? userLoader.load(parseInt(id, 10)) : Promise.resolve(auth.model);
+  // }
+
   @Query('users')
   async list(
     @Loader(UserLoader)
@@ -51,24 +61,59 @@ export class UserResolver {
 
   @ResolveField('referallCode')
   async userReferallCode(
-    @OnlyAdmins() author: AuthorizedModel,
+    @Authorized() author: AuthorizedModel,
+    @Parent() parent: User,
   ): Promise<ReferallCode> {
-    return await this.userService.getUserReferallCode(author.model);
+    if (!(await this.userService.isSame(parent, author))) {
+      throw new ForbiddenError("You can't watch someone else's referral code");
+    }
+
+    return await this.userService.getUserReferallCode(parent);
+  }
+
+  @ResolveField('profit')
+  async profit(
+    @Authorized() author: AuthorizedModel,
+    @Parent() parent: User,
+  ): Promise<number> {
+    if (!(await this.userService.isSame(parent, author))) {
+      throw new ForbiddenError("You can't watch someone else's profit");
+    }
+    return parent.profit;
+  }
+
+  @ResolveField('opened')
+  async opened(
+    @Authorized() author: AuthorizedModel,
+    @Parent() parent: User,
+  ): Promise<number> {
+    if (!(await this.userService.isSame(parent, author))) {
+      throw new ForbiddenError(
+        "You can't watch someone else's count opened case",
+      );
+    }
+    return parent.opened;
   }
 
   @ResolveField('tradeUrl')
   async tradeUrl(
-    @OnlyAdmins() author: AuthorizedModel,
+    @Authorized() author: AuthorizedModel,
     @Parent() parent: User,
   ): Promise<string> {
+    if (!(await this.userService.isSame(parent, author))) {
+      throw new ForbiddenError("You can't watch someone else's tradeUrl");
+    }
     return parent.tradeUrl;
   }
 
   @ResolveField('balance')
   async balance(
-    @OnlyAdmins() author: AuthorizedModel,
+    @Authorized() author: AuthorizedModel,
     @Parent() parent: User,
   ): Promise<number> {
+    if (!(await this.userService.isSame(parent, author))) {
+      throw new ForbiddenError("You can't watch someone else's balance");
+    }
     return parent.balance;
   }
 
