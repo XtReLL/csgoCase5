@@ -17,7 +17,7 @@ import { UserService } from './user.service';
 import { Loader } from 'nestjs-graphql-dataloader';
 import DataLoader from 'dataloader';
 import { User } from './entity/user.entity';
-import { SearchUserInput } from 'typings/graphql';
+import { SearchUserInput, TopList } from 'typings/graphql';
 import { Pagination } from 'list/pagination.input';
 import { formatList, ListData } from 'list/formatter';
 import { Inventory } from 'inventory/entity/inventory.entity';
@@ -38,14 +38,27 @@ export class UserResolver {
     return id ? userLoader.load(parseInt(id, 10)) : Promise.resolve(auth.model);
   }
 
-  // @Query('getTopList')
-  // getTopList(
-  //   @Authorized() auth: AuthorizedModel,
-  //   @Loader(UserLoader)
-  //   userLoader: DataLoader<User['id'], User>,
-  // ): Promise<User> {
-  //   return id ? userLoader.load(parseInt(id, 10)) : Promise.resolve(auth.model);
-  // }
+  @Query('getTopList')
+  async getTopList(
+    @Authorized() auth: AuthorizedModel,
+    @Loader(UserLoader)
+    userLoader: DataLoader<User['id'], User>,
+  ): Promise<TopList[]> {
+    const users = await this.userService.getTopList();
+    const res: Array<TopList> = [{}];
+    Promise.all(
+      users.map(async (user) => {
+        res.push({
+          id: `${user.id}`,
+          username: user.username,
+          profit: user.profit,
+          avatar: user.avatar,
+          opened: user.opened,
+        });
+      }),
+    );
+    return res;
+  }
 
   @Query('users')
   async list(

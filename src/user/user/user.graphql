@@ -13,9 +13,13 @@ type User {
   inventory: InventoryListData
 }
 
-# type TopList {
-
-# }
+type TopList {
+  id: ID
+  username: String
+  avatar: String
+  profit: Float
+  opened: Int
+}
 
 enum AuthProviders {
   local
@@ -36,6 +40,7 @@ input SearchUserInput {
 type Query {
   user(id: ID): User!
   users(search: SearchUserInput, pagination: Pagination): UsersListData!
+  getTopList: [TopList]!
 }
 
 type Mutation {

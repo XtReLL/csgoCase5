@@ -214,4 +214,12 @@ export class UserService {
       .getManyAndCount();
     return result;
   }
+
+  async getTopList(): Promise<User[]> {
+    return await this.userRepository
+      .createQueryBuilder()
+      .limit(10)
+      .orderBy('profit', 'DESC')
+      .getMany();
+  }
 }

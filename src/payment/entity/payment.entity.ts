@@ -16,6 +16,9 @@ export class Payment {
   @PrimaryGeneratedColumn()
   id!: number;
 
+  @Column({ nullable: true })
+  paymentId!: string;
+
   @Column()
   userId!: number;
 
@@ -25,7 +28,7 @@ export class Payment {
   @Column({ default: PaymentStatusType.PENDING })
   status!: PaymentStatusType;
 
-  @Column({ default: PaymentMethodType.FREE_KASSA })
+  @Column({ default: PaymentMethodType.NONE })
   method!: PaymentMethodType;
 
   @ManyToOne(() => User, (user) => user.payment, {

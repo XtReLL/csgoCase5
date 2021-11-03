@@ -39,7 +39,7 @@ services:
       #STEAM_APIKEY: 9CECF1287A6E051A6AD420CAA3A3AE89
       STEAM_APIKEY: 728B8C34EF3E07D6AD803D3F00107F65
       CSGO_MARKET_APIKEY: testkey
-      AUTH_URL: https://api.dev.cased.tk
+      AUTH_URL: http://0.0.0.0:5000
       STEAM_APPID: 730
       OAUTH_GOOGLE_ID: 342491636133-k5bp1vdkdpe5pma9kf2a872888f9q96t.apps.googleusercontent.com
       OAUTH_GOOGLE_SECRET: is7W8a2RG-bkIRLjPsoxSnn9

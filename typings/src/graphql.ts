@@ -55,7 +55,8 @@ export enum RarityLiveDropType {
 
 export enum PaymentMethodType {
     FREE_KASSA = "FREE_KASSA",
-    COINBASE = "COINBASE"
+    COINBASE = "COINBASE",
+    NONE = "NONE"
 }
 
 export enum PaymentStatusType {
@@ -300,6 +301,7 @@ export interface IQuery {
     mainPromocode(): Promocode | Promise<Promocode>;
     user(id?: string): User | Promise<User>;
     users(search?: SearchUserInput, pagination?: Pagination): UsersListData | Promise<UsersListData>;
+    getTopList(): TopList[] | Promise<TopList[]>;
 }
 
 export interface Category {
@@ -446,6 +448,14 @@ export interface User {
     opened?: number;
     referallCode?: ReferallCode;
     inventory?: InventoryListData;
+}
+
+export interface TopList {
+    id?: string;
+    username?: string;
+    avatar?: string;
+    profit?: number;
+    opened?: number;
 }
 
 export interface UsersListData {

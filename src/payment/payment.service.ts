@@ -7,7 +7,10 @@ import { User } from 'user/user/entity/user.entity';
 import { CreatePaymentInput } from './dto/createPaymentInput.input';
 import { Payment } from './entity/payment.entity';
 import crypto from 'crypto-js';
-import { Client } from 'coinbase-commerce-node';
+import {
+  Client as CoinbaseClient,
+  resources as coinbaseResources,
+} from 'coinbase-commerce-node';
 
 import { UserService } from 'user/user/user.service';
 import { paramsToBuilder } from 'list/params';
@@ -15,7 +18,9 @@ import { defaultPagination, Pagination } from 'list/pagination.input';
 
 @Injectable()
 export class PaymentService {
-  public coinbaseClient: any = Client.init(process.env.COINBASE_APIKEY ?? '');
+  private coinbaseClient = CoinbaseClient.init(
+    process.env.COINBASE_APIKEY ?? '',
+  );
   constructor(
     private readonly redisCacheService: RedisCacheService,
     @InjectRepository(Payment)
@@ -55,12 +60,32 @@ export class PaymentService {
         sum: createPaymentInput.sum,
         userId: user.id,
         status: PaymentStatusType.PENDING,
+        method: createPaymentInput.method,
       }),
     );
-    // if (createPaymentInput.method === PaymentMethodType.COINBASE) {
-    //   this.coinbaseClient.
-    // }
-    console.log('test');
+    if (createPaymentInput.method === PaymentMethodType.COINBASE) {
+      await coinbaseResources.Checkout.create(
+        {
+          name: 'The Sovereign Individual',
+          description: 'Mastering the Transition to the Information Age',
+          pricing_type: 'fixed_price',
+          local_price: {
+            amount: '100.00',
+            currency: 'USD',
+          },
+          requested_info: ['name', 'email'],
+        },
+        async (error, response) => {
+          if (error) {
+            throw new Error(error);
+          }
+
+          await this.paymentRepository.update(payment, {
+            paymentId: response.id,
+          });
+        },
+      );
+    }
 
     if (createPaymentInput.method === PaymentMethodType.FREE_KASSA) {
       const sign = crypto.MD5(

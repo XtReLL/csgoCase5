@@ -21,6 +21,7 @@ export class PaymentResolver {
       author.model,
       createPaymentInput,
     );
+
     return url;
   }
 
