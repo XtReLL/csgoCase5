@@ -22,12 +22,13 @@ export class PaymentController {
     }
   }
 
-  // @Post('coinbase-hook')
-  // async coinbaseHook(@Req() req: Request) {
-  //   const event = Webhook.verifyEventBody(
-  //     req.body,
-  //     req.headers.get('x-cc-webhook-signature'),
-  //     '3bc94370-cb27-4dd7-8cc3-4925da9eecb7',
-  //   );
-  // }
+  @Post('coinbase-hook')
+  async coinbaseHook(@Req() req: any) {
+    const event = Webhook.verifyEventBody(
+      req.parsedRawBody?.toString(),
+      req.headers.get('x-cc-webhook-signature'),
+      '3bc94370-cb27-4dd7-8cc3-4925da9eecb7',
+    );
+    console.log(event);
+  }
 }

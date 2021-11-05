@@ -1,4 +1,5 @@
-import { Logger } from '@nestjs/common';
+import { Logger, RequestMethod } from '@nestjs/common';
+import { RouteInfo } from '@nestjs/common/interfaces';
 import { NestFactory } from '@nestjs/core';
 
 import { AppModule } from './app.module';

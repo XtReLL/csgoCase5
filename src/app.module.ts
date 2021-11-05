@@ -1,4 +1,9 @@
-import { Module } from '@nestjs/common';
+import {
+  MiddlewareConsumer,
+  Module,
+  NestModule,
+  RequestMethod,
+} from '@nestjs/common';
 
 import { GraphQLModule } from '@nestjs/graphql';
 import { join } from 'path';
@@ -29,7 +34,17 @@ import { APP_INTERCEPTOR } from '@nestjs/core';
 // @ts-ignore
 import { DataLoaderInterceptor } from 'nestjs-graphql-dataloader';
 import { ScheduleModule } from '@nestjs/schedule';
-
+import {
+  JsonBodyMiddleware,
+  RawBodyMiddleware,
+} from 'middlewares/body.middleware';
+import { RouteInfo } from '@nestjs/common/interfaces';
+const rawBodyParsingRoutes: Array<RouteInfo> = [
+  {
+    path: 'payment/coinbase-hook*',
+    method: RequestMethod.POST,
+  },
+];
 @Module({
   imports: [
     EventEmitterModule.forRoot(),
@@ -78,4 +93,13 @@ import { ScheduleModule } from '@nestjs/schedule';
     },
   ],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  public configure(consumer: MiddlewareConsumer): MiddlewareConsumer | void {
+    consumer
+      .apply(RawBodyMiddleware)
+      .forRoutes(...rawBodyParsingRoutes)
+      .apply(JsonBodyMiddleware)
+      .exclude(...rawBodyParsingRoutes)
+      .forRoutes('*');
+  }
+}
