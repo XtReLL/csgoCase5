@@ -24,6 +24,9 @@ export class PaymentController {
 
   @Post('coinbase-hook')
   async coinbaseHook(@Req() req: any) {
+    console.log(111, 'coinbase-hook');
+    console.log(req);
+
     const event = Webhook.verifyEventBody(
       req.parsedRawBody?.toString(),
       req.headers.get('x-cc-webhook-signature'),
