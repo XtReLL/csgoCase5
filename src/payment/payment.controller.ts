@@ -29,7 +29,7 @@ export class PaymentController {
 
     const event = Webhook.verifyEventBody(
       req.parsedRawBody?.toString(),
-      req.headers('x-cc-webhook-signature'),
+      req.headers['x-cc-webhook-signature'],
       '3bc94370-cb27-4dd7-8cc3-4925da9eecb7',
     );
     console.log(event);
