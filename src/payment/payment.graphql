@@ -1,5 +1,10 @@
 type Payment {
   id: ID
+  paymentId: String
+  userId: Int
+  sum: Int
+  status: PaymentStatusType
+  method: PaymentMethodType
 }
 
 type PaymentsListData {
