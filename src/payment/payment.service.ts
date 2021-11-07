@@ -64,27 +64,23 @@ export class PaymentService {
       }),
     );
     if (createPaymentInput.method === PaymentMethodType.COINBASE) {
-      await coinbaseResources.Checkout.create(
-        {
-          name: 'The Sovereign Individual',
-          description: 'Mastering the Transition to the Information Age',
-          pricing_type: 'fixed_price',
-          local_price: {
-            amount: '100.00',
-            currency: 'USD',
-          },
-          requested_info: ['name', 'email'],
+      const charge = await coinbaseResources.Charge.create({
+        name: 'The Sovereign Individual',
+        description: 'Mastering the Transition to the Information Age',
+        pricing_type: 'fixed_price',
+        local_price: {
+          amount: `${createPaymentInput.sum}`,
+          currency: 'RUB',
         },
-        async (error, response) => {
-          if (error) {
-            throw new Error(error);
-          }
+      });
 
-          await this.paymentRepository.update(payment, {
-            paymentId: response.id,
-          });
-        },
-      );
+      payment.paymentId = charge.id;
+      await this.paymentRepository.save(payment);
+
+      return {
+        payment,
+        url: charge.hosted_url,
+      };
     }
 
     if (createPaymentInput.method === PaymentMethodType.FREE_KASSA) {

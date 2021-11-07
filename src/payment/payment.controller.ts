@@ -32,6 +32,6 @@ export class PaymentController {
       req.headers['x-cc-webhook-signature'],
       '3bc94370-cb27-4dd7-8cc3-4925da9eecb7',
     );
-    console.log(event);
+    console.log(event.data);
   }
 }
