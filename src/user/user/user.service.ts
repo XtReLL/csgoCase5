@@ -41,7 +41,7 @@ export class UserService {
   }
 
   async isSame(user: User, auth: AuthorizedModel): Promise<boolean> {
-    return user.id === auth.model.id && auth.role == 'admin' ? true : false;
+    return user.id === auth.model.id || auth.role == 'admin' ? true : false;
   }
 
   byIds(ids: number[]): Promise<User[]> {
@@ -101,7 +101,7 @@ export class UserService {
   }
 
   async update(user: User): Promise<User> {
-    user = await this.userRepository.save(user);
+    user = await this.userRepository.save(user, { transaction: true });
     await this.redisCacheService.set(
       `user_${user.authProvider}_${user.socialId}`,
       user,

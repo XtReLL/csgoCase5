@@ -9,6 +9,7 @@ import { Payment } from './entity/payment.entity';
 import crypto from 'crypto-js';
 import {
   Client as CoinbaseClient,
+  EventResource,
   resources as coinbaseResources,
 } from 'coinbase-commerce-node';
 
@@ -137,6 +138,34 @@ export class PaymentService {
     await this.userService.update(user);
 
     return true;
+  }
+
+  async callbackCoinbasePayment(event: EventResource): Promise<boolean> {
+    const payment = await this.paymentRepository.findOneOrFail({
+      where: {
+        id: event.id,
+        status: PaymentStatusType.PENDING,
+      },
+    });
+
+    const user = await this.userService.findOne(payment.userId);
+
+    switch (event.type) {
+      case 'charge:confirmed':
+        payment.status = PaymentStatusType.SUCCESSFUL;
+        await this.paymentRepository.save(payment);
+        user.balance += payment.sum;
+        await this.userService.update(user);
+        return true;
+      case 'charge:failed':
+        payment.status = PaymentStatusType.REJECTED;
+        await this.paymentRepository.save(payment);
+        return false;
+      default:
+        return false;
+    }
+
+    // const sum = payment.sum + (await this.getBonus(user, payment));
   }
 
   async getUserPayments(
