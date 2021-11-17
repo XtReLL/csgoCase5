@@ -7,9 +7,15 @@ import { Payment } from './entity/payment.entity';
 import { RedisCacheService } from 'redisCache/redisCache.service';
 import { RedisCacheModule } from 'redisCache/redisCache.module';
 import { UserModule } from 'user/user/user.module';
+import { ShadowpayModule } from 'shadowpay/shadowpay.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Payment]), RedisCacheModule, UserModule],
+  imports: [
+    TypeOrmModule.forFeature([Payment]),
+    ShadowpayModule,
+    RedisCacheModule,
+    UserModule,
+  ],
   providers: [PaymentService, PaymentResolver],
   exports: [PaymentService],
   controllers: [PaymentController],

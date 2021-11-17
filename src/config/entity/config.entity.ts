@@ -49,6 +49,12 @@ export class Config {
   freekassaSecret2!: string;
 
   @Column({ nullable: true })
+  shadowpayPublicKey!: string;
+
+  @Column({ nullable: true })
+  shadowpayPrivateKey!: string;
+
+  @Column({ nullable: true })
   coinbaseApiKey!: string;
 
   @CreateDateColumn()

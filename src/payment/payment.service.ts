@@ -6,7 +6,7 @@ import { PaymentMethodType, PaymentStatusType } from 'typings/graphql';
 import { User } from 'user/user/entity/user.entity';
 import { CreatePaymentInput } from './dto/createPaymentInput.input';
 import { Payment } from './entity/payment.entity';
-import crypto from 'crypto-js';
+import { SHA256, MD5 } from 'crypto-js';
 import {
   Client as CoinbaseClient,
   EventResource,
@@ -16,6 +16,7 @@ import {
 import { UserService } from 'user/user/user.service';
 import { paramsToBuilder } from 'list/params';
 import { defaultPagination, Pagination } from 'list/pagination.input';
+import { ShadowpayService } from 'shadowpay/shadowpay.service';
 
 @Injectable()
 export class PaymentService {
@@ -26,7 +27,7 @@ export class PaymentService {
     private readonly redisCacheService: RedisCacheService,
     @InjectRepository(Payment)
     private readonly paymentRepository: Repository<Payment>,
-
+    private readonly shadowpayService: ShadowpayService,
     private readonly userService: UserService,
   ) {}
 
@@ -85,7 +86,7 @@ export class PaymentService {
     }
 
     if (createPaymentInput.method === PaymentMethodType.FREE_KASSA) {
-      const sign = crypto.MD5(
+      const sign = MD5(
         `${(await this.redisCacheService.get('config')).freekassaId}:${
           createPaymentInput.sum
         }:${(await this.redisCacheService.get('config')).freekassaSecret1}:${
@@ -99,6 +100,31 @@ export class PaymentService {
           (await this.redisCacheService.get('config')).freekassaId
         }&oa=${createPaymentInput.sum}&o=${payment.id}&s=${sign}`,
       };
+    }
+
+    if (createPaymentInput.method === PaymentMethodType.SHADOWPAY) {
+      const sign = SHA256(
+        `${payment.id}${createPaymentInput.sum}USD${
+          (await this.redisCacheService.get('config')).shadowpayPrivateKey
+        }`,
+        (await this.redisCacheService.get('config')).shadowpayPrivateKey,
+      );
+
+      const t = await this.shadowpayService.createPayment({
+        signature: sign,
+        steamId: user.socialId,
+        amount: createPaymentInput.sum,
+        userId: user.id,
+        paymentId: payment.id,
+      });
+      console.log(t);
+
+      // return {
+      //   payment,
+      //   url: `https://www.free-kassa.ru/merchant/cash.php?m=${
+      //     (await this.redisCacheService.get('config')).freekassaId
+      //   }&oa=${createPaymentInput.sum}&o=${payment.id}&s=${sign}`,
+      // };
     }
     return {
       payment,
@@ -115,15 +141,13 @@ export class PaymentService {
     });
     const user = await this.userService.findOne(payment.userId);
 
-    const sign = crypto
-      .MD5(
-        `${(await this.redisCacheService.get('config')).freekassaId}:${
-          payment.sum
-        }:${(await this.redisCacheService.get('config')).freekassaSecret2}:${
-          payment.id
-        }`,
-      )
-      .toString();
+    const sign = MD5(
+      `${(await this.redisCacheService.get('config')).freekassaId}:${
+        payment.sum
+      }:${(await this.redisCacheService.get('config')).freekassaSecret2}:${
+        payment.id
+      }`,
+    ).toString();
 
     if (sign !== query.SIGN) {
       throw new Error('Error sign');

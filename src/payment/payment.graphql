@@ -20,6 +20,7 @@ input CreatePaymentInput {
 enum PaymentMethodType {
   FREE_KASSA
   COINBASE
+  SHADOWPAY
   NONE
 }
 

@@ -56,6 +56,7 @@ export enum RarityLiveDropType {
 export enum PaymentMethodType {
     FREE_KASSA = "FREE_KASSA",
     COINBASE = "COINBASE",
+    SHADOWPAY = "SHADOWPAY",
     NONE = "NONE"
 }
 
@@ -409,6 +410,11 @@ export interface LiveDropListData {
 
 export interface Payment {
     id?: string;
+    paymentId?: string;
+    userId?: number;
+    sum?: number;
+    status?: PaymentStatusType;
+    method?: PaymentMethodType;
 }
 
 export interface PaymentsListData {

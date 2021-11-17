@@ -39,6 +39,7 @@ import {
   RawBodyMiddleware,
 } from 'middlewares/body.middleware';
 import { RouteInfo } from '@nestjs/common/interfaces';
+import { ShadowpayModule } from './shadowpay/shadowpay.module';
 const rawBodyParsingRoutes: Array<RouteInfo> = [
   {
     path: 'payment/coinbase-hook*',
@@ -84,6 +85,7 @@ const rawBodyParsingRoutes: Array<RouteInfo> = [
     PaybackSystemModule,
     LiveDropModule,
     SocketModule,
+    ShadowpayModule,
   ],
   providers: [
     SocketGateway,
