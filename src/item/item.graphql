@@ -18,6 +18,14 @@ type ItemsCountByQuality {
   knife: Int
 }
 
+type ItemsCountByQuality {
+  classified: Int
+  milspec: Int
+  covert: Int
+  restricted: Int
+  knife: Int
+}
+
 enum ItemRarity {
   Classified
   Covert
