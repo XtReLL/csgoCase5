@@ -25,6 +25,10 @@ export enum GameType {
     CASE = "CASE"
 }
 
+export enum GameStatus {
+    NONE = "NONE"
+}
+
 export enum GiveawayType {
     CUSTOM = "CUSTOM",
     DAILY = "DAILY",
@@ -33,6 +37,7 @@ export enum GiveawayType {
 
 export enum InventoryStatus {
     AVAILABLE = "AVAILABLE",
+    UNAVAILABLE = "UNAVAILABLE",
     WITHDRAWN = "WITHDRAWN",
     SOLD = "SOLD"
 }

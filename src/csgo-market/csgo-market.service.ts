@@ -1,11 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import axios from 'axios';
 import { Item } from 'item/entity/item.entity';
+import { RedisCacheService } from 'redisCache/redisCache.service';
 import { User } from 'user/user/entity/user.entity';
 
 @Injectable()
 export class CsgoMarketService {
-  constructor() {}
+  constructor(private readonly redisCacheService: RedisCacheService) {}
 
   async getPrices(): Promise<any> {
     return new Promise((res, rej) => {
@@ -82,6 +83,33 @@ export class CsgoMarketService {
         })
         .catch((e) => {
           return rej(e.message);
+        });
+    });
+  }
+
+  async getTradeByCustomIds(customIds: Array<string>): Promise<any> {
+    return new Promise((res) => {
+      let customIdList = '';
+
+      for (const customId of customIds) {
+        customIdList += `&custom_id[]=${customId}`;
+      }
+
+      axios
+        .get(
+          `https://market.csgo.com/api/v2/get-list-buy-info-by-custom-id?key=${process.env.CSGO_MARKET_APIKEY}${customIdList}`,
+        )
+        .then((data) => {
+          const result = data.data;
+
+          if (!result.success) {
+            return res([]);
+          }
+
+          return res(result.data);
+        })
+        .catch(() => {
+          return res([]);
         });
     });
   }

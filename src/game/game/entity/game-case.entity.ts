@@ -27,6 +27,9 @@ export class GameCase {
   @Column()
   userId!: number;
 
+  @Column()
+  status!: number;
+
   @ManyToOne(() => Case, (box) => box.gameCase)
   public case!: Promise<Case>;
 

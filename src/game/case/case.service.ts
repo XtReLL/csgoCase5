@@ -162,7 +162,7 @@ export class CaseService {
     }
 
     await this.redisCacheService.set(`open_case_${author.model.id}`, 1, {
-      ttl: 5,
+      ttl: 1000 * 10,
     });
     const queryRunner = this.connection.createQueryRunner();
     await queryRunner.connect();
@@ -230,6 +230,12 @@ export class CaseService {
       await queryRunner.commitTransaction();
 
       this.eventEmitter.emit('case.open', new CaseOpenEvent(box, author.model));
+      await this.redisCacheService.delete(
+        `open_case_${author.model.id}`,
+        (error: any) => {
+          throw new Error(error);
+        },
+      );
       return winItems;
     } catch (error) {
       console.log(error);

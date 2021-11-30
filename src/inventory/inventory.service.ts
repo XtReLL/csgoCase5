@@ -35,6 +35,10 @@ export class InventoryService {
     @InjectConnection() private readonly connection: Connection,
   ) {}
 
+  async findOne(id: number): Promise<Inventory> {
+    return this.inventoryRepository.findOneOrFail(id);
+  }
+
   async addItems(
     addItemToInventoryDto: AddItemToInventoryDto,
   ): Promise<Inventory> {
@@ -106,7 +110,7 @@ export class InventoryService {
     const withdraw = await this.withdrawItemRepository.save(
       this.withdrawItemRepository.create({
         userId: user.id,
-        itemId: inventoryItem.itemId,
+        inventoryId: inventoryItem.itemId,
       }),
     );
     const queryRunner = this.connection.createQueryRunner();

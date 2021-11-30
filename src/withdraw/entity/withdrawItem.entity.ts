@@ -21,7 +21,7 @@ export class WithdrawItem {
   userId!: number;
 
   @Column()
-  itemId!: number;
+  inventoryId!: number;
 
   @Column({ default: WithdrawStatusType.PENDING })
   status!: WithdrawStatusType;

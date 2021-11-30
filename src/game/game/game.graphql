@@ -6,6 +6,10 @@ enum GameType {
   CASE
 }
 
+enum GameStatus {
+  NONE
+}
+
 input CreateGameCaseDto {
   caseId: String!
   userId: String!

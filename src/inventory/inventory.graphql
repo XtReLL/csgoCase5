@@ -8,6 +8,7 @@ type Inventory {
 
 enum InventoryStatus {
   AVAILABLE
+  UNAVAILABLE
   WITHDRAWN
   SOLD
 }
